@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+* {
+    image-rendering: pixelated;
+    background-size: 100%;
+}
+
+@font-face {
+    font-family: 'PKMN';
+    src: url('./pokemon-emerald.ttf') format('truetype');
+}

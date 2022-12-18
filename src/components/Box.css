@@ -1,0 +1,40 @@
+.box-index{
+    width: 100%;
+    height: calc(100vh * 25 / 141);
+    padding: calc(100vh * 3 / 141) calc(100vh * 19 / 141);
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.box-index{
+    user-select: none;
+}
+
+.box{
+    background-image: url("/public/box_background.png");
+    height: 100vh;
+    width: calc(100vh * 156 / 141);
+    background-size: 100%;
+
+    display: flex;
+    flex-flow: column;
+    font-family: PKMN;
+    font-size: 8vh;
+    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000,
+    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+}
+
+.arrow{
+    width: calc(80vh * 8 / 141);
+    height: calc(80vh * 12 / 141);
+    cursor: pointer;
+    margin-right: calc(80vh * 4 / 141);
+}
+
+.box-grid{
+    display: grid;
+    height: calc(100vh * 116 / 141);
+    padding: calc(100vh * 5 / 141);
+    grid-template: repeat(5, 1fr) / repeat(5, 1fr);
+}

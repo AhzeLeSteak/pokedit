@@ -1,4 +1,11 @@
 
+export const BOX_1_OFFSET = 0x4000;
+export const BOX_7_OFFSET = 0x6000;
+export const BOX_MEMORY_SIZE = 0x462;
+export const POKEMON_MEMORY_SIZE = 0x21;
+export const POKEMON_OFFSET_IN_BOX = 0x16;
+
+
 export const TYPES = [
     'NORMAL',
     'FIGHTING',
@@ -20,6 +27,7 @@ export const TYPES = [
 ]
 
 export const SPECIES = [
+    '',
     "Rhydon",
     "Kangaskhan",
     "Nidoran♂",

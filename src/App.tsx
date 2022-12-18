@@ -3,35 +3,50 @@ import 'primeflex/primeflex.css';
 import 'primereact/resources/primereact.css'
 import 'primereact/resources/themes/lara-light-blue/theme.css'
 
-import React, {useEffect, useState} from 'react';
-import {TabPanel, TabView} from 'primereact/tabview';
-import {getBuffer} from "./data/getBuffer";
-import {Box} from "./Box";
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import {get_buffer} from "./data/get_buffer";
+import {Box} from "./components/Box";
+import {Pokemon} from "./data/Pokemon";
 
-const index12 = Array(12).fill(0).map((_, i) => i);
+
+const BoxContext = createContext<BoxContextType>({
+    pokemon: undefined,
+    box_index: 0,
+    set_pokemon: (p) => null,
+    set_box_index: (i) => null
+});
+
+export const useBoxContext = () => useContext(BoxContext);
+
 
 function App() {
 
-    const [activeIndex, setActiveIndex] = useState(0);
     const [buffer, setBuffer] = useState<Uint8Array>();
+    const [pokemon, setPokemon] = useState<Pokemon | undefined>();
+    const [activeBox, setActiveBox] = useState(0);
 
     useEffect(() => {
-        getBuffer().then(setBuffer);
+        get_buffer().then(setBuffer);
     }, []);
 
 
     return (
         <div className="App">
-
-            <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
-                {buffer && index12.map(i => <TabPanel header={`Boîte ${i+1}`}>
-                    <Box boxIndex={i} buffer={buffer}></Box>
-                </TabPanel>)}
-            </TabView>
+            <BoxContext.Provider value={{box_index: activeBox, pokemon, set_box_index: setActiveBox, set_pokemon: setPokemon}}>
+                <div className="poke-data"></div>
+                {buffer && <Box buffer={buffer}/>}
+            </BoxContext.Provider>
         </div>
     );
 }
 
+
+export type BoxContextType = {
+    pokemon ?: Pokemon;
+    set_pokemon: (p: Pokemon) => void;
+    box_index: number;
+    set_box_index: (i: number) => void;
+}
 
 
 
