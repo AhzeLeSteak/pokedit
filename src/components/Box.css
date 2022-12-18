@@ -16,13 +16,9 @@
     height: 100vh;
     width: calc(100vh * 156 / 141);
     background-size: 100%;
-
+    font-size: 8vh;
     display: flex;
     flex-flow: column;
-    font-family: PKMN;
-    font-size: 8vh;
-    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000,
-    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 }
 
 .arrow{

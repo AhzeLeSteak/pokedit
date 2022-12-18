@@ -7,6 +7,7 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 import {get_buffer} from "./data/get_buffer";
 import {Box} from "./components/Box";
 import {Pokemon} from "./data/Pokemon";
+import {PokeData} from "./components/PokeData";
 
 
 const BoxContext = createContext<BoxContextType>({
@@ -29,12 +30,14 @@ function App() {
         get_buffer().then(setBuffer);
     }, []);
 
+    if(!buffer)
+        return <></>
 
     return (
         <div className="App">
             <BoxContext.Provider value={{box_index: activeBox, pokemon, set_box_index: setActiveBox, set_pokemon: setPokemon}}>
-                <div className="poke-data"></div>
-                {buffer && <Box buffer={buffer}/>}
+                <PokeData></PokeData>
+                <Box buffer={buffer}/>
             </BoxContext.Provider>
         </div>
     );

@@ -17,6 +17,13 @@ code {
     background-size: 100%;
 }
 
+.poke-font{
+    font-family: PKMN;
+    color: white;
+    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000,
+    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+}
+
 @font-face {
     font-family: 'PKMN';
     src: url('./pokemon-emerald.ttf') format('truetype');

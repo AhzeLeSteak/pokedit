@@ -24,7 +24,7 @@ export function Box(props: {buffer: Uint8Array}){
         [box_index]);
 
     return <div className="box">
-        <div className="box-index">
+        <div className="box-index poke-font">
             <img className="arrow left" src={`${process.env.PUBLIC_URL}/left.png`} onClick={() => set_box_index((box_index+11)%12)}></img>
             BOITE {box_index+1}
             <img className="arrow right" src={`${process.env.PUBLIC_URL}/right.png`}

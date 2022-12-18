@@ -5,11 +5,3 @@
     width: 100vw;
     background-size: 100%;
 }
-
-.poke-data{
-    height: 100%;
-    width: calc(100vh * 80 / 156);
-    background-image: url("/public/poke-data.png");
-    background-size: 100%;
-
-}
