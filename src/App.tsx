@@ -4,10 +4,11 @@ import 'primereact/resources/primereact.css'
 import 'primereact/resources/themes/lara-light-blue/theme.css'
 
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {get_buffer} from "./data/get_buffer";
 import {Box} from "./components/Box";
-import {Pokemon} from "./data/Pokemon";
 import {PokeData} from "./components/PokeData";
+import {SaveDataType} from "./data/AbstractSaveDataReader";
+import {Pokemon} from "./data/PokeTypes";
+import {Gen1SaveDataReader} from "./data/Gen1/Gen1SaveDataReader";
 
 
 const BoxContext = createContext<BoxContextType>({
@@ -20,24 +21,29 @@ const BoxContext = createContext<BoxContextType>({
 export const useBoxContext = () => useContext(BoxContext);
 
 
+
+
 function App() {
 
-    const [buffer, setBuffer] = useState<Uint8Array>();
+    const [saveData, setSaveData] = useState<SaveDataType>();
     const [pokemon, setPokemon] = useState<Pokemon | undefined>();
     const [activeBox, setActiveBox] = useState(0);
 
     useEffect(() => {
-        get_buffer().then(setBuffer);
+        const filename = 'Pokemon_-_Version_Bleue_France_SGB_Enhanced.sav';
+        new Gen1SaveDataReader(filename)
+            .init()
+            .then(reader => setSaveData(reader.get_save_data()));
     }, []);
 
-    if(!buffer)
+    if(!saveData)
         return <></>
 
     return (
         <div className="App">
             <BoxContext.Provider value={{box_index: activeBox, pokemon, set_box_index: setActiveBox, set_pokemon: setPokemon}}>
                 <PokeData></PokeData>
-                <Box buffer={buffer}/>
+                <Box pokemons={saveData.boxes[activeBox]}/>
             </BoxContext.Provider>
         </div>
     );

@@ -1,4 +1,4 @@
-export interface Pokemon extends Record<string, number> {
+export interface PokemonGen1Structure {
     species: number,
     currentHp: number,
     level: number,

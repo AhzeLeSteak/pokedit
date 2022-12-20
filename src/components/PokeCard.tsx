@@ -1,15 +1,14 @@
 import './PokeCard.css'
 
-import React, {useMemo} from "react";
-import {get_poke} from "../data/get_poke";
+import React from "react";
 import {useBoxContext} from "../App";
+import {Pokemon} from "../data/PokeTypes";
 
-export function PokeCard(props: {offset: number, buffer: Uint8Array}){
+export function PokeCard(props: {pokemon: Pokemon}){
 
     const {set_pokemon} = useBoxContext();
-    const poke = useMemo(() => get_poke(props.buffer, props.offset), [props.offset, props.buffer]);
-    const species = useMemo(() => String(poke.species).padStart(3, '0'), [poke.species]);
+    const species = String(props.pokemon.pokedex_id).padStart(3, '0');
 
 
-    return <img src={`${process.env.PUBLIC_URL}/icons/${species}.png`} className="cursor-pointer" onClick={() => set_pokemon(poke)}/>
+    return <img src={`${process.env.PUBLIC_URL}/icons/${species}.png`} className="cursor-pointer" onClick={() => set_pokemon(props.pokemon)}/>
 }

@@ -1,27 +1,14 @@
 import './Box.css';
 
-import React, {useMemo} from "react";
+import React from "react";
 import {PokeCard} from "./PokeCard";
-import {
-    BOX_1_OFFSET,
-    BOX_7_OFFSET,
-    BOX_MEMORY_SIZE,
-    POKEMON_MEMORY_SIZE,
-    POKEMON_OFFSET_IN_BOX
-} from "../data/static-data";
 import {useBoxContext} from "../App";
+import {Pokemon} from "../data/PokeTypes";
 
-const index20 = Array(20).fill(0).map((_, i) => i);
 
-export function Box(props: {buffer: Uint8Array}){
+export function Box(props: {pokemons: Pokemon[]}){
 
-    const {buffer} = props;
     const {set_box_index, box_index} = useBoxContext();
-    const boxOffset = useMemo(() =>
-            box_index < 6
-                ? BOX_1_OFFSET + box_index * BOX_MEMORY_SIZE
-                : BOX_7_OFFSET + (box_index-6)*BOX_MEMORY_SIZE,
-        [box_index]);
 
     return <div className="box">
         <div className="box-index poke-font">
@@ -31,8 +18,8 @@ export function Box(props: {buffer: Uint8Array}){
             onClick={() => set_box_index((box_index+1)%12)}></img>
         </div>
         <div className="box-grid">
-            {index20.map(i =>
-                <PokeCard offset={boxOffset + POKEMON_OFFSET_IN_BOX + i * POKEMON_MEMORY_SIZE} buffer={buffer}/>
+            {props.pokemons.map((pk, i) =>
+                <PokeCard key={i} pokemon={pk}/>
             )}
         </div>
     </div>

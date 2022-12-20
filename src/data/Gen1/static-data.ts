@@ -1,22 +1,30 @@
-
-export const BOX_1_OFFSET = 0x4000;
-export const BOX_7_OFFSET = 0x6000;
-export const BOX_MEMORY_SIZE = 0x462;
-export const POKEMON_MEMORY_SIZE = 0x21;
-export const POKEMON_OFFSET_IN_BOX = 0x16;
+import {PkType} from "../PokeTypes";
 
 
-export const TYPES = [
+export const OFFSET = {
+    BOX_1: 0x4000,
+    BOX_7: 0x6000,
+    POKEMON_OFFSET_IN_BOX: 0x16,
+    POKEMON_NAMES_OFFSET_IN_BOX: 0xB
+}
+
+export const MEMORY_SIZE = {
+    BOX: 0x462,
+    POKEMON: 0x21
+}
+
+
+export const TYPES : PkType[] = [
     'NORMAL',
     'FIGHTING',
     'FLYING',
     'POISON',
     'GROUND',
     'ROCK',
-    'BIRD',
+    'NONE', //'BIRD'
     'BUG',
     'GHOST',
-    '', '', '', '', '',
+    'NONE', 'NONE', 'NONE', 'NONE', 'NONE', //unused bytes
     'FIRE',
     'WATER',
     'GRASS',

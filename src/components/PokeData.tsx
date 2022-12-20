@@ -1,6 +1,6 @@
 import './PokeData.css'
 import {useBoxContext} from "../App";
-import {SPECIES} from "../data/static-data";
+import {SPECIES} from "../data/Gen1/static-data";
 
 export const PokeData = () => {
 
@@ -10,15 +10,16 @@ export const PokeData = () => {
     if(!pokemon)
         return <div className="poke-data"></div>;
 
-    const species = String(pokemon.species).padStart(3, '0');
+    const species = String(pokemon.pokedex_id).padStart(3, '0');
 
     const stats = [
-        [SPECIES[pokemon.species], 'Lvl '+pokemon.level],
-        ['HP', `${pokemon.currentHp}/${pokemon.maxHP}`],
-        ['ATK', pokemon.atk],
-        ['DEF', pokemon.def],
-        ['SPE', pokemon.spe],
-        ['SPD', pokemon.spd]
+        [SPECIES[pokemon.pokedex_id], 'Lvl '+pokemon.level],
+        ['XP', pokemon.exp],
+        ['HP', `${pokemon.currentHp}/${pokemon.base_stats.hp}`],
+        ['ATK', pokemon.base_stats.atk],
+        ['DEF', pokemon.base_stats.def],
+        ['SPE', pokemon.base_stats.atk_spe],
+        ['SPD', pokemon.base_stats.spd]
     ]
 
     return <div className="poke-data">
