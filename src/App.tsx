@@ -9,13 +9,12 @@ import {PokeData} from "./components/PokeData";
 import {SaveDataType} from "./data/AbstractSaveDataReader";
 import {Pokemon} from "./data/PokeTypes";
 import {Gen1SaveDataReader} from "./data/Gen1/Gen1SaveDataReader";
+import {Party} from "./components/Party";
 
 
 const BoxContext = createContext<BoxContextType>({
-    pokemon: undefined,
-    box_index: 0,
-    set_pokemon: (p) => null,
-    set_box_index: (i) => null
+    selected_pokemon: undefined,
+    set_pokemon: () => null,
 });
 
 export const useBoxContext = () => useContext(BoxContext);
@@ -39,11 +38,13 @@ function App() {
     if(!saveData)
         return <></>
 
+
     return (
         <div className="App">
-            <BoxContext.Provider value={{box_index: activeBox, pokemon, set_box_index: setActiveBox, set_pokemon: setPokemon}}>
+            <BoxContext.Provider value={{selected_pokemon: pokemon, set_pokemon: setPokemon}}>
                 <PokeData></PokeData>
-                <Box pokemons={saveData.boxes[activeBox]}/>
+                <Party save_data={saveData}></Party>
+                <Box save_data={saveData} box_index={activeBox} set_box_index={setActiveBox}/>
             </BoxContext.Provider>
         </div>
     );
@@ -51,10 +52,8 @@ function App() {
 
 
 export type BoxContextType = {
-    pokemon ?: Pokemon;
+    selected_pokemon ?: Pokemon;
     set_pokemon: (p: Pokemon) => void;
-    box_index: number;
-    set_box_index: (i: number) => void;
 }
 
 

@@ -4,22 +4,22 @@ import {SPECIES} from "../data/Gen1/static-data";
 
 export const PokeData = () => {
 
-    const {pokemon} = useBoxContext();
+    const {selected_pokemon} = useBoxContext();
 
 
-    if(!pokemon)
+    if(!selected_pokemon)
         return <div className="poke-data"></div>;
 
-    const species = String(pokemon.pokedex_id).padStart(3, '0');
+    const species = String(selected_pokemon.pokedex_id).padStart(3, '0');
 
     const stats = [
-        [SPECIES[pokemon.pokedex_id], 'Lvl '+pokemon.level],
-        ['XP', pokemon.exp],
-        ['HP', `${pokemon.currentHp}/${pokemon.base_stats.hp}`],
-        ['ATK', pokemon.base_stats.atk],
-        ['DEF', pokemon.base_stats.def],
-        ['SPE', pokemon.base_stats.atk_spe],
-        ['SPD', pokemon.base_stats.spd]
+        [SPECIES[selected_pokemon.pokedex_id], 'Lvl '+selected_pokemon.level],
+        ['XP', selected_pokemon.exp],
+        ['HP', `${selected_pokemon.currentHp}/${selected_pokemon.base_stats.hp}`],
+        ['ATK', selected_pokemon.base_stats.atk],
+        ['DEF', selected_pokemon.base_stats.def],
+        ['SPE', selected_pokemon.base_stats.atk_spe],
+        ['SPD', selected_pokemon.base_stats.spd]
     ]
 
     return <div className="poke-data">

@@ -2,6 +2,7 @@ import {PkType} from "../PokeTypes";
 
 
 export const OFFSET = {
+    PARTY: 0x2F2C,
     BOX_1: 0x4000,
     BOX_7: 0x6000,
     POKEMON_OFFSET_IN_BOX: 0x16,

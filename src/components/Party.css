@@ -1,0 +1,13 @@
+.party{
+    background-image: url("/public/party_background.png");
+    height: 100vh;
+    width: calc(100vh * 48 / 160);
+    background-size: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(100vh * 2 /160);
+
+    padding: calc(100vh * 4 / 160) calc(100vh * 9 / 160) calc(100vh * 13 / 160);
+}

@@ -2,13 +2,12 @@ import './Box.css';
 
 import React from "react";
 import {PokeCard} from "./PokeCard";
-import {useBoxContext} from "../App";
-import {Pokemon} from "../data/PokeTypes";
+import {SaveDataType} from "../data/AbstractSaveDataReader";
 
 
-export function Box(props: {pokemons: Pokemon[]}){
+export function Box(props: {save_data: SaveDataType, box_index: number, set_box_index: (_: number) => void}){
 
-    const {set_box_index, box_index} = useBoxContext();
+    const {box_index, set_box_index, save_data} = props;
 
     return <div className="box">
         <div className="box-index poke-font">
@@ -18,7 +17,7 @@ export function Box(props: {pokemons: Pokemon[]}){
             onClick={() => set_box_index((box_index+1)%12)}></img>
         </div>
         <div className="box-grid">
-            {props.pokemons.map((pk, i) =>
+            {save_data.boxes[box_index].map((pk, i) =>
                 <PokeCard key={i} pokemon={pk}/>
             )}
         </div>

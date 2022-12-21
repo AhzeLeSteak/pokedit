@@ -30,6 +30,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
         return {
             player_name: read_string(this.buffer, PLAYER_NAME),
             rival_name: read_string(this.buffer, RIVAL_NAME),
+            party: this.get_party_info(),
             boxes: Array(12)
                 .fill(0)
                 .map((_, i) => this.get_box_info(i))
@@ -130,4 +131,10 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
     }
 
 
+    private get_party_info(): Pokemon[] {
+        const poke_count = this.buffer[OFFSET.PARTY];
+        return Array(poke_count).fill(0)
+            .map((_, i) => this.get_poke(OFFSET.PARTY + 0x8 + i*0x2C))
+            .map(pkg1 => this.convert_poke(pkg1))
+    }
 }
