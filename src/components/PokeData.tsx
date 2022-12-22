@@ -12,8 +12,11 @@ export const PokeData = () => {
 
     const species = String(selected_pokemon.pokedex_id).padStart(3, '0');
 
+    const name = `${selected_pokemon.nickname} (${SPECIES[selected_pokemon.pokedex_id]})`
+
     const stats = [
-        [SPECIES[selected_pokemon.pokedex_id], 'Lvl '+selected_pokemon.level],
+        [name, 'Lvl '+selected_pokemon.level],
+        ['OT', selected_pokemon.OT_name],
         ['XP', selected_pokemon.exp],
         ['HP', `${selected_pokemon.currentHp}/${selected_pokemon.base_stats.hp}`],
         ['ATK', selected_pokemon.base_stats.atk],

@@ -1,4 +1,5 @@
 import {UInt8ToPKChar} from "./char_encoding";
+import {MEMORY_SIZE} from "./static-data";
 
 export const read_n_bytes = (buffer: Uint8Array, offset: number, n: number) => {
     let res = 0;
@@ -9,7 +10,7 @@ export const read_n_bytes = (buffer: Uint8Array, offset: number, n: number) => {
     return res;
 }
 
-export function read_string(buffer: Uint8Array, [offset, length]: number[]){
+export function read_string(buffer: Uint8Array, offset: number, length = MEMORY_SIZE.STRING_LENGTH){
     let over = false;
     let res = '';
     for(let i = 0; !over && i < length; i++){

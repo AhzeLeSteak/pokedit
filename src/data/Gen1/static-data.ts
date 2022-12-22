@@ -2,16 +2,29 @@ import {PkType} from "../PokeTypes";
 
 
 export const OFFSET = {
-    PARTY: 0x2F2C,
-    BOX_1: 0x4000,
-    BOX_7: 0x6000,
-    POKEMON_OFFSET_IN_BOX: 0x16,
-    POKEMON_NAMES_OFFSET_IN_BOX: 0xB
+    PLAYER_NAME: 0x2598,
+    RIVAL_NAME: 0x25F6,
+    BOX: {
+        BOX_1: 0x4000,
+        BOX_7: 0x6000,
+        POKEMONS: 0x16,
+        POKEMON_NAMES: 0x386,
+        OT_NAMES: 0x2AA
+
+    },
+    PARTY: {
+        OFFSET: 0x2F2C,
+        POKEMONS: 0x8,
+        POKEMON_NAMES: 0x152,
+        OT_NAMES: 0X110
+    },
 }
 
 export const MEMORY_SIZE = {
+    STRING_LENGTH: 0xB,
     BOX: 0x462,
-    POKEMON: 0x21
+    POKEMON_IN_BOX: 0x21,
+    POKEMON_IN_PARTY: 0x2C
 }
 
 

@@ -8,6 +8,8 @@ export interface Stats{
 }
 
 export interface Pokemon {
+    OT_name: string,
+    nickname: string,
     pokedex_id: number,
     base_stats: Stats
     level: number,
