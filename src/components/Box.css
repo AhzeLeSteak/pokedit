@@ -1,34 +1,36 @@
 
 .box{
     background-image: url("/public/imgs/box_background.png");
-    height: 100vh;
-    width: calc(100vh * 156 / 141);
+    height: 100%;
+    aspect-ratio: 156/141;
     background-size: 100%;
-    font-size: 8vh;
     display: flex;
     flex-flow: column;
 }
 
 .box-index{
     width: 100%;
-    height: calc(100vh * 25 / 141);
-    padding: calc(100vh * 3 / 141) calc(100vh * 19 / 141);
+    height: calc(100% * 25 / 141);
+    padding: calc(var(--app-height) * 3 / 141) calc(var(--app-height) * 30 / 141);
+    padding-bottom: calc(var(--app-height) * 6 / 141);
     color: white;
     text-align: center;
     user-select: none;
     vertical-align: middle;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .arrow{
-    width: calc(80vh * 8 / 141);
-    height: calc(80vh * 12 / 141);
+    width: calc(var(--app-height) *.8 * 8 / 141);
+    height: calc(var(--app-height) *.8 * 12 / 141);
     cursor: pointer;
-    margin-right: calc(80vh * 4 / 141);
 }
 
 .box-grid{
     display: grid;
-    height: calc(100vh * 116 / 141);
-    padding: calc(100vh * 5 / 141);
+    height: calc(100% * 116 / 141);
+    padding: calc(var(--app-height) * 5 / 141);
     grid-template: repeat(5, 1fr) / repeat(5, 1fr);
 }

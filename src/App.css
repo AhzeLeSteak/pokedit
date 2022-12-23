@@ -1,7 +1,17 @@
 .App {
+    --aspect-ratio: calc(307/160);
+    aspect-ratio: var(--aspect-ratio);
     display: flex;
     background-image: url("/public/imgs/background.png");
-    height: 100vh;
-    width: 100vw;
     background-size: 100%;
+}
+
+.horizontal{
+    height: 100vh;
+    --app-height: 100vh;
+}
+
+.vertical{
+    width: 100vw;
+    --app-height: calc(100vw / var(--aspect-ratio));
 }

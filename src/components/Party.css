@@ -1,13 +1,13 @@
 .party{
     background-image: url("/public/imgs/party_background.png");
-    height: 100vh;
-    width: calc(100vh * 48 / 160);
+    height: 100%;
+    aspect-ratio: 48/160;
     background-size: 100%;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
     align-items: center;
-    gap: calc(100vh * 2 /160);
+    gap: calc(var(--app-height) * 2 /160);
 
-    padding: calc(100vh * 4 / 160) calc(100vh * 9 / 160) calc(100vh * 13 / 160);
+    padding: calc(var(--app-height) * 4 / 160) calc(var(--app-height) * 9 / 160) calc(var(--app-height) * 13 / 160);
 }

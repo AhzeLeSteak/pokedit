@@ -23,8 +23,8 @@ code {
 .poke-font{
     font-family: PKMN;
     color: white;
-    text-shadow: 0.2vh 0 #000, -0.2vh 0 #000, 0 0.2vh #000, 0 -0.2vh #000,
-    0.1vh 0.1vh #000, -0.1vh -0.1vh #000, 0.1vh -0.1vh #000, -0.1vh 0.1vh #000;
+    text-shadow: calc(var(--app-height) / 500) 0 #000, calc(var(--app-height) / -500) 0 #000, 0 calc(var(--app-height) / 500) #000, 0 calc(var(--app-height) / -500) #000,
+    calc(var(--app-height) / 1000) calc(var(--app-height) / 1000) #000, calc(var(--app-height) / -1000) calc(var(--app-height) / -1000) #000, calc(var(--app-height) / 1000) calc(var(--app-height) / -1000) #000, calc(var(--app-height) / -1000) calc(var(--app-height) / 1000) #000;
 }
 
 @font-face {
