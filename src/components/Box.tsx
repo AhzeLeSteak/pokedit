@@ -11,9 +11,9 @@ export function Box(props: {save_data: SaveDataType, box_index: number, set_box_
 
     return <div className="box">
         <div className="box-index poke-font">
-            <img className="arrow left" src={`${process.env.PUBLIC_URL}/left.png`} onClick={() => set_box_index((box_index+11)%12)}></img>
+            <img className="arrow left" src={`${process.env.PUBLIC_URL}/imgs/left.png`} onClick={() => set_box_index((box_index+11)%12)}></img>
             BOITE {box_index+1}
-            <img className="arrow right" src={`${process.env.PUBLIC_URL}/right.png`}
+            <img className="arrow right" src={`${process.env.PUBLIC_URL}/imgs/right.png`}
             onClick={() => set_box_index((box_index+1)%12)}></img>
         </div>
         <div className="box-grid">

@@ -17,14 +17,27 @@ code {
     background-size: 100%;
 }
 
+.type-badge{
+}
+
 .poke-font{
     font-family: PKMN;
     color: white;
-    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000,
-    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+    text-shadow: 0.2vh 0 #000, -0.2vh 0 #000, 0 0.2vh #000, 0 -0.2vh #000,
+    0.1vh 0.1vh #000, -0.1vh -0.1vh #000, 0.1vh -0.1vh #000, -0.1vh 0.1vh #000;
 }
 
 @font-face {
     font-family: 'PKMN';
     src: url('./pokemon-emerald.ttf') format('truetype');
+}
+
+
+.p-tabview .p-tabview-nav,
+.p-tabview .p-tabview-panels,
+.p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link,
+.p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled) .p-tabview-nav-link,
+.p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link
+{
+    background: transparent !important;
 }

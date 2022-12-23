@@ -1,6 +1,6 @@
 
 .box{
-    background-image: url("/public/box_background.png");
+    background-image: url("/public/imgs/box_background.png");
     height: 100vh;
     width: calc(100vh * 156 / 141);
     background-size: 100%;

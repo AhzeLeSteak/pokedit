@@ -1,23 +1,37 @@
 .poke-data{
     height: 100%;
     width: calc(100vh * 80 / 156);
-    background-image: url("/public/poke-data.png");
+    background-image: url("/public/imgs/poke-data.png");
     background-size: 100%;
 
     display: flex;
     flex-flow: column;
+    padding-right: calc(100vh * 2 / 156);
 }
 
 .poke-img{
     height: calc(100vh * 85 / 156);
-    width: 100%;
-    padding-top: calc(100vh * 18 / 156);
-    padding-left: calc(100vh * 14 / 156);
-    padding-bottom: calc(100vh * 11 / 156);
-    right: calc(100vh * 10 / 156);
+    padding: calc(100vh * 18 / 156) calc(100vh * 6 / 156) calc(100vh * 11 / 156) calc(100vh * 14 / 156);
+    object-fit: cover;
 }
 
 .poke-stats{
     font-size: 2.5vh;
     padding: calc(100vh * 6 / 156)
+}
+
+.header-icon{
+    width: 5vh;
+    padding: 1vh;
+}
+
+.p-tabview-nav{
+    justify-content: space-around;
+}
+
+.selected{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 2px white solid;
 }

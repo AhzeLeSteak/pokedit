@@ -11,7 +11,7 @@ export function PokeCard(props: {pokemon: Pokemon}){
 
 
     return <img src={`${process.env.PUBLIC_URL}/icons/${species}.png`}
-                className="cursor-pointer"
+                className="cursor-pointer poke-card"
                 onClick={() => set_pokemon(props.pokemon)}
                 onDoubleClick={() => console.log(props.pokemon)}
     />

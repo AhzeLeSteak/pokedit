@@ -1,3 +1,10 @@
+import {PkMove} from "./PokeMoves";
+
+export type PkType =
+    'NORMAL' | 'FIGHTING' | 'FLYING' | 'POISON' | 'GROUND' |
+    'ROCK' | 'BUG' | 'GHOST' | 'FIRE' | 'WATER' | 'GRASS' |
+    'ELECTRIC' | 'PSYCHIC' | 'ICE' | 'DRAGON' | 'NONE'
+
 export interface Stats{
     hp: number,
     atk: number,
@@ -6,6 +13,8 @@ export interface Stats{
     def_spe: number,
     spd: number,
 }
+
+export type PkMoveWithPP = PkMove & { actual_PP : number }
 
 export interface Pokemon {
     OT_name: string,
@@ -17,21 +26,9 @@ export interface Pokemon {
     currentHp: number,
     status: number,
     item: any,
-    moves: [PkMove, PkMove, PkMove, PkMove],
+    moves: PkMoveWithPP[],
     OGTrainerID: number,
     exp: number,
     EV: Stats
     IV: number,
 }
-
-export type PkMove = {
-    move_name: string,
-    type: PkType,
-    actual_pp: number,
-    max_pp: number
-} | undefined
-
-export type PkType =
-    'NORMAL' | 'FIGHTING' | 'FLYING' | 'POISON' | 'GROUND' |
-    'ROCK' | 'BUG' | 'GHOST' | 'FIRE' | 'WATER' | 'GRASS' |
-    'ELECTRIC' | 'PSYCHIC' | 'ICE' | 'DRAGON' | 'NONE'

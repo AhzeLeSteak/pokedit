@@ -1,5 +1,5 @@
 .party{
-    background-image: url("/public/party_background.png");
+    background-image: url("/public/imgs/party_background.png");
     height: 100vh;
     width: calc(100vh * 48 / 160);
     background-size: 100%;

@@ -2,7 +2,8 @@ import {read_n_bytes, read_string} from "./read_buffer";
 import {PokemonGen1Structure} from "./PokemonGen1Structure";
 import {MEMORY_SIZE, OFFSET, TYPES} from "./static-data";
 import {AbstractSaveDataReader} from "../AbstractSaveDataReader";
-import {Pokemon} from "../PokeTypes";
+import {PkMoveWithPP, Pokemon} from "../PokeTypes";
+import {moves_g1} from "./moves";
 
 
 export class Gen1SaveDataReader extends AbstractSaveDataReader{
@@ -109,6 +110,20 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
 
 
     private convert_poke(poke: PokemonGen1Structure, nickname: string, OT_name: string = '') : Pokemon {
+
+        const move_indexes = [poke.move1, poke.move2, poke.move3, poke.move4];
+        const move_PPs = [poke.move1PP, poke.move2PP, poke.move3PP, poke.move4PP];
+        const moves: PkMoveWithPP[] = [];
+
+        for(let i = 0; i < 4; i++){
+            const move = moves_g1[move_indexes[i]-1];
+            if(!move) break;
+            moves.push({
+                ...move,
+                actual_PP: move_PPs[i]
+            })
+        }
+
         return {
             OT_name,
             nickname,
@@ -131,10 +146,10 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
                 spd: poke.spd
             },
             currentHp: poke.currentHp,
-            exp: 0,
+            exp: poke.exp,
             item: undefined,
             level: poke.level,
-            moves: [undefined, undefined, undefined, undefined],
+            moves,
             pokedex_id: poke.species,
             status: 0,
             types: [TYPES[poke.type1], TYPES[poke.type2]]
