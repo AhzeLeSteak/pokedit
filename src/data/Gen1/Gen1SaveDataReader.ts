@@ -2,7 +2,7 @@ import {read_n_bytes, read_string} from "./read_buffer";
 import {PokemonGen1Structure} from "./PokemonGen1Structure";
 import {MEMORY_SIZE, OFFSET, TYPES} from "./static-data";
 import {AbstractSaveDataReader} from "../AbstractSaveDataReader";
-import {PkMoveWithPP, Pokemon} from "../PokeTypes";
+import {PkMoveWithPP, Pokemon, Stats} from "../PokeTypes";
 import {moves_g1} from "./moves";
 
 
@@ -47,7 +47,9 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
             const pokeG1 = this.get_poke(first_pk_offset + i * MEMORY_SIZE.POKEMON_IN_BOX);
             const nickname = read_string(this.buffer, box_offset + OFFSET.BOX.POKEMON_NAMES + i * MEMORY_SIZE.STRING_LENGTH);
             const OT_name =  read_string(this.buffer, box_offset + OFFSET.BOX.OT_NAMES + i * MEMORY_SIZE.STRING_LENGTH);
-            return this.convert_poke(pokeG1, nickname, OT_name);
+            const poke = this.convert_poke(pokeG1, nickname, OT_name);
+            this.box_trick(poke);
+            return poke;
         })
 
     }
@@ -109,7 +111,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
     };
 
 
-    private convert_poke(poke: PokemonGen1Structure, nickname: string, OT_name: string = '') : Pokemon {
+    private convert_poke(poke: PokemonGen1Structure, nickname: string, OT_name: string) : Pokemon {
 
         const move_indexes = [poke.move1, poke.move2, poke.move3, poke.move4];
         const move_PPs = [poke.move1PP, poke.move2PP, poke.move3PP, poke.move4PP];
@@ -135,9 +137,9 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
                 def_spe: poke.SPE_EV,
                 spd: poke.SPD_EV
             },
-            IV: 0,
+            IVs: this.get_poke_IVs(poke.IV),
             OGTrainerID: 0,
-            base_stats: {
+            stats: {
                 hp: poke.maxHP,
                 atk: poke.atk,
                 def: poke.def,
@@ -155,5 +157,31 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
             types: [TYPES[poke.type1], TYPES[poke.type2]]
 
         };
+    }
+
+    private get_poke_IVs(IV: number): Stats {
+        const ATK_IV = IV >> 12
+        const DEF_IV = (IV >> 8) & 15;
+        const SPD_IV = (IV >> 4) & 15;
+        const SPE_IV = (IV >> 4) & 15;
+        let HP_IV =
+            (ATK_IV & 1) * 8 +
+            (DEF_IV & 1) * 4 +
+            (DEF_IV & 1) * 2 +
+            (DEF_IV & 1);
+
+        return {
+            hp: HP_IV,
+            atk: ATK_IV,
+            atk_spe: SPE_IV,
+            def: DEF_IV,
+            def_spe: SPE_IV,
+            spd: SPD_IV
+        }
+    }
+
+    private box_trick(poke: Pokemon) {
+        const calc = (base: number, IV: number, EV: number) => Math.floor((2 * base + IV + EV) * poke.level/100 + 5)
+        poke.stats.atk = calc(1, poke.IVs.atk, poke.EV.atk);
     }
 }

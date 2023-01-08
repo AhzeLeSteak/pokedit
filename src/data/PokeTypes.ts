@@ -20,7 +20,9 @@ export interface Pokemon {
     OT_name: string,
     nickname: string,
     pokedex_id: number,
-    base_stats: Stats
+    base_stats ?: Stats,
+    stats: Stats,
+    IVs: Stats,
     level: number,
     types: [PkType, PkType] | [PkType]
     currentHp: number,
@@ -30,5 +32,4 @@ export interface Pokemon {
     OGTrainerID: number,
     exp: number,
     EV: Stats
-    IV: number,
 }

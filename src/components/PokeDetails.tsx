@@ -21,18 +21,18 @@ export const PokeDetails = () => {
         [name, 'Lvl '+selected_pokemon.level],
         ['OT', selected_pokemon.OT_name],
         ['XP', selected_pokemon.exp],
-        ['HP', `${selected_pokemon.currentHp}/${selected_pokemon.base_stats.hp}`],
-        ['ATK', selected_pokemon.base_stats.atk],
-        ['DEF', selected_pokemon.base_stats.def],
-        ['SPE', selected_pokemon.base_stats.atk_spe],
-        ['SPD', selected_pokemon.base_stats.spd]
+        ['HP', `${selected_pokemon.currentHp}/${selected_pokemon.stats.hp}`],
+        ['ATK', selected_pokemon.stats.atk],
+        ['DEF', selected_pokemon.stats.def],
+        ['SPE', selected_pokemon.stats.atk_spe],
+        ['SPD', selected_pokemon.stats.spd]
     ]
 
     return <div className="poke-details">
-        <img src={`${process.env.PUBLIC_URL}/icons/${species}.png`} className="poke-img cursor-pointer"/>
+        <img alt="" src={`${process.env.PUBLIC_URL}/icons/${species}.png`} className="poke-img cursor-pointer"/>
         <div className="poke-data">
             <TabView>
-                <TabPanel headerTemplate={({onClick}) => <img onClick={onClick} className="header-icon cursor-pointer" src={`${process.env.PUBLIC_URL}/imgs/stats.svg`}></img>}>
+                <TabPanel headerTemplate={({onClick}) => <img alt="" onClick={onClick} className="header-icon cursor-pointer" src={`${process.env.PUBLIC_URL}/imgs/stats.svg`}></img>}>
                     <div className="poke-stats poke-font">
                         {stats.map((s, i) => <div key={i} className="flex justify-content-between">
                             <span>{s[0]}</span>
@@ -40,7 +40,7 @@ export const PokeDetails = () => {
                         </div>)}
                     </div>
                 </TabPanel>
-                <TabPanel headerTemplate={({onClick}) => <img onClick={onClick} className="header-icon cursor-pointer" src={`${process.env.PUBLIC_URL}/imgs/sword.svg`}></img>}>
+                <TabPanel headerTemplate={({onClick}) => <img alt="" onClick={onClick} className="header-icon cursor-pointer" src={`${process.env.PUBLIC_URL}/imgs/sword.svg`}></img>}>
                     <MovesInfo moves={selected_pokemon.moves}></MovesInfo>
                 </TabPanel>
             </TabView>
@@ -56,7 +56,7 @@ function MovesInfo(props: { moves: PkMoveWithPP[] }) {
     return <div className="grid">
         {props.moves.map((move, i) =>
             <div className={'col-12 cursor-pointer grid poke-font ' + (i === selectedMoveIndex ? 'selected' : '')} key={i} onClick={() => setSelectedMoveIndex(i)}>
-                <img className="type-badge col-2" src={process.env.PUBLIC_URL + '/types/' + move.type.toLowerCase() + '.png'}/>
+                <img alt="" className="type-badge col-2" src={process.env.PUBLIC_URL + '/types/' + move.type.toLowerCase() + '.png'}/>
                 <div className="col"><ResponsiveText text={move.name}/></div>
                 <div className="col-2">{move.actual_PP}/{move.PP}PP</div>
             </div>
