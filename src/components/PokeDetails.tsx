@@ -1,11 +1,11 @@
 import './PokeDetails.css'
 import {useBoxContext} from "../App";
-import {SPECIES} from "../data/Gen1/static-data";
 
 import {TabPanel, TabView} from "primereact/tabview";
 import {PkMoveWithPP} from "../data/PokeTypes";
 import {useState} from "react";
 import {ResponsiveText} from "./ResponsiveText";
+import {NAMES} from "../data/NAMES";
 
 export const PokeDetails = () => {
 
@@ -13,9 +13,9 @@ export const PokeDetails = () => {
     if(!selected_pokemon)
         return <div className="poke-details"></div>;
 
-    const species = String(selected_pokemon.pokedex_id).padStart(3, '0');
+    const species = String(selected_pokemon.pokedex_id).padStart(3, '0'); // 7 -> '007'
 
-    const name = `${selected_pokemon.nickname} (${SPECIES[selected_pokemon.pokedex_id]})`
+    const name = `${selected_pokemon.nickname} (${NAMES[selected_pokemon.pokedex_id]})`
 
     const stats = [
         [name, 'Lvl '+selected_pokemon.level],

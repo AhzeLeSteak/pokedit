@@ -1,6 +1,6 @@
 import {read_n_bytes, read_string} from "./read_buffer";
 import {PokemonGen1Structure} from "./PokemonGen1Structure";
-import {MEMORY_SIZE, OFFSET, TYPES} from "./static-data";
+import {MEMORY_SIZE, OFFSET, SPECIES, TYPES} from "./static-data";
 import {AbstractSaveDataReader} from "../AbstractSaveDataReader";
 import {PkMoveWithPP, Pokemon, Stats} from "../PokeTypes";
 import {moves_g1} from "./moves";
@@ -12,7 +12,6 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
 
     constructor(private filename: string) {
         super();
-
     }
 
     init(){
@@ -152,7 +151,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
             item: undefined,
             level: poke.level,
             moves,
-            pokedex_id: poke.species,
+            pokedex_id: SPECIES[poke.species],
             status: 0,
             types: [TYPES[poke.type1], TYPES[poke.type2]]
 
@@ -167,8 +166,8 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
         let HP_IV =
             (ATK_IV & 1) * 8 +
             (DEF_IV & 1) * 4 +
-            (DEF_IV & 1) * 2 +
-            (DEF_IV & 1);
+            (SPD_IV & 1) * 2 +
+            (SPE_IV & 1);
 
         return {
             hp: HP_IV,
