@@ -26,10 +26,16 @@ export const PokeDetails = () => {
         ['DEF', selected_pokemon.stats.def],
         ['SPE', selected_pokemon.stats.atk_spe],
         ['SPD', selected_pokemon.stats.spd]
-    ]
+    ];
+
+    console.log(selected_pokemon)
 
     return <div className="poke-details">
         <img alt="" src={`${process.env.PUBLIC_URL}/icons/${species}.png`} className="poke-img cursor-pointer"/>
+        <div className="types flex flex-column">
+            {selected_pokemon.types.map(type =>
+                <img alt="" className="type-badge" src={process.env.PUBLIC_URL + '/types/' + type.toLowerCase() + '.png'}/>)}
+        </div>
         <div className="poke-data">
             <TabView>
                 <TabPanel headerTemplate={({onClick}) => <img alt="" onClick={onClick} className="header-icon cursor-pointer" src={`${process.env.PUBLIC_URL}/imgs/stats.svg`}></img>}>

@@ -1,4 +1,5 @@
 .poke-details{
+    position: relative;
     height: 100%;
     aspect-ratio: 80/156;
     background-image: url("/public/imgs/poke-data.png");
@@ -13,6 +14,17 @@
     height: calc(var(--app-height) * 85 / 156);
     padding: calc(var(--app-height) * 18 / 156) calc(var(--app-height) * 6 / 156) calc(var(--app-height) * 11 / 156) calc(var(--app-height) * 14 / 156);
     object-fit: cover;
+}
+
+.types{
+    position: absolute;
+    width: calc(var(--app-height) * 12 / 156);
+    right: calc(var(--app-height) * 12 / 156);
+    top: calc(var(--app-height) * 18 / 156);
+}
+
+.types img{
+    aspect-ratio : 32 / 14;
 }
 
 .poke-data{
@@ -34,8 +46,5 @@
 }
 
 .selected{
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    border: 2px white solid;
+    background-color: rgba(0, 0, 0, .2);
 }

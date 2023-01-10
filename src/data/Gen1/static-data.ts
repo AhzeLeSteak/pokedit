@@ -38,7 +38,7 @@ export const TYPES : PkType[] = [
     'NONE', //'BIRD'
     'BUG',
     'GHOST',
-    'NONE', 'NONE', 'NONE', 'NONE', 'NONE', //unused bytes
+    'NONE', 'NONE', 'NONE', 'NONE', 'NONE', 'NONE', 'NONE', 'NONE', 'NONE', 'NONE', 'NONE', //unused bytes
     'FIRE',
     'WATER',
     'GRASS',

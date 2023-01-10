@@ -128,6 +128,10 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
 
         const dex_id = SPECIES[poke.species];
 
+        const types : Pokemon["types"] = [TYPES[poke.type1], TYPES[poke.type2]];
+        if(!types[1] || types[1] === types[0])
+            types.pop();
+
         return {
             OT_name,
             nickname,
@@ -157,7 +161,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
             moves,
             pokedex_id: dex_id,
             status: 0,
-            types: [TYPES[poke.type1], TYPES[poke.type2]]
+            types
         };
     }
 
@@ -183,12 +187,11 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
     }
 
     private box_trick(poke: Pokemon) {
-        const calc_EV = (stat_xp: number) => Math.floor(Math.min(255, Math.ceil(Math.sqrt(stat_xp))) / 4)
         const calc_stat = (base: number, IV: number, stat_xp: number) =>
             Math.floor((((base + IV)*2+(Math.sqrt(stat_xp)/4))*poke.level)/100)+ 5;
 
-        Object.keys(poke.stats).forEach((stat: string) => {
-            // @ts-ignore
+        Object.keys(poke.stats).forEach((stat_str: string) => {
+            const stat = stat_str as keyof Stats;
             poke.stats[stat] = calc_stat(poke.base_stats[stat], poke.IVs[stat], poke.stats_exp[stat]);
         })
         poke.stats.hp += poke.level + 5;
