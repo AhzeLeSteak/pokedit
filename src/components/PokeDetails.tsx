@@ -21,7 +21,7 @@ export const PokeDetails = () => {
         [name, 'Lvl '+selected_pokemon.level],
         ['OT', selected_pokemon.OT_name],
         ['XP', selected_pokemon.exp],
-        ['HP', `${selected_pokemon.currentHp}/${selected_pokemon.stats.hp}`],
+        ['HP', `${selected_pokemon.current_hp}/${selected_pokemon.stats.hp}`],
         ['ATK', selected_pokemon.stats.atk],
         ['DEF', selected_pokemon.stats.def],
         ['SPE', selected_pokemon.stats.atk_spe],

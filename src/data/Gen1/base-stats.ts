@@ -2,6 +2,14 @@ import {Stats} from "../PokeTypes";
 
 export const BASE_STATS: Stats[] = [
     {
+        hp: 0,
+        atk: 0,
+        def: 0,
+        spd: 0,
+        atk_spe: 0,
+		def_spe: 0
+    },
+    {
         hp: 45,
         atk: 49,
         def: 49,

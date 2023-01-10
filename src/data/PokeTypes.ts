@@ -17,19 +17,22 @@ export interface Stats{
 export type PkMoveWithPP = PkMove & { actual_PP : number }
 
 export interface Pokemon {
-    OT_name: string,
-    nickname: string,
     pokedex_id: number,
-    base_stats ?: Stats,
+    nickname: string,
+    level: number,
+    OT_name: string,
+
+    base_stats : Stats,
     stats: Stats,
     IVs: Stats,
-    level: number,
+    stats_exp: Stats
+
     types: [PkType, PkType] | [PkType]
-    currentHp: number,
+
+    current_hp: number,
+    exp: number,
     status: number,
     item: any,
     moves: PkMoveWithPP[],
-    OGTrainerID: number,
-    exp: number,
-    EV: Stats
+    OG_trainer_id: number,
 }

@@ -4,6 +4,7 @@ import {MEMORY_SIZE, OFFSET, SPECIES, TYPES} from "./static-data";
 import {AbstractSaveDataReader} from "../AbstractSaveDataReader";
 import {PkMoveWithPP, Pokemon, Stats} from "../PokeTypes";
 import {moves_g1} from "./moves";
+import {BASE_STATS} from "./base-stats";
 
 
 export class Gen1SaveDataReader extends AbstractSaveDataReader{
@@ -125,10 +126,12 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
             })
         }
 
+        const dex_id = SPECIES[poke.species];
+
         return {
             OT_name,
             nickname,
-            EV: {
+            stats_exp: {
                 hp: poke.EV_HP,
                 atk: poke.ATK_EV,
                 def: poke.DEF_EV,
@@ -137,7 +140,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
                 spd: poke.SPD_EV
             },
             IVs: this.get_poke_IVs(poke.IV),
-            OGTrainerID: 0,
+            OG_trainer_id: 0,
             stats: {
                 hp: poke.maxHP,
                 atk: poke.atk,
@@ -146,15 +149,15 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
                 def_spe: poke.spe,
                 spd: poke.spd
             },
-            currentHp: poke.currentHp,
+            base_stats: BASE_STATS[dex_id],
+            current_hp: poke.currentHp,
             exp: poke.exp,
             item: undefined,
             level: poke.level,
             moves,
-            pokedex_id: SPECIES[poke.species],
+            pokedex_id: dex_id,
             status: 0,
             types: [TYPES[poke.type1], TYPES[poke.type2]]
-
         };
     }
 
@@ -162,7 +165,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
         const ATK_IV = IV >> 12
         const DEF_IV = (IV >> 8) & 15;
         const SPD_IV = (IV >> 4) & 15;
-        const SPE_IV = (IV >> 4) & 15;
+        const SPE_IV = (IV >> 0) & 15;
         let HP_IV =
             (ATK_IV & 1) * 8 +
             (DEF_IV & 1) * 4 +
@@ -180,7 +183,14 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
     }
 
     private box_trick(poke: Pokemon) {
-        const calc = (base: number, IV: number, EV: number) => Math.floor((2 * base + IV + EV) * poke.level/100 + 5)
-        poke.stats.atk = calc(1, poke.IVs.atk, poke.EV.atk);
+        const calc_EV = (stat_xp: number) => Math.floor(Math.min(255, Math.ceil(Math.sqrt(stat_xp))) / 4)
+        const calc_stat = (base: number, IV: number, stat_xp: number) =>
+            Math.floor((((base + IV)*2+(Math.sqrt(stat_xp)/4))*poke.level)/100)+ 5;
+
+        Object.keys(poke.stats).forEach((stat: string) => {
+            // @ts-ignore
+            poke.stats[stat] = calc_stat(poke.base_stats[stat], poke.IVs[stat], poke.stats_exp[stat]);
+        })
+        poke.stats.hp += poke.level + 5;
     }
 }
