@@ -1,50 +1,130 @@
-.poke-details{
-    position: relative;
-    height: 100%;
-    aspect-ratio: 80/156;
-    background-image: url("/public/imgs/poke-data.png");
-    background-size: 100%;
-
-    display: flex;
-    flex-flow: column;
-    padding-right: calc(var(--app-height) * 2 / 156);
+.poke-details {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 80/156;
+  background-image: url("../../public/imgs/poke-data.png");
+  background-size: 100%;
+  display: flex;
+  flex-flow: column;
+  padding-right: calc(var(--app-height) * 2 / 156);
+  overflow-y: hidden;
 }
 
-.poke-img{
-    height: calc(var(--app-height) * 85 / 156);
-    padding: calc(var(--app-height) * 18 / 156) calc(var(--app-height) * 6 / 156) calc(var(--app-height) * 11 / 156) calc(var(--app-height) * 14 / 156);
-    object-fit: cover;
+.poke-img {
+  height: calc(var(--app-height) * 80 / 156);
+  padding: calc(var(--app-height) * 18 / 156) calc(var(--app-height) * 6 / 156) calc(var(--app-height) * 8 / 156) calc(var(--app-height) * 14 / 156);
+  object-fit: cover;
 }
 
-.types{
-    position: absolute;
-    width: calc(var(--app-height) * 12 / 156);
-    right: calc(var(--app-height) * 12 / 156);
-    top: calc(var(--app-height) * 18 / 156);
+.types {
+  position: absolute;
+  width: calc(var(--app-height) * 12 / 156);
+  right: calc(var(--app-height) * 12 / 156);
+  top: calc(var(--app-height) * 18 / 156);
+}
+.types img {
+  aspect-ratio: 32/14;
 }
 
-.types img{
-    aspect-ratio : 32 / 14;
+.tab-select {
+  aspect-ratio: 160/16;
+  padding-left: calc(var(--app-height) * 23 / 156);
+  padding-right: calc(var(--app-height) * 23 / 156);
+}
+.tab-select.tab-0 {
+  background-image: url("../../public/imgs/barre_0.png");
+}
+.tab-select.tab-1 {
+  background-image: url("../../public/imgs/barre_1.png");
+}
+.tab-select.tab-2 {
+  background-image: url("../../public/imgs/barre_2.png");
+}
+.tab-select.tab-3 {
+  background-image: url("../../public/imgs/barre_3.png");
+}
+.tab-select div {
+  color: transparent;
+  cursor: pointer;
+  width: calc(var(--app-height) * 4 / 156);
+  height: 100%;
 }
 
-.poke-data{
-    height: calc(var(--app-height) * (156 - 85) / 156);
+.tab-content {
+  width: 100%;
+  --w: 160;
+  --h: 139;
+  aspect-ratio: var(--w)/var(--h);
+  position: relative;
+}
+.tab-content span {
+  font-size: calc(var(--app-height) / 31);
+}
+.tab-content.stats-tab {
+  background-image: url("../../public/imgs/stats.png");
+}
+.tab-content.stats-tab span:nth-child(odd) {
+  color: white;
+  text-align: center;
+}
+.tab-content.stats-tab span:nth-child(even) {
+  color: black;
+  text-align: right;
+  --shadow-color: transparent !important;
+}
+.tab-content.stats-tab .stats {
+  position: absolute;
+  left: calc(300% / var(--w));
+  top: calc(3700% / var(--h));
+  width: calc(15600% / var(--w));
+  height: calc(4800% / var(--h));
+  display: grid;
+  grid-template: 1fr 1fr 1fr/calc(4800% / var(--w)) calc(4600% / var(--w)) calc(4200% / var(--w)) calc(2100% / var(--w));
+}
+.tab-content.stats-tab .xp {
+  position: absolute;
+  left: calc(300% / var(--w));
+  top: calc(9200% / var(--h));
+  width: calc(15200% / var(--w));
+  height: calc(3200% / var(--h));
+  display: grid;
+  grid-template: 1fr 1fr/calc(8700% / var(--w)) 1fr;
+}
+.tab-content.moves-tab {
+  background-image: url("../../public/imgs/moves.png");
+}
+.tab-content.moves-tab .moves {
+  position: absolute;
+  left: calc(700% / var(--w));
+  top: calc(1400% / var(--h));
+  width: calc(15600% / var(--w));
+  height: calc(2000% / var(--h));
+  display: grid;
+  grid-template: repeat(4, 1fr)/calc(3500% / var(--w)) calc(7700% / var(--w)) calc(4500% / var(--w));
+  row-gap: calc(1200% / var(--h));
+}
+.tab-content.moves-tab .moves .type-badge {
+  height: 90%;
+}
+.tab-content.moves-tab .moves span {
+  cursor: pointer;
+}
+.tab-content.moves-tab .move-selection {
+  --rect-h: 15.5;
+  position: absolute;
+  width: calc(16100% / var(--w));
+  left: calc(100% / var(--w));
+  top: calc(100% * (12.5 + var(--i) * var(--rect-h)) / var(--h));
+}
+.tab-content.moves-tab .description {
+  position: absolute;
+  width: calc(15200% / var(--w));
+  max-height: calc(3200% / var(--w));
+  left: calc(500% / var(--w));
+  top: calc(10100% / var(--h));
+}
+.tab-content.moves-tab .description span {
+  padding-left: calc(200% / var(--w));
 }
 
-.poke-stats{
-    font-size: 2.5vh;
-    padding: calc(var(--app-height) * 6 / 156)
-}
-
-.header-icon{
-    width: 5vh;
-    padding: 1vh;
-}
-
-.p-tabview-nav{
-    justify-content: space-around;
-}
-
-.selected{
-    background-color: rgba(0, 0, 0, .2);
-}
+/*# sourceMappingURL=PokeDetails.css.map */

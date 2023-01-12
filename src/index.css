@@ -20,8 +20,9 @@ code {
 .poke-font{
     font-family: PKMN;
     color: white;
-    text-shadow: calc(var(--app-height) / 500) 0 #000, calc(var(--app-height) / -500) 0 #000, 0 calc(var(--app-height) / 500) #000, 0 calc(var(--app-height) / -500) #000,
-    calc(var(--app-height) / 1000) calc(var(--app-height) / 1000) #000, calc(var(--app-height) / -1000) calc(var(--app-height) / -1000) #000, calc(var(--app-height) / 1000) calc(var(--app-height) / -1000) #000, calc(var(--app-height) / -1000) calc(var(--app-height) / 1000) #000;
+    --shadow-color: black;
+    text-shadow: calc(var(--app-height) / 500) 0 var(--shadow-color), calc(var(--app-height) / -500) 0 var(--shadow-color), 0 calc(var(--app-height) / 500) var(--shadow-color), 0 calc(var(--app-height) / -500) var(--shadow-color),
+    calc(var(--app-height) / 1000) calc(var(--app-height) / 1000) var(--shadow-color), calc(var(--app-height) / -1000) calc(var(--app-height) / -1000) var(--shadow-color), calc(var(--app-height) / 1000) calc(var(--app-height) / -1000) var(--shadow-color), calc(var(--app-height) / -1000) calc(var(--app-height) / 1000) var(--shadow-color);
 }
 
 @font-face {
