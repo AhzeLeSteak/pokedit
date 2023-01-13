@@ -1,0 +1,35 @@
+.stats-tab{
+  background-image: url("../../../public/imgs/stats.png");
+
+  span:nth-child(odd){
+    color: white;
+    text-align: center;
+  }
+  span:nth-child(even){
+    color: black;
+    text-align: right;
+    --shadow-color: transparent !important;
+  }
+
+  .stats{
+    position: absolute;
+    left: calc(100% * 3 / var(--w));
+    top: calc(100% * 37 / var(--h));
+    width: calc(100% * 156 / var(--w));
+    height: calc(100% * 48 / var(--h));
+
+    display: grid;
+    grid-template: 1fr 1fr 1fr / calc(100% * 48 / var(--w)) calc(100% * 46 / var(--w)) calc(100% * 42 / var(--w)) calc(100% * 21 / var(--w));
+  }
+
+  .xp {
+    position: absolute;
+    left: calc(100% * 3 / var(--w));
+    top: calc(100% * 92 / var(--h));
+    width: calc(100% * 152 / var(--w));
+    height: calc(100% * 32 / var(--h));
+
+    display: grid;
+    grid-template: 1fr 1fr / calc(100% * 87 / var(--w)) 1fr
+  }
+}

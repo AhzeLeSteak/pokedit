@@ -5,6 +5,7 @@ import {AbstractSaveDataReader} from "../AbstractSaveDataReader";
 import {PkMoveWithPP, Pokemon, Stats} from "../PokeTypes";
 import {moves_g1} from "./moves";
 import {BASE_STATS} from "./base-stats";
+import {calcNextXp} from "../xp-curves";
 
 
 export class Gen1SaveDataReader extends AbstractSaveDataReader{
@@ -132,7 +133,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
         if(!types[1] || types[1] === types[0])
             types.pop();
 
-        return {
+        const pokemon: Pokemon = {
             OT_name,
             nickname,
             stats_exp: {
@@ -163,6 +164,8 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
             status: 0,
             types
         };
+        calcNextXp(pokemon);
+        return pokemon;
     }
 
     private get_poke_IVs(IV: number): Stats {

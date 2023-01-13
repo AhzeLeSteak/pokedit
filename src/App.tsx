@@ -5,7 +5,7 @@ import 'primereact/resources/themes/lara-light-blue/theme.css'
 
 import React, {createContext, useContext, useEffect, useLayoutEffect, useState} from 'react';
 import {Box} from "./components/Box";
-import {PokeDetails} from "./components/PokeDetails";
+import {PokeDetails} from "./components/PokeDetails/PokeDetails";
 import {SaveDataType} from "./data/AbstractSaveDataReader";
 import {Pokemon} from "./data/PokeTypes";
 import {Gen1SaveDataReader} from "./data/Gen1/Gen1SaveDataReader";

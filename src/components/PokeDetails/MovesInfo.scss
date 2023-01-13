@@ -1,0 +1,62 @@
+.moves-tab{
+  background-image: url("../../../public/imgs/moves.png");
+
+  .moves{
+    position: absolute;
+    left: calc(100% * 7 / var(--w));
+    top: calc(100% * 14 / var(--h));
+    width: calc(100% * 156 / var(--w));
+    height: calc(100% * 20 / var(--h));
+
+    display: grid;
+    grid-template: repeat(4, 1fr) / calc(100% * 35 / var(--w)) calc(100% * 77 / var(--w)) calc(100% * 45 / var(--w));
+    row-gap: calc(100% * 12 / var(--h));
+
+    .type-badge{
+      height: 90%
+    }
+
+    span{
+      cursor: pointer;
+    }
+  }
+
+  .move-selection{
+    --rect-h: 15;
+    position: absolute;
+
+    width: calc(100% * 161 / var(--w));
+    left: calc(100% * 1 / var(--w));
+    top: calc( 100% * (12 + var(--i) * var(--rect-h)) / var(--h))
+  }
+
+  .effect{
+    position: absolute;
+
+    width: calc(100% * 104 / var(--w));
+    left: calc(100% * 24 / var(--w));
+    top: calc( 100% * 78 / var(--h));
+
+    display: grid;
+    grid-template: 1fr / calc( 100% * 18 / var(--h)) calc( 100% * 54 / var(--h)) calc( 100% * 50 / var(--h))  calc( 100% * 19 / var(--h));
+
+    span{
+      font-size: calc(var(--app-height) / 42);
+      text-align: center;
+    }
+  }
+
+  .description{
+    position: absolute;
+
+    width: calc(100% * 152 / var(--w));
+    max-height: calc(100% * 32 / var(--w));
+    left: calc(100% * 5 / var(--w));
+    top: calc( 100% * 101 / var(--h));
+    padding-left: calc(100% * 2 / var(--w));
+
+    span{
+      font-size: calc(var(--app-height) / 36);
+    }
+  }
+}
