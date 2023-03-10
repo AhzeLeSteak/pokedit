@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/pokedit/static/css/main.3bfaabc7.css",
+    "main.js": "/pokedit/static/js/main.cf0e01f8.js",
+    "static/js/787.74df8652.chunk.js": "/pokedit/static/js/787.74df8652.chunk.js",
+    "static/media/pokemon-emerald.ttf": "/pokedit/static/media/pokemon-emerald.5444d2c08fcf95ac8192.ttf",
+    "index.html": "/pokedit/index.html",
+    "main.3bfaabc7.css.map": "/pokedit/static/css/main.3bfaabc7.css.map",
+    "main.cf0e01f8.js.map": "/pokedit/static/js/main.cf0e01f8.js.map",
+    "787.74df8652.chunk.js.map": "/pokedit/static/js/787.74df8652.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3bfaabc7.css",
+    "static/js/main.cf0e01f8.js"
+  ]
+}
