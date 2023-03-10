@@ -15,3 +15,15 @@
     width: 100vw;
     --app-height: calc(100vw / var(--aspect-ratio));
 }
+
+#drop-zone{
+    width: 30%;
+    height: 50%;
+    background-color: rgba(17, 16, 16, 0.53);
+    border-radius: 25px;
+    font-size: calc(var(--app-height) / 30);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

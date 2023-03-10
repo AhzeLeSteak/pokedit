@@ -13,7 +13,7 @@ export const StatsInfo = (props: {poke: Pokemon}) => {
         'SPD', props.poke.stats.spd
     ];
 
-    const xp_data = ['EXP_POINTS', props.poke.exp, 'NEXT LV.', props.poke.next_exp ? props.poke.next_exp - props.poke.exp : 0];
+    const xp_data = ['EXP_POINTS', props.poke.exp, 'NEXT LV.', props.poke.xp_needed_for_next_level ? props.poke.xp_needed_for_next_level - props.poke.exp : 0];
     
     return <div className="tab-content stats-tab">
         <div className="stats">
@@ -22,5 +22,6 @@ export const StatsInfo = (props: {poke: Pokemon}) => {
         <div className="xp">
             {xp_data.map((stat, i) => <span key={i} className="poke-font">{stat}</span>)}
         </div>
+        <div className="xp_bar" style={{'--percent': props.poke.percentage_level} as React.CSSProperties}></div>
     </div>;
 }

@@ -2,17 +2,16 @@ import {Pokemon} from "./PokeTypes";
 
 type Curve = 'f' | 'mf' | 'ms' | 's' | 'e' | 'fl';
 
-const calcFast = (poke: Pokemon) => poke.next_exp = .8 * poke.level**3;
-const calcMediumFast = (poke: Pokemon) => poke.next_exp = poke.level**3;
-const calcMediumSlow = (poke: Pokemon) => poke.next_exp = 1.2 * poke.level**3 - 15*poke.level**2 + 100*poke.level - 140;
-const calcSlow = (poke: Pokemon) => poke.next_exp = 1.25 * poke.level**3;
+const calcFast = (lvl: number) => .8 * lvl**3;
+const calcMediumFast = (lvl: number) => lvl**3;
+const calcMediumSlow = (lvl: number) => 1.2 * lvl**3 - 15*lvl**2 + 100*lvl - 140;
+const calcSlow = (lvl: number) => 1.25 * lvl**3;
+const calcErratic = (lvl: number) => 0;
+const calcFluctuating = (lvl: number) => 0;
 
-const funcs : Record<Curve, (p: Pokemon) => number> = {
-    e(p: Pokemon): number {
-        return 0;
-    }, fl(p: Pokemon): number {
-        return 0;
-    },
+const funcs : Record<Curve, (lvl: number) => number> = {
+    e: calcErratic,
+    fl: calcFluctuating,
     f: calcFast,
     mf: calcMediumFast,
     ms: calcMediumSlow,
@@ -22,11 +21,15 @@ const funcs : Record<Curve, (p: Pokemon) => number> = {
 
 export function calcNextXp(poke: Pokemon) {
     const type = xp_curves[poke.pokedex_id-1];
+    if(!(type in funcs))
+        return console.warn(type, 'not a known xp type');
+
+    const xp_needed_for_actual_level = Math.floor(funcs[type](poke.level));
     poke.level++;
-    funcs[type](poke);
+    poke.xp_needed_for_next_level = Math.floor(funcs[type](poke.level));
     poke.level--;
-    if(poke.level === 0)
-        console.log(poke);
+
+    poke.percentage_level = (poke.exp - xp_needed_for_actual_level) / (poke.xp_needed_for_next_level - xp_needed_for_actual_level)
 }
 
 

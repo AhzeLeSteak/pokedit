@@ -31,7 +31,8 @@ export interface Pokemon {
 
     current_hp: number,
     exp: number,
-    next_exp ?: number,
+    xp_needed_for_next_level ?: number,
+    percentage_level?: number,
     status: number,
     item: any,
     moves: PkMoveWithPP[],

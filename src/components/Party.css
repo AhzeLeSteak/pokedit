@@ -5,9 +5,9 @@
     background-size: 100%;
     display: flex;
     flex-flow: column;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
-    gap: calc(var(--app-height) * 2 /160);
+    gap: calc(var(--app-height) * 4 /160);
 
     padding: calc(var(--app-height) * 4 / 160) calc(var(--app-height) * 9 / 160) calc(var(--app-height) * 13 / 160);
 }

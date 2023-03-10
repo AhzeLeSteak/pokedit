@@ -10,19 +10,10 @@ import {calcNextXp} from "../xp-curves";
 
 export class Gen1SaveDataReader extends AbstractSaveDataReader{
 
-    buffer !: Uint8Array;
-
-    constructor(private filename: string) {
+    constructor(private buffer: Uint8Array) {
         super();
     }
 
-    init(){
-        return fetch(this.filename)
-            .then(res => res.arrayBuffer())
-            .then(ab => new Uint8Array(ab))
-            .then(uintArray => this.buffer = uintArray)
-            .then(() => this);
-    }
 
 
     get_save_data () {
@@ -37,22 +28,24 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
     }
 
     private get_box_info(box_index: number) {
-        const box_offset = box_index < 6
-            ? OFFSET.BOX.BOX_1 + box_index * MEMORY_SIZE.BOX
-            : OFFSET.BOX.BOX_7 + (box_index-6) * MEMORY_SIZE.BOX;
-        const first_pk_offset = box_offset + OFFSET.BOX.POKEMONS;
+        let current_box_number = this.buffer[OFFSET.CURRENT_BOX_NUMBER] % 2**7;
+        let box_offset = current_box_number === box_index
+            ? OFFSET.CURRENT_BOX
+            : box_index < 6
+                ? OFFSET.BOX.BOX_1 + box_index * MEMORY_SIZE.BOX
+                : OFFSET.BOX.BOX_7 + (box_index-6) * MEMORY_SIZE.BOX;
 
+        const first_pk_offset = box_offset + OFFSET.BOX.POKEMONS;
         const poke_count = this.buffer[box_offset];
 
         return Array(poke_count).fill(0).map((_, i) => {
             const pokeG1 = this.get_poke(first_pk_offset + i * MEMORY_SIZE.POKEMON_IN_BOX);
             const nickname = read_string(this.buffer, box_offset + OFFSET.BOX.POKEMON_NAMES + i * MEMORY_SIZE.STRING_LENGTH);
             const OT_name =  read_string(this.buffer, box_offset + OFFSET.BOX.OT_NAMES + i * MEMORY_SIZE.STRING_LENGTH);
-            const poke = this.convert_poke(pokeG1, nickname, OT_name);
+            const poke = this.convert_poke(pokeG1, nickname, OT_name, true);
             this.box_trick(poke);
             return poke;
-        })
-
+        });
     }
 
     private get_party_info(): Pokemon[] {
@@ -62,7 +55,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
             .map((pkg1, i) => {
                 const nickname = read_string(this.buffer, OFFSET.PARTY.OFFSET + OFFSET.PARTY.POKEMON_NAMES + i * MEMORY_SIZE.STRING_LENGTH);
                 const OT_name =  read_string(this.buffer, OFFSET.PARTY.OFFSET + OFFSET.PARTY.OT_NAMES + i * MEMORY_SIZE.STRING_LENGTH);
-                return this.convert_poke(pkg1, nickname, OT_name);
+                return this.convert_poke(pkg1, nickname, OT_name, false);
             })
     }
 
@@ -112,7 +105,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
     };
 
 
-    private convert_poke(poke: PokemonGen1Structure, nickname: string, OT_name: string) : Pokemon {
+    private convert_poke(poke: PokemonGen1Structure, nickname: string, OT_name: string, from_box: boolean) : Pokemon {
 
         const move_indexes = [poke.move1, poke.move2, poke.move3, poke.move4];
         const move_PPs = [poke.move1PP, poke.move2PP, poke.move3PP, poke.move4PP];
@@ -158,7 +151,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
             current_hp: poke.currentHp,
             exp: poke.exp,
             item: undefined,
-            level: poke.level,
+            level: from_box ? poke.level : poke.level_doublon,
             moves,
             pokedex_id: dex_id,
             status: 0,

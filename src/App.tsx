@@ -3,7 +3,7 @@ import 'primeflex/primeflex.css';
 import 'primereact/resources/primereact.css'
 import 'primereact/resources/themes/lara-light-blue/theme.css'
 
-import React, {createContext, useContext, useEffect, useLayoutEffect, useState} from 'react';
+import React, {createContext, DragEventHandler, useContext, useLayoutEffect, useState} from 'react';
 import {Box} from "./components/Box";
 import {PokeDetails} from "./components/PokeDetails/PokeDetails";
 import {SaveDataType} from "./data/AbstractSaveDataReader";
@@ -41,24 +41,30 @@ function App() {
         return () => window.removeEventListener('resize', updateSize);
     }, []);
 
-    useEffect(() => {
-        const filename = 'Pokemon_-_Version_Bleue_France_SGB_Enhanced.sav';
-        new Gen1SaveDataReader(filename)
-            .init()
-            .then(reader => setSaveData(reader.get_save_data()));
-    }, []);
 
-    if(!saveData)
-        return <></>
-
+    const dropSaveFile: DragEventHandler = async(event) => {
+        event.preventDefault();
+        const buffer = await event.dataTransfer.files[0].arrayBuffer()
+        const uint8Array = new Uint8Array(buffer);
+        const save_data = new Gen1SaveDataReader(uint8Array).get_save_data();
+        setSaveData(save_data);
+    };
 
     return (
         <div className={'App ' + (aspectRatio > ASPECT_RATIO ? 'horizontal' : 'vertical')} style={{'--aspect-ratio': ASPECT_RATIO} as React.CSSProperties}>
-            <BoxContext.Provider value={{selected_pokemon: pokemon, set_pokemon: setPokemon}}>
-                <PokeDetails></PokeDetails>
-                <Party save_data={saveData}></Party>
-                <Box save_data={saveData} box_index={activeBox} set_box_index={setActiveBox}/>
-            </BoxContext.Provider>
+            {saveData ?
+                <BoxContext.Provider value={{selected_pokemon: pokemon, set_pokemon: setPokemon}}>
+                    <PokeDetails></PokeDetails>
+                    <Party save_data={saveData}></Party>
+                    <Box save_data={saveData} box_index={activeBox} set_box_index={setActiveBox}/>
+                </BoxContext.Provider>
+            :
+                <div style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <div onDrop={dropSaveFile} onDragOver={ev => ev.preventDefault()} id="drop-zone" className="poke-font">
+                        Drop your save file here
+                    </div>
+                </div>
+            }
         </div>
     );
 }

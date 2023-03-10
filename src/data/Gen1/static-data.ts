@@ -4,6 +4,8 @@ import {PkType} from "../PokeTypes";
 export const OFFSET = {
     PLAYER_NAME: 0x2598,
     RIVAL_NAME: 0x25F6,
+    CURRENT_BOX_NUMBER: 0x284C,
+    CURRENT_BOX: 0x30C0,
     BOX: {
         BOX_1: 0x4000,
         BOX_7: 0x6000,
@@ -17,7 +19,7 @@ export const OFFSET = {
         POKEMONS: 0x8,
         POKEMON_NAMES: 0x152,
         OT_NAMES: 0X110
-    },
+    }
 }
 
 export const MEMORY_SIZE = {

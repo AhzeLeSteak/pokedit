@@ -1,12 +1,14 @@
 import {PkMoveWithPP} from "../../data/PokeTypes";
-import {CSSProperties, useState} from "react";
+import {CSSProperties, useEffect, useState} from "react";
 import './MovesInfo.scss';
 
 export function MovesInfo(props: { moves: PkMoveWithPP[] }) {
 
     let [selectedMoveIndex, setSelectedMoveIndex] = useState(0);
-    if(selectedMoveIndex > props.moves.length)
+    if(selectedMoveIndex >= props.moves.length)
         selectedMoveIndex = 0;
+
+    useEffect(() => setSelectedMoveIndex(0), props.moves); //set 0 when changing selected pkmon
 
     const selected_move = props.moves[selectedMoveIndex];
     const effect = [selected_move.power, 'POWER', 'ACCURACY', selected_move.accuracy];
