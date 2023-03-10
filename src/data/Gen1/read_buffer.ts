@@ -16,7 +16,7 @@ export function read_string(buffer: Uint8Array, offset: number, length = MEMORY_
     for(let i = 0; !over && i < length; i++){
         const pkchar = buffer[offset+i];
         const char = UInt8ToPKChar(pkchar);
-        if(char === '')
+        if(char === '' || !char)
             over = true;
         else
             res += char;

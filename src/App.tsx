@@ -41,13 +41,23 @@ function App() {
         return () => window.removeEventListener('resize', updateSize);
     }, []);
 
-
-    const dropSaveFile: DragEventHandler = async(event) => {
-        event.preventDefault();
-        const buffer = await event.dataTransfer.files[0].arrayBuffer()
+    const handleFileData = async(file: Blob) => {
+        const buffer = await file.arrayBuffer()
         const uint8Array = new Uint8Array(buffer);
         const save_data = new Gen1SaveDataReader(uint8Array).get_save_data();
         setSaveData(save_data);
+    };
+
+    const handleDropFile: DragEventHandler = async(event) => {
+        event.preventDefault();
+        handleFileData(event.dataTransfer.files[0]);
+    };
+
+    const handleClick = () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.onchange = () => input.files && handleFileData(input.files[0]);
+        input.click();
     };
 
     return (
@@ -58,9 +68,9 @@ function App() {
                     <Party save_data={saveData}></Party>
                     <Box save_data={saveData} box_index={activeBox} set_box_index={setActiveBox}/>
                 </BoxContext.Provider>
-            :
+                :
                 <div style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <div onDrop={dropSaveFile} onDragOver={ev => ev.preventDefault()} id="drop-zone" className="poke-font">
+                    <div onClick={handleClick} onDrop={handleDropFile} onDragOver={ev => ev.preventDefault()} id="drop-zone" className="poke-font">
                         Drop your save file here
                     </div>
                 </div>

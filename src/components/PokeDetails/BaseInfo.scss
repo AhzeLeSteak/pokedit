@@ -1,4 +1,30 @@
 .base-tab {
   background-image: url("../../../public/imgs/info.png");
 
+  .profile{
+    //background-color: rgba(5, 5, 5, 0.87);
+    position: absolute;
+    left: calc(100% * 6 / var(--w));
+    top: calc(100% * 12 / var(--h));
+    width: calc(100% * 150 / var(--w));
+    height: calc(100% * 29 / var(--h));
+
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+
+    .first-line{
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .second-line{
+
+      .type-badge{
+        height: 90%;
+        margin-left: calc(100% * 2 / var(--w))
+      }
+    }
+  }
+
 }

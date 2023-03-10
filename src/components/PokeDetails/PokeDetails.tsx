@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import {MovesInfo} from "./MovesInfo";
 import {StatsInfo} from "./StatsInfo";
 import {BaseInfo} from "./BaseInfo";
+import {NAMES} from "../../data/NAMES";
 
 export const PokeDetails = () => {
 
@@ -22,9 +23,10 @@ export const PokeDetails = () => {
 
     return <div className="poke-details">
         <img alt="" src={`${process.env.PUBLIC_URL}/icons/${species}.png`} className="poke-img cursor-pointer"/>
-        <div className="types flex flex-column">
-            {selected_pokemon.types.map(type =>
-                <img alt="" key={type} className="type-badge" src={process.env.PUBLIC_URL + '/types/' + type.toLowerCase() + '.png'}/>)}
+        <div className="types flex flex-column poke-font">
+            <span>{NAMES[selected_pokemon.pokedex_id]}</span>
+            <span>/{selected_pokemon.nickname}</span>
+            <span>LV. {selected_pokemon.level}</span>
         </div>
         <div className={`tab-select tab-${selectedTab} flex justify-content-around align-items-center`}>
             {[0, 1, 2, 3].map(i =>

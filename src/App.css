@@ -1,9 +1,14 @@
+body{
+    background-image: url("/public/imgs/background.png");
+    background-size: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .App {
     --aspect-ratio: calc(307/160);
     aspect-ratio: var(--aspect-ratio);
     display: flex;
-    background-image: url("/public/imgs/background.png");
-    background-size: 100%;
 }
 
 .horizontal{
@@ -26,4 +31,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }

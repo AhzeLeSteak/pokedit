@@ -36,5 +36,5 @@ export interface Pokemon {
     status: number,
     item: any,
     moves: PkMoveWithPP[],
-    OG_trainer_id: number,
+    OT_id: number,
 }

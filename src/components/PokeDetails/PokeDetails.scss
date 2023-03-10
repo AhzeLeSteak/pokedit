@@ -20,9 +20,10 @@
 
 .types{
     position: absolute;
-    width: calc(var(--app-height) * 12 / 156);
-    right: calc(var(--app-height) * 12 / 156);
+    width: calc(var(--app-height) * 50 / 156);
+    left: calc(var(--app-height) * 14 / 156);
     top: calc(var(--app-height) * 18 / 156);
+    font-size: calc(var(--app-height) / 40);
 
     img{
         aspect-ratio : 32 / 14;

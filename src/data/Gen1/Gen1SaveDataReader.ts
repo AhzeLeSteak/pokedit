@@ -138,7 +138,7 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
                 spd: poke.SPD_EV
             },
             IVs: this.get_poke_IVs(poke.IV),
-            OG_trainer_id: 0,
+            OT_id: 0,
             stats: {
                 hp: poke.maxHP,
                 atk: poke.atk,
