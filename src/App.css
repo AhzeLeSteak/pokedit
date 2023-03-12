@@ -9,6 +9,7 @@ body{
     --aspect-ratio: calc(307/160);
     aspect-ratio: var(--aspect-ratio);
     display: flex;
+    position: relative;
 }
 
 .horizontal{

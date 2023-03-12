@@ -39,3 +39,12 @@ code {
 {
     background: transparent !important;
 }
+
+.p-sidebar{
+    //background-color: #C60928 !important;
+}
+
+.p-sidebar-content{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}

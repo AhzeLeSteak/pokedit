@@ -17,18 +17,27 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
 
 
     get_save_data () {
+        const box_has_changed = this.buffer[OFFSET.CURRENT_BOX_NUMBER] & 2**7;
+        const dex_seen = this.get_dex_data(OFFSET.POKEDEX.SEEN);
+        const dex_owned = this.get_dex_data(OFFSET.POKEDEX.OWNED);
+
         return {
             player_name: read_string(this.buffer, OFFSET.PLAYER_NAME),
             rival_name: read_string(this.buffer, OFFSET.RIVAL_NAME),
             party: this.get_party_info(),
             boxes: Array(12)
                 .fill(0)
-                .map((_, i) => this.get_box_info(i))
+                .map((_, i) => !box_has_changed && i > 0 ? [] : this.get_box_info(i)),
+            pokedex: dex_seen.map((seen, i) => ({
+                seen,
+                owned: dex_owned[i]
+            }))
         }
     }
 
     private get_box_info(box_index: number) {
         let current_box_number = this.buffer[OFFSET.CURRENT_BOX_NUMBER] % 2**7;
+        console.log(current_box_number);
         let box_offset = current_box_number === box_index
             ? OFFSET.CURRENT_BOX
             : box_index < 6
@@ -191,5 +200,11 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
             poke.stats[stat] = calc_stat(poke.base_stats[stat], poke.IVs[stat], poke.stats_exp[stat]);
         })
         poke.stats.hp += poke.level + 5;
+    }
+
+    private get_dex_data(offset: number) {
+        return new Array(151).fill(0)
+            .map((_, i) => (this.buffer[offset + (i >> 3)] >> (i & 7) ) & 1)
+            .map(val => !!val)
     }
 }

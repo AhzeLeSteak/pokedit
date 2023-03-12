@@ -1,0 +1,79 @@
+#dex-dialog{
+  height: calc(.5 * var(--app-height));
+  aspect-ratio: 24/16;
+  background-image: url("../../public/imgs/dex_background.png");
+  border: calc(.01 * var(--app-height)) black solid;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+
+  --w: 240;
+  --h: 160;
+
+  #names{
+    display: flex;
+    flex-flow: column;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    font-size: calc(var(--app-height) / 40);
+    gap: calc(var(--app-height) / 32);
+
+    padding-top: 50%;
+
+    scroll-snap-type: y mandatory;
+
+    &::-webkit-scrollbar{
+      display: none;
+    }
+
+    position: fixed;
+    left: calc(var(--app-height) / 2.4);
+    top: calc(var(--app-height) / 23);
+    width: calc(var(--app-height) / 3.7);
+    height: calc(var(--app-height) / 2.5);
+
+    div{
+
+      scroll-snap-align: center;
+      display: flex;
+
+      div:nth-child(1){
+        display: flex;
+        justify-content: center;
+        align-items:center;
+      }
+
+      .ball{
+        width: calc(var(--app-height) / 60);
+        height: calc(var(--app-height) / 60);
+        margin-right: calc(var(--app-height) / 100);
+      }
+    }
+
+  }
+
+}
+
+#dex_btn{
+  --offset: 63;
+  --size: 15;
+
+  position: absolute;
+  top: calc(var(--app-height) /   var(--offset));
+  right: calc(var(--app-height) / var(--offset));
+  width: calc(var(--app-height)  / var(--size));
+  height: calc(var(--app-height) / var(--size));
+
+  background-color: red;
+  border: calc(var(--app-height) / 200) solid black;
+  border-radius: calc(var(--app-height) / 100);
+
+  background-image: url("../../public/imgs/dex_icon.png");
+  background-size: 80%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}

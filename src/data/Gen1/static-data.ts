@@ -19,6 +19,10 @@ export const OFFSET = {
         POKEMONS: 0x8,
         POKEMON_NAMES: 0x152,
         OT_NAMES: 0X110
+    },
+    POKEDEX:{
+        OWNED: 0x25A3,
+        SEEN: 0x25B6
     }
 }
 

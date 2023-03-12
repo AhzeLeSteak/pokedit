@@ -1,10 +1,14 @@
 import {Pokemon} from "./PokeTypes";
 
-export type SaveDataType = {
+export interface SaveDataType {
     player_name: string,
     rival_name: string,
     party: Pokemon[],
-    boxes: Pokemon[][]
+    boxes: Pokemon[][],
+    pokedex: {
+        seen: boolean,
+        owned: boolean,
+    }[]
 }
 
 export abstract class AbstractSaveDataReader{

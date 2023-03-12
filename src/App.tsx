@@ -2,6 +2,7 @@ import './App.css';
 import 'primeflex/primeflex.css';
 import 'primereact/resources/primereact.css'
 import 'primereact/resources/themes/lara-light-blue/theme.css'
+import 'primeicons/primeicons.css'
 
 import React, {createContext, DragEventHandler, useContext, useLayoutEffect, useState} from 'react';
 import {Box} from "./components/Box";
@@ -10,6 +11,7 @@ import {SaveDataType} from "./data/AbstractSaveDataReader";
 import {Pokemon} from "./data/PokeTypes";
 import {Gen1SaveDataReader} from "./data/Gen1/Gen1SaveDataReader";
 import {Party} from "./components/Party";
+import {DexDialog} from "./components/DexDialog";
 
 
 const BoxContext = createContext<BoxContextType>({
@@ -48,15 +50,15 @@ function App() {
         setSaveData(save_data);
     };
 
-    const handleDropFile: DragEventHandler = async(event) => {
+    const handleDropFile: DragEventHandler = (event) => {
         event.preventDefault();
-        handleFileData(event.dataTransfer.files[0]);
+        return handleFileData(event.dataTransfer.files[0]);
     };
 
     const handleClick = () => {
         const input = document.createElement('input');
         input.type = 'file';
-        input.onchange = () => input.files && handleFileData(input.files[0]);
+        input.onchange = () => input.files && input.files.length && handleFileData(input.files[0]);
         input.click();
     };
 
@@ -67,6 +69,7 @@ function App() {
                     <PokeDetails></PokeDetails>
                     <Party save_data={saveData}></Party>
                     <Box save_data={saveData} box_index={activeBox} set_box_index={setActiveBox}/>
+                    <DexDialog dex_info={saveData.pokedex}/>
                 </BoxContext.Provider>
                 :
                 <div style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
