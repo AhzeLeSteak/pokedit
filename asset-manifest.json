@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/pokedit/static/css/main.e546fb73.css",
-    "main.js": "/pokedit/static/js/main.96176450.js",
+    "main.css": "/pokedit/static/css/main.85876cb6.css",
+    "main.js": "/pokedit/static/js/main.a1996bea.js",
     "static/js/787.74df8652.chunk.js": "/pokedit/static/js/787.74df8652.chunk.js",
     "static/media/primeicons.svg": "/pokedit/static/media/primeicons.e1441b135b3ca9ad643c.svg",
     "static/media/primeicons.eot": "/pokedit/static/media/primeicons.d44157bdfa026dc877af.eot",
@@ -10,12 +10,12 @@
     "static/media/pokemon-emerald.ttf": "/pokedit/static/media/pokemon-emerald.5444d2c08fcf95ac8192.ttf",
     "static/media/primeicons.woff2": "/pokedit/static/media/primeicons.78172950b335ccdb94e2.woff2",
     "index.html": "/pokedit/index.html",
-    "main.e546fb73.css.map": "/pokedit/static/css/main.e546fb73.css.map",
-    "main.96176450.js.map": "/pokedit/static/js/main.96176450.js.map",
+    "main.85876cb6.css.map": "/pokedit/static/css/main.85876cb6.css.map",
+    "main.a1996bea.js.map": "/pokedit/static/js/main.a1996bea.js.map",
     "787.74df8652.chunk.js.map": "/pokedit/static/js/787.74df8652.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e546fb73.css",
-    "static/js/main.96176450.js"
+    "static/css/main.85876cb6.css",
+    "static/js/main.a1996bea.js"
   ]
 }
