@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/pokedit/static/css/main.e9e59f56.css",
-    "main.js": "/pokedit/static/js/main.238dac97.js",
+    "main.js": "/pokedit/static/js/main.26c540a4.js",
     "static/js/787.74df8652.chunk.js": "/pokedit/static/js/787.74df8652.chunk.js",
     "static/media/primeicons.svg": "/pokedit/static/media/primeicons.e1441b135b3ca9ad643c.svg",
     "static/media/primeicons.eot": "/pokedit/static/media/primeicons.d44157bdfa026dc877af.eot",
@@ -11,11 +11,11 @@
     "static/media/primeicons.woff2": "/pokedit/static/media/primeicons.78172950b335ccdb94e2.woff2",
     "index.html": "/pokedit/index.html",
     "main.e9e59f56.css.map": "/pokedit/static/css/main.e9e59f56.css.map",
-    "main.238dac97.js.map": "/pokedit/static/js/main.238dac97.js.map",
+    "main.26c540a4.js.map": "/pokedit/static/js/main.26c540a4.js.map",
     "787.74df8652.chunk.js.map": "/pokedit/static/js/787.74df8652.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e9e59f56.css",
-    "static/js/main.238dac97.js"
+    "static/js/main.26c540a4.js"
   ]
 }
