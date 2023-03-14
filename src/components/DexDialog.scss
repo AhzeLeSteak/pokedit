@@ -13,17 +13,60 @@
   --w: 240;
   --h: 160;
 
+  .stat{
+    font-size: calc(var(--app-height) / 32);
+    position: absolute;
+    left: calc(var(--app-height) / 50);
+    width: calc(var(--app-height) / 7);
+    text-align: right;
+
+    &#seen{
+      top: calc(var(--app-height) / 9.5);
+    }
+    &#owned{
+      top: calc(var(--app-height) / 5);
+    }
+  }
+
+  #sprites{
+    display: flex;
+    flex-flow: column;
+    overflow-y: scroll;
+
+    position: fixed;
+    left: calc(var(--app-height) / 5.1);
+    top: calc(var(--app-height) / 13.5);
+    width: calc(var(--app-height) / 5.4);
+    height: calc(var(--app-height) / 2.95);
+    scroll-snap-type: y mandatory;
+    scroll-snap-align: center;
+
+    & > div{
+      scroll-snap-align: center;
+      aspect-ratio: 1;
+      transform-origin: center;
+      transition-delay: 100ms;
+    }
+
+    & > div:not(.selected){
+      //transform: scale(0.9);
+    }
+
+
+    &::-webkit-scrollbar{
+      display: none;
+    }
+  }
+
   #names{
     display: flex;
     flex-flow: column;
     overflow-y: scroll;
-    scroll-behavior: smooth;
     font-size: calc(var(--app-height) / 40);
     gap: calc(var(--app-height) / 32);
 
-    padding-top: 50%;
-
     scroll-snap-type: y mandatory;
+    scroll-snap-align: center;
 
     &::-webkit-scrollbar{
       display: none;
@@ -36,8 +79,8 @@
     height: calc(var(--app-height) / 2.5);
 
     div{
-
       scroll-snap-align: center;
+      scroll-snap-stop: always;
       display: flex;
 
       div:nth-child(1){
@@ -66,6 +109,8 @@
   right: calc(var(--app-height) / var(--offset));
   width: calc(var(--app-height)  / var(--size));
   height: calc(var(--app-height) / var(--size));
+
+  cursor: pointer;
 
   background-color: red;
   border: calc(var(--app-height) / 200) solid black;

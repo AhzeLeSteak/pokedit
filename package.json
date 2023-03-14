@@ -2,6 +2,7 @@
   "name": "pokedit",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ahzelesteak.github.io/pokedit/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -13,7 +14,6 @@
     "fs": "^0.0.1-security",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
-    "primereact": "^8.7.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -21,6 +21,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -45,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^5.0.0",
     "sass": "^1.57.1"
   }
 }

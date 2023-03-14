@@ -37,7 +37,6 @@ export class Gen1SaveDataReader extends AbstractSaveDataReader{
 
     private get_box_info(box_index: number) {
         let current_box_number = this.buffer[OFFSET.CURRENT_BOX_NUMBER] % 2**7;
-        console.log(current_box_number);
         let box_offset = current_box_number === box_index
             ? OFFSET.CURRENT_BOX
             : box_index < 6
