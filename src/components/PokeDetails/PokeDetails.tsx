@@ -1,10 +1,10 @@
 import './PokeDetails.scss'
-import {useBoxContext} from "../../App";
 import React, {useState} from "react";
 import {MovesInfo} from "./MovesInfo";
 import {StatsInfo} from "./StatsInfo";
 import {BaseInfo} from "./BaseInfo";
 import {NAMES} from "../../data/NAMES";
+import {useBoxContext} from "../../pages/SaveViewer";
 
 export const PokeDetails = () => {
 

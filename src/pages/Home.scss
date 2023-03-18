@@ -1,0 +1,53 @@
+#home{
+  text-align: center;
+  font-size: 1.2em;
+  background-color: rgba(17, 16, 16, 0.53);
+  width: clamp(350px, 50%, 600px);
+  padding: 2em;
+
+  .user-row{
+
+
+    #userPP, #btn-logout{
+      height: 50px;
+      border-radius: 100%;
+      image-rendering: initial;
+    }
+    #btn-logout{
+      cursor: pointer;
+      aspect-ratio: 1;
+      background-color: red;
+      border: none;
+    }
+
+    #btn-dialog{
+      height: 3em;
+    }
+  }
+
+
+  #dialog-new-file{
+    cursor: initial;
+    background-color: white;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+
+    & > *:nth-of-type(2n+1){
+      text-align: right;
+    }
+
+    & > *:nth-of-type(2n){
+      text-align: left;
+    }
+
+    select{
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+

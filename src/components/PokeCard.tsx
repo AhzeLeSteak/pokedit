@@ -1,8 +1,8 @@
 import './PokeCard.css'
 
 import React from "react";
-import {useBoxContext} from "../App";
 import {Pokemon} from "../data/PokeTypes";
+import {useBoxContext} from "../pages/SaveViewer";
 
 export function PokeCard(props: {pokemon: Pokemon}){
 

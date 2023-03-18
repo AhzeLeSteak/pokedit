@@ -12,63 +12,33 @@ export const DexDialog = (props: {dex_info: SaveDataType['pokedex']}) => {
     const owned = props.dex_info.filter(dx => dx.owned).length;
 
     useEffect(() => {
-        document.querySelector('#sprites [data-pkid="1"]')?.scrollIntoView({block: "center"});
+        setTimeout(() => document.querySelector('#sprites [data-pkid="1"]')?.scrollIntoView({block: "center"}), 1);
     }, [visible]);
 
-
-    const scrollSprites = (ev: React.UIEvent<HTMLDivElement>) => {
-        const target = ev.target as HTMLElement;
-        const rect = target.getBoundingClientRect();
+    const get_pkid_from_scrollbar = (el: HTMLElement) => {
+        const rect = el.getBoundingClientRect();
         const middle_y = rect.top + rect.height/2;
 
-        const pokemon_elements = [].slice.call(target.children) as HTMLElement[];
+        const pokemon_elements = [].slice.call(el.children) as HTMLElement[];
         const select_element = pokemon_elements.find((el: HTMLElement) =>
             Math.abs(el.getBoundingClientRect().top + el.getBoundingClientRect().height/2 - middle_y) < 10
         )
-        if(!select_element)
-            return;
-        const pk_id = select_element.dataset.pkid!;
-        const names_div = document.getElementById('names')!;
+        return select_element ? select_element.dataset.pkid! : false;
+    }
+
+
+    const handleScroll = (ev: React.UIEvent<HTMLDivElement>, otherScrollbar: 'names' | 'sprites') => {
+        const pk_id = get_pkid_from_scrollbar(ev.target as HTMLElement);
+        if(!pk_id) return;
+        const scrollbar = document.getElementById(otherScrollbar)!;
         if(timeout)
             clearTimeout(timeout);
         timeout = setTimeout(() =>
-            names_div
+            scrollbar
                 .querySelector(`[data-pkid="${pk_id}"]`)
                 ?.scrollIntoView({block: "center", behavior: 'smooth'}),
             500);
     }
-
-    const scrollNames = (ev: React.UIEvent<HTMLDivElement>) => {
-        const target = ev.target as HTMLElement;
-        const rect = target.getBoundingClientRect();
-        const middle_y = rect.top + rect.height/2;
-
-        const pokemon_elements = [].slice.call(target.children) as HTMLElement[];
-        const select_element = pokemon_elements.find((el: HTMLElement) =>
-            Math.abs(el.getBoundingClientRect().top + el.getBoundingClientRect().height/2 - middle_y) < 10
-        )
-        if(!select_element)
-            return;
-        const pk_id = select_element.dataset.pkid!;
-        const sprites_div = document.getElementById('sprites')!;
-        if(timeout)
-            clearTimeout(timeout);
-        timeout = setTimeout(() =>
-                sprites_div
-                    .querySelector(`[data-pkid="${pk_id}"]`)
-                    ?.scrollIntoView({block: "center", behavior: 'smooth'}),
-            500);
-    }
-
-    const filler_names = Array(3).fill(0).map((_, i) =>
-        <div style={{visibility: 'hidden'}}>
-            <div><img className="ball" src={`${process.env.PUBLIC_URL}/imgs/poke.png`}/></div>
-            <span>{NAMES[i].toUpperCase()}</span>
-        </div>
-    );
-    const filler_sprites = <div className="flex justify-content-center align-content-center">
-        <img style={{width: '100%', visibility: 'hidden'}} src={`${process.env.PUBLIC_URL}/icons/001.png`}/>
-    </div>;
 
     return <>
         <button onClick={() => setVisible(v => !v)} id="dex_btn" />
@@ -78,7 +48,7 @@ export const DexDialog = (props: {dex_info: SaveDataType['pokedex']}) => {
                 <span className="stat" id="seen">{seen}</span>
                 <span className="stat" id="owned">{owned}</span>
 
-                <div id="sprites" onScroll={scrollSprites}>
+                <div id="sprites" onScroll={e => handleScroll(e, 'names')}>
                     {filler_sprites}
                     {props.dex_info.map((_, i) =>
                         <div className="flex justify-content-center align-content-center" data-pkid={i+1}>
@@ -88,7 +58,7 @@ export const DexDialog = (props: {dex_info: SaveDataType['pokedex']}) => {
                     {filler_sprites}
                 </div>
 
-                <div id="names" onScroll={scrollNames}>
+                <div id="names" onScroll={e => handleScroll(e, 'sprites')}>
                     {filler_names}
                     {props.dex_info.map((_, i) => {
                             i+=1;
@@ -106,3 +76,14 @@ export const DexDialog = (props: {dex_info: SaveDataType['pokedex']}) => {
         }
     </>
 }
+
+
+const filler_names = Array(3).fill(0).map((_, i) =>
+    <div style={{visibility: 'hidden'}}>
+        <div><img className="ball" src={`${process.env.PUBLIC_URL}/imgs/poke.png`}/></div>
+        <span>{NAMES[i].toUpperCase()}</span>
+    </div>
+);
+const filler_sprites = <div className="flex justify-content-center align-content-center">
+    <img style={{width: '100%', visibility: 'hidden'}} src={`${process.env.PUBLIC_URL}/icons/001.png`}/>
+</div>;

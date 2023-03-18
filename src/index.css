@@ -25,6 +25,12 @@ code {
     calc(var(--app-height) / 1000) calc(var(--app-height) / 1000) var(--shadow-color), calc(var(--app-height) / -1000) calc(var(--app-height) / -1000) var(--shadow-color), calc(var(--app-height) / 1000) calc(var(--app-height) / -1000) var(--shadow-color), calc(var(--app-height) / -1000) calc(var(--app-height) / 1000) var(--shadow-color);
 }
 
+.pi{
+    font-family: initial;
+    text-shadow: none;
+    color: white;
+}
+
 @font-face {
     font-family: 'PKMN';
     src: url('./pokemon-emerald.ttf') format('truetype');
