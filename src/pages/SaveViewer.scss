@@ -1,4 +1,3 @@
-
 #save-viewer{
 
   display: initial;
@@ -18,5 +17,43 @@
   .vertical &{
     width: 100vw;
     --app-height: calc(100vw / var(--aspect-ratio));
+  }
+
+
+  .buttons{
+    --offset: 62;
+    --size: 15;
+
+    position: absolute;
+    top: calc(var(--app-height) /   var(--offset));
+    right: calc(var(--app-height) / var(--offset));
+
+    display: flex;
+    flex-flow: column;
+    gap: calc(var(--app-height) / (var(--size)  * 8 ));
+
+    & > button{
+
+      width: calc(var(--app-height)  / var(--size));
+      height: calc(var(--app-height) / var(--size));
+      border: calc(var(--app-height) / 200) solid black;
+
+      cursor: pointer;
+      background-size: 80%;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: calc(var(--app-height) / 100);
+    }
+
+    #dex-btn{
+      background-size: 80%;
+      background-color: red;
+      background-image: url("../../public/imgs/dex_icon.png");
+    }
+
+    #home-btn{
+      background-size: 120%;
+      background-image: url("../../public/imgs/pkcenter_icon.png");
+    }
   }
 }

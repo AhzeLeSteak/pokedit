@@ -13,6 +13,16 @@
   --w: 240;
   --h: 160;
 
+  #close-btn{
+    position: fixed;
+    cursor: pointer;
+    top: calc(var(--app-height) / 120);
+    right: calc(var(--app-height) / 100);
+    i{
+      color: black;
+    }
+  }
+
   .stat{
     font-size: calc(var(--app-height) / 32);
     position: absolute;
@@ -97,28 +107,5 @@
     }
 
   }
-
-}
-
-#dex_btn{
-  --offset: 63;
-  --size: 15;
-
-  position: absolute;
-  top: calc(var(--app-height) /   var(--offset));
-  right: calc(var(--app-height) / var(--offset));
-  width: calc(var(--app-height)  / var(--size));
-  height: calc(var(--app-height) / var(--size));
-
-  cursor: pointer;
-
-  background-color: red;
-  border: calc(var(--app-height) / 200) solid black;
-  border-radius: calc(var(--app-height) / 100);
-
-  background-image: url("../../public/imgs/dex_icon.png");
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
 
 }

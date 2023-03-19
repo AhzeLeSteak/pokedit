@@ -11,7 +11,7 @@ export const Login = () => {
     const [saveData, setSaveData] = useState<SaveDataType>();
 
     if(saveData)
-        return <SaveViewer saveData={saveData}></SaveViewer>
+        return <SaveViewer saveData={saveData} onHome={() => setSaveData(undefined)}></SaveViewer>
 
     const handleFileData = async(file: Blob) => {
         const buffer = await file.arrayBuffer()
@@ -28,9 +28,11 @@ export const Login = () => {
     const handleClick = () => {
         const input = document.createElement('input');
         input.type = 'file';
+        input.accept = '.sav';
         input.onchange = () => input.files && input.files.length && handleFileData(input.files[0]);
         input.click();
     };
+
     return <div id="login-page" className="poke-font">
         <div id="drop-zone" onClick={handleClick} onDrop={handleDropFile} onDragOver={ev => ev.preventDefault()}>
             Drop your save file here to visualize it

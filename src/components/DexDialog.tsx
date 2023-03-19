@@ -1,15 +1,15 @@
 import './DexDialog.scss';
 import {SaveDataType} from "../data/AbstractSaveDataReader";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {NAMES} from "../data/NAMES";
 
 let timeout: NodeJS.Timeout;
 
-export const DexDialog = (props: {dex_info: SaveDataType['pokedex']}) => {
+type DexDialogProps = {visible: boolean, onClose: Function, dex_info: SaveDataType['pokedex']};
+export const DexDialog = ({visible, onClose, dex_info}: DexDialogProps) => {
 
-    const [visible, setVisible] = useState(false);
-    const seen = props.dex_info.filter(dx => dx.seen).length;
-    const owned = props.dex_info.filter(dx => dx.owned).length;
+    const seen = dex_info.filter(dx => dx.seen).length;
+    const owned = dex_info.filter(dx => dx.owned).length;
 
     useEffect(() => {
         setTimeout(() => document.querySelector('#sprites [data-pkid="1"]')?.scrollIntoView({block: "center"}), 1);
@@ -41,16 +41,17 @@ export const DexDialog = (props: {dex_info: SaveDataType['pokedex']}) => {
     }
 
     return <>
-        <button onClick={() => setVisible(v => !v)} id="dex_btn" />
         {visible &&
-            <div id="dex-dialog" style={{'--rows': props.dex_info.length+1} as React.CSSProperties} className="poke-font">
-
+            <div id="dex-dialog" style={{'--rows': dex_info.length+1} as React.CSSProperties} className="poke-font">
+                <div onClick={() => onClose()} id="close-btn">
+                    <i className="pi pi-times"/>
+                </div>
                 <span className="stat" id="seen">{seen}</span>
                 <span className="stat" id="owned">{owned}</span>
 
                 <div id="sprites" onScroll={e => handleScroll(e, 'names')}>
                     {filler_sprites}
-                    {props.dex_info.map((_, i) =>
+                    {dex_info.map((_, i) =>
                         <div className="flex justify-content-center align-content-center" data-pkid={i+1}>
                             <img style={{width: '100%'}} src={`${process.env.PUBLIC_URL}/icons/${String(i+1).padStart(3, '0')}.png`}/>
                         </div>
@@ -60,7 +61,7 @@ export const DexDialog = (props: {dex_info: SaveDataType['pokedex']}) => {
 
                 <div id="names" onScroll={e => handleScroll(e, 'sprites')}>
                     {filler_names}
-                    {props.dex_info.map((_, i) => {
+                    {dex_info.map((_, i) => {
                             i+=1;
                             const fixed = String(i).padStart(3, '0');
                             const ball = _.owned ? 'pokeball' : 'noball';

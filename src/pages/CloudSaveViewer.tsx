@@ -1,4 +1,4 @@
-import {Navigate, useParams} from "react-router-dom";
+import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {SaveDataType} from "../data/AbstractSaveDataReader";
 import {SaveViewer} from "./SaveViewer";
@@ -17,8 +17,8 @@ export const CloudSaveViewer = () => {
 
 
 const SubViewer = ({id}: {id: string}) => {
+    const navigate = useNavigate();
     const [saveData, setSaveData] = useState<SaveDataType>();
-
 
     useEffect(() => {
         (async() => {
@@ -31,5 +31,5 @@ const SubViewer = ({id}: {id: string}) => {
         })();
     }, [id]);
 
-    return saveData ? <SaveViewer saveData={saveData}/> : <div className="poke-font">Loading</div>;
+    return saveData ? <SaveViewer saveData={saveData} onHome={() => navigate('/')}/> : <div className="poke-font">Loading</div>;
 }
