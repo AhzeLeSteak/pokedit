@@ -16,11 +16,6 @@ export const PokeDetails = () => {
 
     const species = String(selected_pokemon.pokedex_id).padStart(3, '0'); // 7 -> '007'
 
-    //const name = `${selected_pokemon.nickname} (${NAMES[selected_pokemon.pokedex_id]})`
-
-
-
-
     return <div className="poke-details">
         <img alt="" src={`${process.env.PUBLIC_URL}/icons/${species}.png`} className="poke-img cursor-pointer"/>
         <div className="types flex flex-column poke-font">
@@ -30,7 +25,7 @@ export const PokeDetails = () => {
         </div>
         <div className={`tab-select tab-${selectedTab} flex justify-content-around align-items-center`}>
             {[0, 1, 2, 3].map(i =>
-                <div key={i} onClick={() => setSelectedTab(i)}></div>
+                <div key={i} onClick={() => i < 3 && setSelectedTab(i)}></div>
             )}
         </div>
 

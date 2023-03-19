@@ -34,15 +34,24 @@ export const SavesList = () => {
         {saves.docs.map(d => {
             const save = d.data();
             return <div className="grid" key={d.id}>
-                <div className="col-3 flex align-items-center">
+                <div className="col-2 md:col-3 flex align-items-center">
                     <SaveImg version={save.version}/>
                 </div>
-                <div className="col-6 poke-font flex align-items-end">
+                <div className="col poke-font flex align-items-cented">
                     {save.name}
                 </div>
-                <div className="col-3 flex align-items-end gap-2">
-                    <Button onClick={() => navigate('/save/' + d.id)} icon="pi pi-eye" aria-label="View save"/>
-                    <Button onClick={e => deleteSave(e, d.ref)} icon="pi pi-times" severity="danger" aria-label="Delete"/>
+                <div className="col-2 md:col-4 flex flex-column md:flex-row align-items-end gap-2">
+                    <Button icon="pi pi-eye"
+                            className="h-1rem md:h-auto"
+                            aria-label="View save"
+                            onClick={() => navigate('/save/' + d.id)}
+                    />
+                    <Button icon="pi pi-times"
+                            aria-label="Delete"
+                            className="h-1rem md:h-auto"
+                            severity="danger"
+                            onClick={e => deleteSave(e, d.ref)}
+                    />
                 </div>
             </div>;
         })}

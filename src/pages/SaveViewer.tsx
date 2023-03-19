@@ -7,7 +7,6 @@ import React, {createContext, useContext, useState} from "react";
 import {Pokemon} from "../data/PokeTypes";
 import {BoxContextType} from "../App";
 import {SaveDataType} from "../data/AbstractSaveDataReader";
-import {useNavigate} from "react-router-dom";
 
 const BoxContext = createContext<BoxContextType>({
     selected_pokemon: undefined,
@@ -18,7 +17,6 @@ export const useBoxContext = () => useContext(BoxContext);
 
 export const SaveViewer = ({saveData, onHome}: {onHome: Function, saveData: SaveDataType}) => {
 
-    let navigate = useNavigate();
     const [pokemon, setPokemon] = useState<Pokemon | undefined>();
     const [activeBox, setActiveBox] = useState(0);
     const [dexVisible, setDexVisible] = useState(false);

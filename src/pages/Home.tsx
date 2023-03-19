@@ -12,9 +12,9 @@ export const Home = () => {
     const navigate = useNavigate();
 
 
-    return <div id="home">
-        <div className="user-row grid pl-4 pr-4">
-            <div className="col-4 grid gap-2">
+    return <div id="home" className="p-4 md:p-6">
+        <div className="user-row grid md:pl-4 md:pr-4">
+            <div className="col-6 lg:col-4 grid gap-2">
                 <Tooltip target="#userPP"/>
                 <img referrerPolicy="no-referrer"
                      src={user?.photoURL!}

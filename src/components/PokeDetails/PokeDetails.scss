@@ -1,7 +1,5 @@
 .poke-details{
     position: relative;
-    height: 100%;
-    aspect-ratio: 80/156;
     background-image: url("../../../public/imgs/poke-data.png");
     background-size: 100%;
 
@@ -10,6 +8,15 @@
     padding-right: calc(var(--app-height) * 2 / 156);
 
     overflow-y: hidden;
+
+  .horizontal & {
+    height: 100%;
+    aspect-ratio: 80/156;
+  }
+  .vertical & {
+    width: 100%;
+    aspect-ratio: 156/80;
+  }
 }
 
 .poke-img{

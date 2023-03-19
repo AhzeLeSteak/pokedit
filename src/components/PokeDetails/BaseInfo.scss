@@ -21,7 +21,7 @@
     .second-line{
 
       .type-badge{
-        height: 90%;
+        height: calc(var(--app-height) / 28);
         margin-left: calc(100% * 2 / var(--w))
       }
     }
