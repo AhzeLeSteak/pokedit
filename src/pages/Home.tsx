@@ -29,7 +29,7 @@ export const Home = () => {
             <Button id="btn-dialog"
                     onClick={() => navigate('/new')}
                     label="Import a new save file"
-                    severity="secondary"
+                    severity="info"
                     className="col"
             />
         </div>

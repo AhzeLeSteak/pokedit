@@ -6,5 +6,6 @@ export interface SaveFile {
     uid: string,
     version : Version,
     name: string,
-    file: number[]
+    file: number[],
+    file_name: string
 }

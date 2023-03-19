@@ -25,8 +25,7 @@ code {
     calc(var(--app-height) / 1000) calc(var(--app-height) / 1000) var(--shadow-color), calc(var(--app-height) / -1000) calc(var(--app-height) / -1000) var(--shadow-color), calc(var(--app-height) / 1000) calc(var(--app-height) / -1000) var(--shadow-color), calc(var(--app-height) / -1000) calc(var(--app-height) / 1000) var(--shadow-color);
 }
 
-.pi{
-    font-family: initial;
+i.pi{
     text-shadow: none;
     color: white;
 }

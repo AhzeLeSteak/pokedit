@@ -1,11 +1,12 @@
 import {SaveFile, Version} from "../firebase/types";
-import {collection, CollectionReference, query, where} from "firebase/firestore";
+import {collection, CollectionReference, deleteDoc, DocumentReference, query, where} from "firebase/firestore";
 import {COLLECTIONS, getFirestore} from "../firebase/firebase-config";
 import {useCollection} from "react-firebase-hooks/firestore";
 import {useAuthContext} from "../firebase/AuthProvider";
 import {Button} from "primereact/button";
 import React from "react";
 import {useNavigate} from "react-router-dom";
+import {confirmPopup, ConfirmPopup} from "primereact/confirmpopup";
 
 export const SavesList = () => {
     const navigate = useNavigate()
@@ -18,10 +19,21 @@ export const SavesList = () => {
     if(!saves)
         return <></>
 
+    const deleteSave = async(ev: {currentTarget: EventTarget & HTMLElement}, doc: DocumentReference<SaveFile>) => {
+        confirmPopup({
+            target: ev.currentTarget,
+            message: 'Do you want to delete this record?',
+            icon: 'pi pi-exclamation-triangle',
+            acceptClassName: 'p-button-danger',
+            accept: () => deleteDoc(doc),
+        })
+    }
+
     return <>
+        <ConfirmPopup />
         {saves.docs.map(d => {
             const save = d.data();
-            return <div className="grid">
+            return <div className="grid" key={d.id}>
                 <div className="col-3 flex align-items-center">
                     <SaveImg version={save.version}/>
                 </div>
@@ -30,7 +42,7 @@ export const SavesList = () => {
                 </div>
                 <div className="col-3 flex align-items-end gap-2">
                     <Button onClick={() => navigate('/save/' + d.id)} icon="pi pi-eye" aria-label="View save"/>
-                    <Button icon="pi pi-times" severity="danger" aria-label="Delete"/>
+                    <Button onClick={e => deleteSave(e, d.ref)} icon="pi pi-times" severity="danger" aria-label="Delete"/>
                 </div>
             </div>;
         })}
@@ -39,8 +51,8 @@ export const SavesList = () => {
 
 const species: Record<Version, string> = {
     yellow: '025',
-    red: '009',
-    blue: '006'
+    red: '006',
+    blue: '009'
 }
 
 const SaveImg = ({version}: {version: Version}) => {

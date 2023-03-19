@@ -1,0 +1,28 @@
+#dialog-new-file{
+  font-size: 1.2em;
+  background-color: rgba(17, 16, 16, 0.53);
+  width: clamp(350px, 50%, 700px);
+  padding: 2em;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+
+  & > *:nth-of-type(2n+1){
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+
+  & > *:nth-of-type(2n){
+    text-align: left;
+  }
+
+  select{
+    width: 100%;
+    height: 100%;
+  }
+}
