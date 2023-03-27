@@ -1,12 +1,12 @@
 import './Party.css'
-
-import {SaveDataType} from "../data/AbstractSaveDataReader";
 import {PokeCard} from "./PokeCard";
+import {useSaveContext} from "../pages/SaveViewer";
 
-export const Party = ({save_data}: {save_data: SaveDataType}) => {
+export const Party = () => {
 
+    const {save_reader} = useSaveContext();
 
     return <div className="party">
-        {save_data.party.map((pk, i) => <PokeCard key={i} pokemon={pk}/>)}
+        {save_reader.save.party.map((pk, i) => <PokeCard key={i} pokemon={pk}/>)}
     </div>
 }

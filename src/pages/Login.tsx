@@ -1,23 +1,22 @@
 import './Login.scss'
 import {useAuthContext} from "../firebase/AuthProvider";
-import {Gen1SaveDataReader} from "../data/Gen1/Gen1SaveDataReader";
+import {Gen1SaveReader} from "../data/Gen1/Gen1SaveReader";
 import React, {DragEventHandler, useState} from "react";
-import {SaveDataType} from "../data/AbstractSaveDataReader";
+import {SaveReader} from "../data/SaveReader";
 import {SaveViewer} from "./SaveViewer";
 
 export const Login = () => {
 
     const {login} = useAuthContext();
-    const [saveData, setSaveData] = useState<SaveDataType>();
+    const [saveReader, setSaveReader] = useState<SaveReader>();
 
-    if(saveData)
-        return <SaveViewer saveData={saveData} onHome={() => setSaveData(undefined)}></SaveViewer>
+    if(saveReader)
+        return <SaveViewer saveReader={saveReader} onHome={() => setSaveReader(undefined)}></SaveViewer>
 
     const handleFileData = async(file: Blob) => {
         const buffer = await file.arrayBuffer()
         const uint8Array = new Uint8Array(buffer);
-        const save_data = new Gen1SaveDataReader(uint8Array).get_save_data();
-        setSaveData(save_data);
+        setSaveReader(new Gen1SaveReader(uint8Array));
     };
 
     const handleDropFile: DragEventHandler = (event) => {

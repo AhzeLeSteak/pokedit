@@ -1,23 +1,23 @@
 import './Box.css';
 
-import React from "react";
+import React, {useState} from "react";
 import {PokeCard} from "./PokeCard";
-import {SaveDataType} from "../data/AbstractSaveDataReader";
+import {useSaveContext} from "../pages/SaveViewer";
 
 
-export function Box(props: {save_data: SaveDataType, box_index: number, set_box_index: (_: number) => void}){
-
-    const {box_index, set_box_index, save_data} = props;
+export function Box(){
+    const {save_reader} = useSaveContext();
+    const [activeBox, setActiveBox] = useState(0);
 
     return <div className="box">
         <div className="box-index poke-font">
-            <img className="arrow left" src={`${process.env.PUBLIC_URL}/imgs/left.png`} onClick={() => set_box_index((box_index+11)%12)}></img>
-            <span>BOX {box_index+1}</span>
+            <img className="arrow left" src={`${process.env.PUBLIC_URL}/imgs/left.png`} onClick={() => setActiveBox((activeBox+11)%12)}></img>
+            <span>BOX {activeBox+1}</span>
             <img className="arrow right" src={`${process.env.PUBLIC_URL}/imgs/right.png`}
-            onClick={() => set_box_index((box_index+1)%12)}></img>
+            onClick={() => setActiveBox((activeBox+1)%12)}></img>
         </div>
         <div className="box-grid">
-            {save_data.boxes[box_index].map((pk, i) =>
+            {save_reader.save.boxes[activeBox].map((pk, i) =>
                 <PokeCard key={i} pokemon={pk}/>
             )}
         </div>

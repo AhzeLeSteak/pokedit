@@ -1,12 +1,15 @@
 import './DexDialog.scss';
-import {SaveDataType} from "../data/AbstractSaveDataReader";
-import React, {useEffect} from "react";
+import {SaveType} from "../data/SaveReader";
+import React, {useEffect, useRef} from "react";
 import {NAMES} from "../data/NAMES";
+import {useClickOutside} from "primereact/hooks";
 
 let timeout: NodeJS.Timeout;
 
-type DexDialogProps = {visible: boolean, onClose: Function, dex_info: SaveDataType['pokedex']};
+type DexDialogProps = {visible: boolean, onClose: Function, dex_info: SaveType['pokedex']};
 export const DexDialog = ({visible, onClose, dex_info}: DexDialogProps) => {
+
+    const dialogRef = useRef(null);
 
     const seen = dex_info.filter(dx => dx.seen).length;
     const owned = dex_info.filter(dx => dx.owned).length;
@@ -14,6 +17,8 @@ export const DexDialog = ({visible, onClose, dex_info}: DexDialogProps) => {
     useEffect(() => {
         setTimeout(() => document.querySelector('#sprites [data-pkid="1"]')?.scrollIntoView({block: "center"}), 1);
     }, [visible]);
+
+    useClickOutside(dialogRef, onClose);
 
     const get_pkid_from_scrollbar = (el: HTMLElement) => {
         const rect = el.getBoundingClientRect();
@@ -25,7 +30,6 @@ export const DexDialog = ({visible, onClose, dex_info}: DexDialogProps) => {
         )
         return select_element ? select_element.dataset.pkid! : false;
     }
-
 
     const handleScroll = (ev: React.UIEvent<HTMLDivElement>, otherScrollbar: 'names' | 'sprites') => {
         const pk_id = get_pkid_from_scrollbar(ev.target as HTMLElement);
@@ -42,7 +46,7 @@ export const DexDialog = ({visible, onClose, dex_info}: DexDialogProps) => {
 
     return <>
         {visible &&
-            <div id="dex-dialog" style={{'--rows': dex_info.length+1} as React.CSSProperties} className="poke-font">
+            <div id="dex-dialog" ref={dialogRef} className="poke-font">
                 <div onClick={() => onClose()} id="close-btn">
                     <i className="pi pi-times"/>
                 </div>

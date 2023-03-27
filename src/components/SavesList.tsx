@@ -19,15 +19,14 @@ export const SavesList = () => {
     if(!saves)
         return <></>
 
-    const deleteSave = async(ev: {currentTarget: EventTarget & HTMLElement}, doc: DocumentReference<SaveFile>) => {
+    const deleteSave = async(ev: {currentTarget: EventTarget & HTMLElement}, doc: DocumentReference<SaveFile>) =>
         confirmPopup({
             target: ev.currentTarget,
             message: 'Do you want to delete this record?',
             icon: 'pi pi-exclamation-triangle',
             acceptClassName: 'p-button-danger',
             accept: () => deleteDoc(doc),
-        })
-    }
+        });
 
     return <>
         <ConfirmPopup />
@@ -37,10 +36,10 @@ export const SavesList = () => {
                 <div className="col-2 md:col-3 flex align-items-center">
                     <SaveImg version={save.version}/>
                 </div>
-                <div className="col poke-font flex align-items-cented">
+                <div className="col poke-font flex align-items-center">
                     {save.name}
                 </div>
-                <div className="col-2 md:col-4 flex flex-column md:flex-row align-items-end gap-2">
+                <div className="col-2 md:col-3 flex flex-column md:flex-row align-items-end gap-2">
                     <Button icon="pi pi-eye"
                             className="h-1rem md:h-auto"
                             aria-label="View save"

@@ -1,11 +1,11 @@
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {SaveDataType} from "../data/AbstractSaveDataReader";
+import {SaveReader} from "../data/SaveReader";
 import {SaveViewer} from "./SaveViewer";
 import {collection, CollectionReference, doc, getDoc} from "firebase/firestore";
 import {COLLECTIONS, getFirestore} from "../firebase/firebase-config";
 import {SaveFile} from "../firebase/types";
-import {Gen1SaveDataReader} from "../data/Gen1/Gen1SaveDataReader";
+import {Gen1SaveReader} from "../data/Gen1/Gen1SaveReader";
 
 
 export const CloudSaveViewer = () => {
@@ -18,7 +18,7 @@ export const CloudSaveViewer = () => {
 
 const SubViewer = ({id}: {id: string}) => {
     const navigate = useNavigate();
-    const [saveData, setSaveData] = useState<SaveDataType>();
+    const [saveReader, setSaveReader] = useState<SaveReader>();
 
     useEffect(() => {
         (async() => {
@@ -26,10 +26,9 @@ const SubViewer = ({id}: {id: string}) => {
             const save_doc = await getDoc<SaveFile>(doc(save_collection, id));
             const save = save_doc.data();
             if(!save) return;
-            const save_data = new Gen1SaveDataReader(new Uint8Array(save.file)).get_save_data();
-            setSaveData(save_data);
+            setSaveReader(new Gen1SaveReader(new Uint8Array(save.file)));
         })();
     }, [id]);
 
-    return saveData ? <SaveViewer saveData={saveData} onHome={() => navigate('/')}/> : <div className="poke-font">Loading</div>;
+    return saveReader ? <SaveViewer saveReader={saveReader} onHome={() => navigate('/')}/> : <div className="poke-font">Loading</div>;
 }

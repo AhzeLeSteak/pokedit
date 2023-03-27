@@ -15,6 +15,22 @@ export function UInt8ToPKChar(uint: number, language: 'FR' | 'EN' | 'JP' | 'GR' 
     return '';
 }
 
+export function PKCharToUInt8(char: string,language: 'FR' | 'EN' | 'JP' | 'GR' | 'IT' | 'SP' = 'FR'){
+    switch (language){
+        case 'FR':
+        case 'GR':
+            return FRENCH_CHAR.indexOf(char) + 0x80;
+        case 'EN':
+            return ENGLISH_CHAR.indexOf(char) + 0x80;
+        case 'JP':
+            return JAP_CHAR.indexOf(char);
+        case "IT":
+        case "SP":
+            return ITALIAN_CHAR.indexOf(char) + 0x80
+    }
+    return 0;
+}
+
 const FRENCH_CHAR = [
     'A',
     'B',

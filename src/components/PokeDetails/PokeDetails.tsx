@@ -4,11 +4,11 @@ import {MovesInfo} from "./MovesInfo";
 import {StatsInfo} from "./StatsInfo";
 import {BaseInfo} from "./BaseInfo";
 import {NAMES} from "../../data/NAMES";
-import {useBoxContext} from "../../pages/SaveViewer";
+import {useSaveContext} from "../../pages/SaveViewer";
 
 export const PokeDetails = () => {
 
-    const {selected_pokemon} = useBoxContext();
+    const {selected_pokemon} = useSaveContext();
     const [selectedTab, setSelectedTab] = useState(0);
 
     if(!selected_pokemon)

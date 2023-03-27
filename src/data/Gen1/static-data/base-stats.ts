@@ -1,4 +1,4 @@
-import {Stats} from "../PokeTypes";
+import {Stats} from "../../PokeTypes";
 
 export const BASE_STATS: Stats[] = [
     {

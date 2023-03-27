@@ -1,4 +1,4 @@
-export interface PokemonGen1Structure {
+export interface PokemonGen1 {
     species: number,
     currentHp: number,
     level: number,

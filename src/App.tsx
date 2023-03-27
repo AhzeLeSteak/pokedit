@@ -5,7 +5,6 @@ import 'primereact/resources/themes/lara-light-blue/theme.css'
 import 'primeicons/primeicons.css'
 
 import React, {useLayoutEffect, useState} from 'react';
-import {Pokemon} from "./data/PokeTypes";
 import {Home} from "./pages/Home";
 import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import {useAuthContext} from "./firebase/AuthProvider";
@@ -48,14 +47,5 @@ function App() {
         </div>
     );
 }
-
-
-export type BoxContextType = {
-    selected_pokemon ?: Pokemon;
-    set_pokemon: (p: Pokemon) => void;
-}
-
-
-
 
 export default App;
