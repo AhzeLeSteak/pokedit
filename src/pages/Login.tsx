@@ -11,7 +11,7 @@ export const Login = () => {
     const [saveReader, setSaveReader] = useState<SaveReader>();
 
     if(saveReader)
-        return <SaveViewer saveReader={saveReader} onHome={() => setSaveReader(undefined)}></SaveViewer>
+        return <SaveViewer saveReader={saveReader} edit={false} onHome={() => setSaveReader(undefined)}></SaveViewer>
 
     const handleFileData = async(file: Blob) => {
         const buffer = await file.arrayBuffer()

@@ -35,8 +35,7 @@ export const DexDialog = ({visible, onClose, dex_info}: DexDialogProps) => {
         const pk_id = get_pkid_from_scrollbar(ev.target as HTMLElement);
         if(!pk_id) return;
         const scrollbar = document.getElementById(otherScrollbar)!;
-        if(timeout)
-            clearTimeout(timeout);
+        clearTimeout(timeout);
         timeout = setTimeout(() =>
             scrollbar
                 .querySelector(`[data-pkid="${pk_id}"]`)
@@ -47,9 +46,7 @@ export const DexDialog = ({visible, onClose, dex_info}: DexDialogProps) => {
     return <>
         {visible &&
             <div id="dex-dialog" ref={dialogRef} className="poke-font">
-                <div onClick={() => onClose()} id="close-btn">
-                    <i className="pi pi-times"/>
-                </div>
+                <i onClick={() => onClose()} id="close-btn" className="pi pi-times"></i>
                 <span className="stat" id="seen">{seen}</span>
                 <span className="stat" id="owned">{owned}</span>
 

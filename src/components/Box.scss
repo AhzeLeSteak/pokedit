@@ -1,6 +1,6 @@
 
 .box{
-    background-image: url("/public/imgs/box_background.png");
+    background-image: url("../../public/imgs/box_background.png");
     height: 100%;
     aspect-ratio: 156/141;
     background-size: 100%;
@@ -28,7 +28,13 @@
     width: calc(var(--app-height) *.8 * 8 / 141);
     height: calc(var(--app-height) *.8 * 12 / 141);
     cursor: pointer;
+    transform-origin: center;
+
+    &:hover{
+        transform: scale(1.1);
+    }
 }
+
 
 .box-grid{
     display: grid;

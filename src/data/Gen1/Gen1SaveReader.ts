@@ -11,11 +11,7 @@ import {TYPES} from "./static-data/types";
 
 type PkG1WithNames = PokemonGen1 & {nickname: string, OT_name: string}
 
-export class Gen1SaveReader extends SaveReader{
-
-    constructor(public buffer: Uint8Array) {
-        super();
-    }
+export class Gen1SaveReader extends SaveReader<PokemonGen1>{
 
     calc_save_data () {
         const box_has_changed = this.buffer[OFFSET.CURRENT_BOX_NUMBER] & 2**7;
@@ -29,6 +25,7 @@ export class Gen1SaveReader extends SaveReader{
             boxes: Array(12)
                 .fill(0)
                 .map((_, i) => !box_has_changed && i > 0 ? [] : this.get_box_info(i)),
+            box_size: 20,
             pokedex: dex_seen.map((seen, i) => ({
                 seen,
                 owned: dex_owned[i]
@@ -44,6 +41,11 @@ export class Gen1SaveReader extends SaveReader{
             .map((_, i) => `box|${box_index}|${i}` as Location)
             .map(l => ({l, pk: this.get_from_location(l)}) )
             .map(({l, pk}) => this.convert_poke(pk, pk.nickname, pk.OT_name, l))
+    }
+
+    override set_box_pokes(box_index: number, pokes: PokemonGen1[]){
+        super.set_box_pokes(box_index, pokes);
+        this.buffer[this.get_box_offset(box_index)] = pokes.length;
     }
 
     private get_party_info(): Pokemon[] {
@@ -110,7 +112,7 @@ export class Gen1SaveReader extends SaveReader{
             })
         }
 
-        const dex_id = SPECIES[poke.species];
+        const dex_id = this.dex_id(poke);
 
         const types : Pokemon["types"] = [TYPES[poke.type1], TYPES[poke.type2]];
         if(!types[1] || types[1] === types[0])
@@ -192,17 +194,9 @@ export class Gen1SaveReader extends SaveReader{
     }
 
 
-    public swap(l1: Location, l2: Location){
-        if(l1 === l2) return;
-        console.log(l1, l2);
-        const p1 = this.get_from_location(l1);
-        const p2 = this.get_from_location(l2);
-        this.set_from_location(l1, p2);
-        this.set_from_location(l2, p1);
-        this.update()
-    }
 
-    private get_from_location(l: Location): PkG1WithNames{
+
+    override get_from_location(l: Location): PkG1WithNames{
         const [offset_pk, offset_nickname, offset_OT_name] = this.get_offsets(l);
         const nickname = read_string(this.buffer, offset_nickname);
         const OT_name =  read_string(this.buffer, offset_OT_name);
@@ -213,7 +207,7 @@ export class Gen1SaveReader extends SaveReader{
         }
     }
 
-    private set_from_location(l: Location, poke: PkG1WithNames){
+    override set_from_location(l: Location, poke: PkG1WithNames){
         const [offset_poke, offset_nickname, offset_OT_name] = this.get_offsets(l);
         let buffer_offset = 0;
         let key: keyof PokemonGen1;
@@ -229,6 +223,9 @@ export class Gen1SaveReader extends SaveReader{
     }
 
 
+    override dex_id(poke: PokemonGen1): number {
+        return SPECIES[poke.species];
+    }
 }
 
 

@@ -6,6 +6,7 @@ import {collection, CollectionReference, doc, getDoc} from "firebase/firestore";
 import {COLLECTIONS, getFirestore} from "../firebase/firebase-config";
 import {SaveFile} from "../firebase/types";
 import {Gen1SaveReader} from "../data/Gen1/Gen1SaveReader";
+import {useAuthContext} from "../firebase/AuthProvider";
 
 
 export const CloudSaveViewer = () => {
@@ -18,7 +19,10 @@ export const CloudSaveViewer = () => {
 
 const SubViewer = ({id}: {id: string}) => {
     const navigate = useNavigate();
+    const {user} = useAuthContext();
+
     const [saveReader, setSaveReader] = useState<SaveReader>();
+    const [edit, setEdit] = useState(false);
 
     useEffect(() => {
         (async() => {
@@ -26,9 +30,10 @@ const SubViewer = ({id}: {id: string}) => {
             const save_doc = await getDoc<SaveFile>(doc(save_collection, id));
             const save = save_doc.data();
             if(!save) return;
+            setEdit(save.uid === user?.uid);
             setSaveReader(new Gen1SaveReader(new Uint8Array(save.file)));
         })();
-    }, [id]);
+    }, [id, user?.uid]);
 
-    return saveReader ? <SaveViewer saveReader={saveReader} onHome={() => navigate('/')}/> : <div className="poke-font">Loading</div>;
+    return saveReader ? <SaveViewer edit={edit} saveReader={saveReader} onHome={() => navigate('/')}/> : <div className="poke-font">Loading</div>;
 }

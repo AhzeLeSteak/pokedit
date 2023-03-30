@@ -33,7 +33,6 @@
     gap: calc(var(--app-height) / (var(--size)  * 8 ));
 
     & > button{
-
       width: calc(var(--app-height)  / var(--size));
       height: calc(var(--app-height) / var(--size));
       border: calc(var(--app-height) / 200) solid black;
@@ -43,6 +42,24 @@
       background-position: center;
       background-repeat: no-repeat;
       border-radius: calc(var(--app-height) / 100);
+      transition: transform 0.2s linear;
+      &>i{
+        color: black;
+      }
+    }
+
+    image-rendering: pixelated;
+
+    &.closed button:not(:nth-of-type(1)){
+      transform: scale(0);
+    }
+
+    & button:nth-of-type(1){
+      background-image: url("../../public/imgs/pokeball_opened.png");
+      background-size: 70%
+    }
+    &.closed button:nth-of-type(1){
+      background-image: url("../../public/imgs/pokeball.png");
     }
 
     #dex-btn{
@@ -54,6 +71,22 @@
     #home-btn{
       background-size: 120%;
       background-image: url("../../public/imgs/pkcenter_icon.png");
+    }
+
+    #dl-btn{
+      background-image: url("../../public/imgs/download.png");
+      background-color: #b6b6b6;
+      image-rendering: initial;
+    }
+
+    #up-btn{
+      background-image: url("../../public/imgs/upload.png");
+      background-color: #b6b6b6;
+      image-rendering: initial;
+    }
+
+    #sort-btn{
+
     }
   }
 }
