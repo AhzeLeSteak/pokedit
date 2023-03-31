@@ -42,7 +42,7 @@ export const SaveViewer = ({saveReader, onHome, edit}: {onHome: Function, saveRe
                 <button onClick={() => setBtnsVisible(v => !v)}></button>
                 <button id="home-btn" title="Home" onClick={() => onHome()} />
                 <button id="dex-btn" title="Show dex entries" onClick={() => setDexVisible(true)} />
-                <button id="dl-btn" title="Download save file" onClick={() => downloadBlob(saveReader.buffer, 'red.sav')}></button>
+                <DownloadButton saveReader={saveReader}/>
                 {edit && <>
                     <button id="up-btn" title="Upload modifications"></button>
                     <button id="sort-btn" title="Sort boxes" onClick={() => {saveReader.sort(); update();}}></button>
@@ -54,14 +54,19 @@ export const SaveViewer = ({saveReader, onHome, edit}: {onHome: Function, saveRe
     </div>
 }
 
-const downloadBlob = (data: Uint8Array, fileName: string, mimeType = 'application/octet-stream') => {
-    const blob = new Blob([data], {
-        type: mimeType
-    });
-    const a = document.createElement('a');
-    a.href =  window.URL.createObjectURL(blob);
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-};
+const DownloadButton = ({saveReader}: {saveReader: SaveReader}) => {
+    const downloadBlob = (data: Uint8Array, fileName: string, mimeType = 'application/octet-stream') => {
+        const blob = new Blob([data], {
+            type: mimeType
+        });
+        const a = document.createElement('a');
+        a.href =  window.URL.createObjectURL(blob);
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    };
+    return <button id="dl-btn" title="Download save file" onClick={() => downloadBlob(saveReader.buffer, 'red.sav')}></button>
+}
+
+

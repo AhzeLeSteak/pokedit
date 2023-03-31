@@ -19,8 +19,8 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
         const dex_owned = this.get_dex_data(OFFSET.POKEDEX.OWNED);
 
         return {
-            player_name: read_string(this.buffer, OFFSET.PLAYER_NAME),
-            rival_name: read_string(this.buffer, OFFSET.RIVAL_NAME),
+            player_name: read_string(this.buffer, OFFSET.PLAYER_NAME, this.language),
+            rival_name: read_string(this.buffer, OFFSET.RIVAL_NAME, this.language),
             party: this.get_party_info(),
             boxes: Array(12)
                 .fill(0)
@@ -45,7 +45,10 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
 
     override set_box_pokes(box_index: number, pokes: PokemonGen1[]){
         super.set_box_pokes(box_index, pokes);
-        this.buffer[this.get_box_offset(box_index)] = pokes.length;
+        const box_offset = this.get_box_offset(box_index);
+        this.buffer[box_offset] = pokes.length;
+        for(let i = pokes.length; i < this.save.box_size; i++)
+            this.buffer[box_offset + OFFSET.BOX.SPECIES + i] = 0;
     }
 
     private get_party_info(): Pokemon[] {
@@ -198,8 +201,8 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
 
     override get_from_location(l: Location): PkG1WithNames{
         const [offset_pk, offset_nickname, offset_OT_name] = this.get_offsets(l);
-        const nickname = read_string(this.buffer, offset_nickname);
-        const OT_name =  read_string(this.buffer, offset_OT_name);
+        const nickname = read_string(this.buffer, offset_nickname, this.language);
+        const OT_name =  read_string(this.buffer, offset_OT_name, this.language);
         return {
             ...this.get_poke(offset_pk),
             nickname,
@@ -218,13 +221,48 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
             if(l.startsWith('box') && buffer_offset === 33)
                 break;
         }
-        write_string(this.buffer, offset_nickname, poke.nickname);
-        write_string(this.buffer, offset_OT_name, poke.OT_name);
+        write_string(this.buffer, offset_nickname, poke.nickname, this.language);
+        write_string(this.buffer, offset_OT_name, poke.OT_name, this.language);
+        const is_party = l.startsWith('party');
+        const pk_index = +l.split('|')[is_party ? 1 : 2];
+        const species_offset = is_party ? OFFSET.PARTY.OFFSET : this.get_box_offset(+l.split('|')[1]);
+        write_n_bytes(this.buffer, species_offset + 1 + pk_index, 1, poke.species)
     }
 
 
     override dex_id(poke: PokemonGen1): number {
         return SPECIES[poke.species];
+    }
+
+    override update(){
+        const get_checksum = (offset: number, size: number) =>
+            (~(this.buffer.slice(offset, size)
+                .reduce((acc, val) => acc + val, 0) % 256) + 256)%256;
+
+        console.log('main_data', read_n_bytes(this.buffer, OFFSET.CHECKSUM.MAIN_DATA, 1), get_checksum(OFFSET.PLAYER_NAME, OFFSET.CHECKSUM.MAIN_DATA - 1))
+        console.log('bank_2', read_n_bytes(this.buffer, OFFSET.CHECKSUM.BANK_2, 1), get_checksum(OFFSET.BOX.BOX_1, OFFSET.CHECKSUM.BANK_2))
+
+        //main data checksum
+        const main_checksum = get_checksum(OFFSET.PLAYER_NAME, OFFSET.CHECKSUM.MAIN_DATA - 1);
+        write_n_bytes(this.buffer, OFFSET.CHECKSUM.MAIN_DATA, 1, main_checksum);
+
+        const write_bank_offset = (bank_offset: number, checksum_offset: number) => {
+            const all_checksum = get_checksum(bank_offset, checksum_offset);
+            write_n_bytes(this.buffer, checksum_offset, 1, all_checksum);
+            Array(6).fill(0)
+                .map((_, i) => bank_offset + MEMORY_SIZE.BOX * i)
+                .forEach((box_offset, i) => {
+                    const individual_checksum_offset = checksum_offset + 0x1 + i * MEMORY_SIZE.INDIVIDUAL_CHECKSUM;
+                    const individual_checksum = get_checksum(box_offset, MEMORY_SIZE.BOX)
+                    write_n_bytes(this.buffer, individual_checksum_offset, 1, individual_checksum);
+                })
+        }
+
+        write_bank_offset(OFFSET.BOX.BOX_1, OFFSET.CHECKSUM.BANK_2);
+        //write_bank_offset(OFFSET.BOX.BOX_7, OFFSET.CHECKSUM.BANK_3);
+
+
+        super.update();
     }
 }
 

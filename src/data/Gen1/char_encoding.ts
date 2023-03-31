@@ -1,5 +1,6 @@
+import {Language} from "../../firebase/types";
 
-export function UInt8ToPKChar(uint: number, language: 'FR' | 'EN' | 'JP' | 'GR' | 'IT' | 'SP' = 'FR'){
+export function UInt8ToPKChar(uint: number, language: Language){
     switch (language){
         case 'FR':
         case 'GR':
@@ -15,7 +16,7 @@ export function UInt8ToPKChar(uint: number, language: 'FR' | 'EN' | 'JP' | 'GR' 
     return '';
 }
 
-export function PKCharToUInt8(char: string,language: 'FR' | 'EN' | 'JP' | 'GR' | 'IT' | 'SP' = 'FR'){
+export function PKCharToUInt8(char: string,language: Language){
     switch (language){
         case 'FR':
         case 'GR':

@@ -1,4 +1,4 @@
-import {SaveFile, Version} from "../firebase/types";
+import {SaveFile} from "../firebase/types";
 import {collection, CollectionReference, deleteDoc, DocumentReference, query, where} from "firebase/firestore";
 import {COLLECTIONS, getFirestore} from "../firebase/firebase-config";
 import {useCollection} from "react-firebase-hooks/firestore";
@@ -7,6 +7,7 @@ import {Button} from "primereact/button";
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import {confirmPopup, ConfirmPopup} from "primereact/confirmpopup";
+import {SaveImg} from "./SaveImg";
 
 export const SavesList = () => {
     const navigate = useNavigate()
@@ -57,12 +58,3 @@ export const SavesList = () => {
     </>
 }
 
-const species: Record<Version, string> = {
-    yellow: '025',
-    red: '006',
-    blue: '009'
-}
-
-const SaveImg = ({version}: {version: Version}) => {
-    return <img style={{width: '100%'}} src={`${process.env.PUBLIC_URL}/icons/${species[version]}.png`}/>
-}

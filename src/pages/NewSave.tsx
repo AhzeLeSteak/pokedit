@@ -1,5 +1,5 @@
 import './NewSave.scss';
-import {SaveFile, Version} from "../firebase/types";
+import {Language, LANGUAGES, SaveFile, Version, VERSIONS} from "../firebase/types";
 import React, {useState} from "react";
 import {addDoc, collection, CollectionReference} from "firebase/firestore";
 import {COLLECTIONS, getFirestore} from "../firebase/firebase-config";
@@ -9,13 +9,9 @@ import {Button} from "primereact/button";
 import {InputText} from "primereact/inputtext";
 import {Dropdown} from "primereact/dropdown";
 import {FileUpload} from "primereact/fileupload";
+import {SaveImg} from "../components/SaveImg";
 
 const title = (str: string) => str[0].toUpperCase() + str.slice(1)
-
-const VERSIONS: Array<{label: string, value: Version}> = (['red', 'blue', 'yellow'] as Version[]).map(v => ({
-    value: v,
-    label: title(v)
- }));
 
 export const NewSave = () => {
     const {user} = useAuthContext();
@@ -23,24 +19,35 @@ export const NewSave = () => {
 
     const [file, setFile] = useState<File>()
     let [saveName, setSaveName] = useState('');
-    const [version, setVersion] = useState(VERSIONS[0].value);
+    const [version, setVersion] = useState<Version>();
+    const [language, setLanguage] = useState<Language>();
     const [hasUserPressed, setHasUserPressed] = useState(false);
 
     if(file && version && !hasUserPressed)
         saveName = `Pokémon ${title(version)} Version Save`;
 
-    const GO = async() => {
-        if(!file) return;
-        const save_collection = collection(getFirestore(), COLLECTIONS.SAVE_FILES) as unknown as CollectionReference<SaveFile>;
+    const save_and_navigate = async() => {
+        if(!file || !version || !language) return;
+        const save_collection = collection(getFirestore(), COLLECTIONS.SAVE_FILES) as CollectionReference<SaveFile>;
         const doc_ref = await addDoc<SaveFile>(save_collection, {
             uid: user!.uid,
-            version: version,
+            version,
+            language: language as Language,
             file: Array.from(new Uint8Array(await file.arrayBuffer())),
             name: saveName,
             file_name: file.name
         });
         navigate('/save/'+doc_ref.id);
     }
+
+    const versionTemplate = (option: {value: Version, label: string}) => {
+        return (
+            <div className="flex align-items-end">
+                <SaveImg version={option.value} width="4em"/>
+                <div className="text-lg">{option.label}</div>
+            </div>
+        );
+    };
 
     return <div id="dialog-new-file" className="grid poke-font">
         <div className="col-6">
@@ -50,6 +57,19 @@ export const NewSave = () => {
             <Dropdown value={version}
                       onChange={e => setVersion(e.value)}
                       options={VERSIONS}
+                      optionValue="value"
+                      optionLabel="label"
+                      style={{width: '100%'}}
+                      itemTemplate={versionTemplate}
+            />
+        </div>
+        <div className="col-6">
+            Game language
+        </div>
+        <div className="col-6">
+            <Dropdown value={language}
+                      onChange={e => setLanguage(e.value)}
+                      options={LANGUAGES}
                       optionValue="value"
                       optionLabel="label"
                       style={{width: '100%'}}
@@ -76,7 +96,7 @@ export const NewSave = () => {
         </div>
         <div className="col-offset-6 col-6 flex justify-content-end gap-2">
             <Button onClick={() => navigate('/')} severity="warning">Cancel</Button>
-            <Button onClick={GO} disabled={!(file && version && saveName)}>Let's go !</Button>
+            <Button onClick={save_and_navigate} disabled={!(file && version && saveName)}>Let's go !</Button>
         </div>
     </div>
 }

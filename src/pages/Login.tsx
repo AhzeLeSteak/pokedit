@@ -1,6 +1,5 @@
 import './Login.scss'
 import {useAuthContext} from "../firebase/AuthProvider";
-import {Gen1SaveReader} from "../data/Gen1/Gen1SaveReader";
 import React, {DragEventHandler, useState} from "react";
 import {SaveReader} from "../data/SaveReader";
 import {SaveViewer} from "./SaveViewer";
@@ -14,9 +13,9 @@ export const Login = () => {
         return <SaveViewer saveReader={saveReader} edit={false} onHome={() => setSaveReader(undefined)}></SaveViewer>
 
     const handleFileData = async(file: Blob) => {
-        const buffer = await file.arrayBuffer()
+        const buffer = await file.arrayBuffer();
         const uint8Array = new Uint8Array(buffer);
-        setSaveReader(new Gen1SaveReader(uint8Array));
+        //setSaveReader(new Gen1SaveReader(uint8Array));
     };
 
     const handleDropFile: DragEventHandler = (event) => {

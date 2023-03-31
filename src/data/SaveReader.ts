@@ -1,4 +1,5 @@
 import {Location, Pokemon} from "./PokeTypes";
+import {Language} from "../firebase/types";
 
 export interface SaveType {
     player_name: string,
@@ -16,7 +17,7 @@ export abstract class SaveReader<TPkGen = {}> {
 
     protected _save!: SaveType;
 
-    constructor(public readonly buffer: Uint8Array) {
+    constructor(public readonly buffer: Uint8Array, public readonly language: Language) {
 
     }
 

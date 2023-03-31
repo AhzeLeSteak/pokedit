@@ -31,7 +31,15 @@ const SubViewer = ({id}: {id: string}) => {
             const save = save_doc.data();
             if(!save) return;
             setEdit(save.uid === user?.uid);
-            setSaveReader(new Gen1SaveReader(new Uint8Array(save.file)));
+            switch (save.version) {
+                case "yellow":
+                case "blue":
+                case "red":
+                    setSaveReader(new Gen1SaveReader(new Uint8Array(save.file), save.language));
+                    break;
+                default:
+                    throw new Error('Unsupported game version');
+            }
         })();
     }, [id, user?.uid]);
 
