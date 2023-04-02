@@ -122,7 +122,6 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
             types.pop();
 
         const pokemon: Pokemon = {
-            location_in_save: location,
             OT_name,
             nickname,
             stats_exp: {
@@ -245,7 +244,6 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
 
         const write_bank_offset = (bank_offset: number, checksum_offset: number) => {
             const all_checksum = get_checksum(bank_offset, checksum_offset);
-            console.log(`bank checksum`, bank_offset.toString(16), all_checksum, read_n_bytes(this.buffer, checksum_offset, 1));
             write_n_bytes(this.buffer, checksum_offset, 1, all_checksum);
             Array(6).fill(0)
                 .map((_, i) => bank_offset + MEMORY_SIZE.BOX * i)

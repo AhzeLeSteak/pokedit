@@ -4,27 +4,36 @@ import React, {useId} from "react";
 import {Location, Pokemon} from "../data/PokeTypes";
 import {useSaveContext} from "../pages/SaveViewer";
 
-export function PokeCard(props: {pokemon: Pokemon}){
+export function PokeCard({location, pokemon}: { pokemon: Pokemon, location: Location }){
 
     const {set_pokemon, save_reader, update} = useSaveContext();
-    const species = String(props.pokemon.pokedex_id).padStart(3, '0');
     const id = useId();
 
     const onDrop = (e: React.DragEvent) => {
         e.preventDefault();
         const data = e.dataTransfer.getData('text/plain') as Location;
-        save_reader.swap(props.pokemon.location_in_save, data);
+        if(pokemon)
+            save_reader.swap(location, data);
+        else
+            save_reader.transfer(data, location);
         update();
     }
 
+    if(!pokemon)
+        return <img src={`${process.env.PUBLIC_URL}/icons/empty.png`}
+                    id={id}
+                    className="cursor-pointer poke-card"
+                    onDrop={onDrop}
+        />
 
+    const species = String(pokemon.pokedex_id).padStart(3, '0');
     return <img src={`${process.env.PUBLIC_URL}/icons/${species}.png`}
                 id={id}
                 className="cursor-pointer poke-card"
-                onClick={() => set_pokemon(props.pokemon)}
-                onDoubleClick={() => console.log(props.pokemon)}
+                onClick={() => set_pokemon(pokemon)}
+                onDoubleClick={() => console.log(pokemon)}
                 draggable={true}
-                onDragStart={e => e.dataTransfer.setData('text/plain', props.pokemon.location_in_save)}
+                onDragStart={e => e.dataTransfer.setData('text/plain', location)}
                 onDragOver={e => e.preventDefault()}
                 onDrop={onDrop}
     />

@@ -42,7 +42,7 @@ export function Box(){
         </div>
         <div className="box-grid">
             {save_reader.save.boxes[activeBox].map((pk, i) =>
-                <PokeCard key={i} pokemon={pk}/>
+                <PokeCard key={i} pokemon={pk} location={`box|${activeBox}|${i}`}/>
             )}
         </div>
     </div>

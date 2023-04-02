@@ -19,7 +19,6 @@ export type PkMoveWithPP = PkMove & { actual_PP : number }
 export type Location = `party|${number}` | `box|${number}|${number}`;
 
 export interface Pokemon {
-    location_in_save: Location,
     pokedex_id: number,
     nickname: string,
     level: number,

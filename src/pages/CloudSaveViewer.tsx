@@ -5,8 +5,8 @@ import {SaveViewer} from "./SaveViewer";
 import {collection, CollectionReference, doc, getDoc} from "firebase/firestore";
 import {COLLECTIONS, getFirestore} from "../firebase/firebase-config";
 import {SaveFile} from "../firebase/types";
-import {Gen1SaveReader} from "../data/Gen1/Gen1SaveReader";
 import {useAuthContext} from "../firebase/AuthProvider";
+import {get_reader} from "../data/get_save_reader";
 
 
 export const CloudSaveViewer = () => {
@@ -31,15 +31,7 @@ const SubViewer = ({id}: {id: string}) => {
             const save = save_doc.data();
             if(!save) return;
             setEdit(save.uid === user?.uid);
-            switch (save.version) {
-                case "yellow":
-                case "blue":
-                case "red":
-                    setSaveReader(new Gen1SaveReader(new Uint8Array(save.file), save.language));
-                    break;
-                default:
-                    throw new Error('Unsupported game version');
-            }
+            setSaveReader(get_reader(save.version, save.language, new Uint8Array(save.file)));
         })();
     }, [id, user?.uid]);
 

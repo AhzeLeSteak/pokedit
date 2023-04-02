@@ -51,6 +51,10 @@ export abstract class SaveReader<TPkGen = {}> {
         this.update()
     }
 
+    transfer(from: Location, to: Location) {
+
+    }
+
     protected get flat_mons(){
         const res = [];
         for(let box_index = 0; box_index < this.save.boxes.length; box_index++){
