@@ -235,12 +235,9 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
     }
 
     override update(){
-        const get_checksum = (offset: number, size: number) =>
-            (~(this.buffer.slice(offset, size)
-                .reduce((acc, val) => acc + val, 0) % 256) + 256)%256;
-
-        console.log('main_data', read_n_bytes(this.buffer, OFFSET.CHECKSUM.MAIN_DATA, 1), get_checksum(OFFSET.PLAYER_NAME, OFFSET.CHECKSUM.MAIN_DATA - 1))
-        console.log('bank_2', read_n_bytes(this.buffer, OFFSET.CHECKSUM.BANK_2, 1), get_checksum(OFFSET.BOX.BOX_1, OFFSET.CHECKSUM.BANK_2))
+        const get_checksum = (offset: number, end: number) =>
+            0xFF & ~this.buffer.slice(offset, end)
+                .reduce((acc, val) => acc + val, 0);
 
         //main data checksum
         const main_checksum = get_checksum(OFFSET.PLAYER_NAME, OFFSET.CHECKSUM.MAIN_DATA - 1);
@@ -248,18 +245,19 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
 
         const write_bank_offset = (bank_offset: number, checksum_offset: number) => {
             const all_checksum = get_checksum(bank_offset, checksum_offset);
+            console.log(`bank checksum`, bank_offset.toString(16), all_checksum, read_n_bytes(this.buffer, checksum_offset, 1));
             write_n_bytes(this.buffer, checksum_offset, 1, all_checksum);
             Array(6).fill(0)
                 .map((_, i) => bank_offset + MEMORY_SIZE.BOX * i)
                 .forEach((box_offset, i) => {
-                    const individual_checksum_offset = checksum_offset + 0x1 + i * MEMORY_SIZE.INDIVIDUAL_CHECKSUM;
-                    const individual_checksum = get_checksum(box_offset, MEMORY_SIZE.BOX)
+                    const individual_checksum_offset = checksum_offset + 0x1 + i;
+                    const individual_checksum = get_checksum(box_offset, box_offset + MEMORY_SIZE.BOX)
                     write_n_bytes(this.buffer, individual_checksum_offset, 1, individual_checksum);
                 })
         }
 
         write_bank_offset(OFFSET.BOX.BOX_1, OFFSET.CHECKSUM.BANK_2);
-        //write_bank_offset(OFFSET.BOX.BOX_7, OFFSET.CHECKSUM.BANK_3);
+        write_bank_offset(OFFSET.BOX.BOX_7, OFFSET.CHECKSUM.BANK_3);
 
 
         super.update();

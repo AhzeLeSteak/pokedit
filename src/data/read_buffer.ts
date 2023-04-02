@@ -39,6 +39,6 @@ export const write_string = (buffer: Uint8Array, offset: number, value: string, 
         buffer[offset+i] = PKCharToUInt8(value[i], language);
     }
     for(i; i < length; i++){
-        buffer[offset+i] = 0;
+        buffer[offset+i] = language !== 'JP' ? 80 : 0;
     }
 }
