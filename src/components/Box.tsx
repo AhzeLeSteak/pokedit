@@ -41,9 +41,13 @@ export function Box(){
             ></img>
         </div>
         <div className="box-grid">
-            {save_reader.save.boxes[activeBox].map((pk, i) =>
-                <PokeCard key={i} pokemon={pk} location={`box|${activeBox}|${i}`}/>
-            )}
+            {Array(save_reader.save.box_size).fill(0).map((_, i) => {
+                const box = save_reader.save.boxes[activeBox];
+                return <PokeCard key={i}
+                                 pokemon={box[i]}
+                                 location={{location: 'box', box_index: activeBox, pk_index: Math.min(i, box.length)}}
+                />
+            })}
         </div>
     </div>
 }

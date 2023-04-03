@@ -16,7 +16,7 @@ export interface Stats{
 
 export type PkMoveWithPP = PkMove & { actual_PP : number }
 
-export type Location = `party|${number}` | `box|${number}|${number}`;
+export type Location = {location: 'party', pk_index: number} | {location: 'box', box_index: number, pk_index: number};
 
 export interface Pokemon {
     pokedex_id: number,

@@ -18,7 +18,6 @@ export abstract class SaveReader<TPkGen = {}> {
     protected _save!: SaveType;
 
     constructor(public readonly buffer: Uint8Array, public readonly language: Language) {
-
     }
 
     protected abstract calc_save_data(): SaveType;
@@ -39,7 +38,7 @@ export abstract class SaveReader<TPkGen = {}> {
 
     protected set_box_pokes(box_index: number, pokes: TPkGen[]){
         for(let i = 0; i < pokes.length; i++)
-            this.set_from_location(`box|${box_index}|${i}`, pokes[i]);
+            this.set_from_location({location: "box", box_index, pk_index: i}, pokes[i]);
     }
 
     public swap(l1: Location, l2: Location){
@@ -51,16 +50,30 @@ export abstract class SaveReader<TPkGen = {}> {
         this.update()
     }
 
-    transfer(from: Location, to: Location) {
-
+    transfer(from: Location, to: Location, update = true) {
+        const poke = this.get_from_location(from);
+        this.set_from_location(to, poke);
+        this.change_size(to, 1);
+        this.remove_from_location(from);
+        update && this.update();
     }
 
+    remove_from_location(where: Location){
+        const to = where.location === 'box' ? this.save.box_size : 6;
+        for(let i = where.pk_index; i + 1 < to; i++)
+            this.set_from_location({...where, pk_index: i}, this.get_from_location({...where, pk_index: i+1}));
+
+        this.change_size(where, -1);
+    }
+
+    abstract change_size(l: Location, diff: number): void;
+
     protected get flat_mons(){
-        const res = [];
+        const res: TPkGen[] = [];
         for(let box_index = 0; box_index < this.save.boxes.length; box_index++){
             const box = this._save.boxes[box_index];
             for(let pk_index = 0; pk_index < box.length; pk_index++)
-                res.push(this.get_from_location(`box|${box_index}|${pk_index}`));
+                res.push(this.get_from_location({location: 'box', box_index, pk_index}));
         }
         return res;
     }
@@ -70,9 +83,5 @@ export abstract class SaveReader<TPkGen = {}> {
         for(let i = 0; i < this.save.boxes.length; i++)
             this.set_box_pokes(i, mons.slice(i*this.save.box_size, (i+1)*this.save.box_size));
         this.update();
-    }
-
-    pack(){
-        this.sort((a, b) => 0);
     }
 }

@@ -38,7 +38,15 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
         const poke_count = this.buffer[box_offset];
 
         return Array(poke_count).fill(0)
-            .map((_, i) => `box|${box_index}|${i}` as Location)
+            .map((_, i) => (<Location>{location: 'box', box_index, pk_index: i}))
+            .map(l => ({l, pk: this.get_from_location(l)}) )
+            .map(({l, pk}) => this.convert_poke(pk, pk.nickname, pk.OT_name, l))
+    }
+
+    private get_party_info(): Pokemon[] {
+        const poke_count = this.buffer[OFFSET.PARTY.OFFSET];
+        return Array(poke_count).fill(0)
+            .map((_, i) => (<Location>{location: 'party', pk_index: i}))
             .map(l => ({l, pk: this.get_from_location(l)}) )
             .map(({l, pk}) => this.convert_poke(pk, pk.nickname, pk.OT_name, l))
     }
@@ -51,33 +59,6 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
             this.buffer[box_offset + OFFSET.BOX.SPECIES + i] = 0;
     }
 
-    private get_party_info(): Pokemon[] {
-        const poke_count = this.buffer[OFFSET.PARTY.OFFSET];
-        return Array(poke_count).fill(0)
-            .map((_, i) => `party|${i}` as Location)
-            .map(l => ({l, pk: this.get_from_location(l)}) )
-            .map(({l, pk}) => this.convert_poke(pk, pk.nickname, pk.OT_name, l))
-    }
-
-    private get_offsets(l: Location){
-        if(l.startsWith('party')){
-            const i = +l.split('|')[1];
-            return [
-                OFFSET.PARTY.OFFSET + OFFSET.PARTY.POKEMONS + i * MEMORY_SIZE.POKEMON_IN_PARTY,
-                OFFSET.PARTY.OFFSET + OFFSET.PARTY.POKEMON_NAMES + i * MEMORY_SIZE.STRING_LENGTH,
-                OFFSET.PARTY.OFFSET + OFFSET.PARTY.OT_NAMES + i * MEMORY_SIZE.STRING_LENGTH
-            ]
-        }
-
-        const [, box_index, pk_index] = l.split('|').map(s => +s);
-        const box_offset = this.get_box_offset(box_index);
-        return [
-            box_offset + OFFSET.BOX.POKEMONS + pk_index * MEMORY_SIZE.POKEMON_IN_BOX,
-            box_offset + OFFSET.BOX.POKEMON_NAMES + pk_index * MEMORY_SIZE.STRING_LENGTH,
-            box_offset + OFFSET.BOX.OT_NAMES + pk_index * MEMORY_SIZE.STRING_LENGTH
-        ]
-    }
-
     private get_box_offset(box_index: number){
         let current_box_number = this.buffer[OFFSET.CURRENT_BOX_NUMBER] % 2**7;
         return current_box_number === box_index
@@ -87,8 +68,24 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
                 : OFFSET.BOX.BOX_7 + (box_index-6) * MEMORY_SIZE.BOX;
     }
 
+    private get_offsets(l: Location){
+        if(l.location === 'party')
+            return [
+                OFFSET.PARTY.OFFSET + OFFSET.PARTY.POKEMONS + l.pk_index * MEMORY_SIZE.POKEMON_IN_PARTY,
+                OFFSET.PARTY.OFFSET + OFFSET.PARTY.POKEMON_NAMES + l.pk_index * MEMORY_SIZE.STRING_LENGTH,
+                OFFSET.PARTY.OFFSET + OFFSET.PARTY.OT_NAMES + l.pk_index * MEMORY_SIZE.STRING_LENGTH
+            ]
 
-    private get_poke(offset: number) {
+        const box_offset = this.get_box_offset(l.box_index);
+        return [
+            box_offset + OFFSET.BOX.POKEMONS + l.pk_index * MEMORY_SIZE.POKEMON_IN_BOX,
+            box_offset + OFFSET.BOX.POKEMON_NAMES + l.pk_index * MEMORY_SIZE.STRING_LENGTH,
+            box_offset + OFFSET.BOX.OT_NAMES + l.pk_index * MEMORY_SIZE.STRING_LENGTH
+        ]
+    }
+
+
+    private get_poke_from_offset(offset: number) {
         const poke = {...bytes_in_poke};
         let key: keyof PokemonGen1;
         for(key in poke){
@@ -132,7 +129,26 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
                 def_spe: poke.SPE_EV,
                 spd: poke.SPD_EV
             },
-            IVs: this.get_poke_IVs(poke.IV),
+            IVs: (() => {
+                const ATK_IV = poke.IV >> 12
+                const DEF_IV = (poke.IV >> 8) & 15;
+                const SPD_IV = (poke.IV >> 4) & 15;
+                const SPE_IV = (poke.IV >> 0) & 15;
+                let HP_IV =
+                    (ATK_IV & 1) * 8 +
+                    (DEF_IV & 1) * 4 +
+                    (SPD_IV & 1) * 2 +
+                    (SPE_IV & 1);
+
+                return {
+                    hp: HP_IV,
+                    atk: ATK_IV,
+                    atk_spe: SPE_IV,
+                    def: DEF_IV,
+                    def_spe: SPE_IV,
+                    spd: SPD_IV
+                }
+            })(),
             OT_id: 0,
             stats: {
                 hp: poke.maxHP,
@@ -146,37 +162,16 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
             current_hp: poke.currentHp,
             exp: poke.exp,
             item: undefined,
-            level: location.startsWith('box') ? poke.level : poke.level_doublon,
+            level: location.location === 'box' ? poke.level : poke.level_doublon,
             moves,
             pokedex_id: dex_id,
             status: 0,
             types
         };
         calcNextXp(pokemon);
-        if(location.startsWith('box'))
+        if(location.location === 'box')
             this.box_trick(pokemon);
         return pokemon;
-    }
-
-    private get_poke_IVs(IV: number): Stats {
-        const ATK_IV = IV >> 12
-        const DEF_IV = (IV >> 8) & 15;
-        const SPD_IV = (IV >> 4) & 15;
-        const SPE_IV = (IV >> 0) & 15;
-        let HP_IV =
-            (ATK_IV & 1) * 8 +
-            (DEF_IV & 1) * 4 +
-            (SPD_IV & 1) * 2 +
-            (SPE_IV & 1);
-
-        return {
-            hp: HP_IV,
-            atk: ATK_IV,
-            atk_spe: SPE_IV,
-            def: DEF_IV,
-            def_spe: SPE_IV,
-            spd: SPD_IV
-        }
     }
 
     private box_trick(poke: Pokemon) {
@@ -203,7 +198,7 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
         const nickname = read_string(this.buffer, offset_nickname, this.language);
         const OT_name =  read_string(this.buffer, offset_OT_name, this.language);
         return {
-            ...this.get_poke(offset_pk),
+            ...this.get_poke_from_offset(offset_pk),
             nickname,
             OT_name
         }
@@ -217,15 +212,13 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
             const bytes = bytes_in_poke[key];
             write_n_bytes(this.buffer, offset_poke + buffer_offset, bytes, poke[key]);
             buffer_offset += bytes;
-            if(l.startsWith('box') && buffer_offset === 33)
+            if(l.location === 'box' && buffer_offset === 33)
                 break;
         }
         write_string(this.buffer, offset_nickname, poke.nickname, this.language);
         write_string(this.buffer, offset_OT_name, poke.OT_name, this.language);
-        const is_party = l.startsWith('party');
-        const pk_index = +l.split('|')[is_party ? 1 : 2];
-        const species_offset = is_party ? OFFSET.PARTY.OFFSET : this.get_box_offset(+l.split('|')[1]);
-        write_n_bytes(this.buffer, species_offset + 1 + pk_index, 1, poke.species)
+        const species_offset = l.location === 'party' ? OFFSET.PARTY.OFFSET : this.get_box_offset(l.box_index);
+        write_n_bytes(this.buffer, species_offset + 1 + l.pk_index, 1, poke.species)
     }
 
 
@@ -259,6 +252,11 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
 
 
         super.update();
+    }
+
+    change_size(l: Location, diff: number): void {
+        const offset = l.location === 'box' ? this.get_box_offset(l.box_index) : OFFSET.PARTY.OFFSET;
+        this.buffer[offset] += diff;
     }
 }
 
