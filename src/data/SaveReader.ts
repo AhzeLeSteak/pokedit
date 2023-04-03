@@ -33,26 +33,26 @@ export abstract class SaveReader<TPkGen = {}> {
     }
 
     protected abstract get_from_location(l: Location): TPkGen;
-    protected abstract set_from_location(l: Location, poke: TPkGen): void;
+    protected abstract set_from_location(l: Location, poke: TPkGen, b: boolean): void;
     protected abstract dex_id(poke: TPkGen): number;
 
     protected set_box_pokes(box_index: number, pokes: TPkGen[]){
         for(let i = 0; i < pokes.length; i++)
-            this.set_from_location({location: "box", box_index, pk_index: i}, pokes[i]);
+            this.set_from_location({location: "box", box_index, pk_index: i}, pokes[i], false);
     }
 
     public swap(l1: Location, l2: Location){
         if(l1 === l2) return;
         const p1 = this.get_from_location(l1);
         const p2 = this.get_from_location(l2);
-        this.set_from_location(l1, p2);
-        this.set_from_location(l2, p1);
+        this.set_from_location(l1, p2, l1.location === 'party' && l2.location === 'box');
+        this.set_from_location(l2, p1, l1.location === 'box' && l2.location === 'party');
         this.update()
     }
 
     transfer(from: Location, to: Location, update = true) {
         const poke = this.get_from_location(from);
-        this.set_from_location(to, poke);
+        this.set_from_location(to, poke, from.location === 'box' && to.location === 'party');
         this.change_size(to, 1);
         this.remove_from_location(from);
         update && this.update();
@@ -61,7 +61,7 @@ export abstract class SaveReader<TPkGen = {}> {
     remove_from_location(where: Location){
         const to = where.location === 'box' ? this.save.box_size : 6;
         for(let i = where.pk_index; i + 1 < to; i++)
-            this.set_from_location({...where, pk_index: i}, this.get_from_location({...where, pk_index: i+1}));
+            this.set_from_location({...where, pk_index: i}, this.get_from_location({...where, pk_index: i+1}), false);
 
         this.change_size(where, -1);
     }

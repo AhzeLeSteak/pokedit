@@ -40,7 +40,7 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
         return Array(poke_count).fill(0)
             .map((_, i) => (<Location>{location: 'box', box_index, pk_index: i}))
             .map(l => ({l, pk: this.get_from_location(l)}) )
-            .map(({l, pk}) => this.convert_poke(pk, pk.nickname, pk.OT_name, l))
+            .map(({l, pk}) => this.convert_poke(pk, pk.nickname, pk.OT_name, l.location))
     }
 
     private get_party_info(): Pokemon[] {
@@ -48,7 +48,7 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
         return Array(poke_count).fill(0)
             .map((_, i) => (<Location>{location: 'party', pk_index: i}))
             .map(l => ({l, pk: this.get_from_location(l)}) )
-            .map(({l, pk}) => this.convert_poke(pk, pk.nickname, pk.OT_name, l))
+            .map(({l, pk}) => this.convert_poke(pk, pk.nickname, pk.OT_name, l.location))
     }
 
     override set_box_pokes(box_index: number, pokes: PokemonGen1[]){
@@ -98,7 +98,7 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
     };
 
 
-    private convert_poke(poke: PokemonGen1, nickname: string, OT_name: string, location: Location) : Pokemon {
+    private convert_poke(poke: PokemonGen1, nickname: string, OT_name: string, location: Location['location']) : Pokemon {
         const move_indexes = [poke.move1, poke.move2, poke.move3, poke.move4];
         const move_PPs = [poke.move1PP, poke.move2PP, poke.move3PP, poke.move4PP];
         const moves: PkMoveWithPP[] = [];
@@ -162,14 +162,14 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
             current_hp: poke.currentHp,
             exp: poke.exp,
             item: undefined,
-            level: location.location === 'box' ? poke.level : poke.level_doublon,
+            level: location === 'box' ? poke.level : poke.level_doublon,
             moves,
             pokedex_id: dex_id,
             status: 0,
             types
         };
         calcNextXp(pokemon);
-        if(location.location === 'box')
+        if(location === 'box')
             this.box_trick(pokemon);
         return pokemon;
     }
@@ -204,8 +204,20 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
         }
     }
 
-    override set_from_location(l: Location, poke: PkG1WithNames){
+    override set_from_location(l: Location, poke: PkG1WithNames, calc_stats = false){
         const [offset_poke, offset_nickname, offset_OT_name] = this.get_offsets(l);
+        if(calc_stats && l.location === 'party'){
+            //calcul des stats
+            const p = this.convert_poke(poke, '', '', 'box');
+            const {stats, level} = p;
+            poke.level = poke.level_doublon = level;
+            poke.atk = stats.atk;
+            poke.def = stats.def;
+            poke.spd = stats.spd;
+            poke.spe = stats.atk_spe;
+            poke.maxHP = stats.hp;
+        }
+
         let buffer_offset = 0;
         let key: keyof PokemonGen1;
         for(key in bytes_in_poke){
@@ -218,7 +230,7 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
         write_string(this.buffer, offset_nickname, poke.nickname, this.language);
         write_string(this.buffer, offset_OT_name, poke.OT_name, this.language);
         const species_offset = l.location === 'party' ? OFFSET.PARTY.OFFSET : this.get_box_offset(l.box_index);
-        write_n_bytes(this.buffer, species_offset + 1 + l.pk_index, 1, poke.species)
+        write_n_bytes(this.buffer, species_offset + 1 + l.pk_index, 1, poke.species);
     }
 
 
