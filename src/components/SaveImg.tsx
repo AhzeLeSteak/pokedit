@@ -2,9 +2,13 @@ import {Version} from "../firebase/types";
 import React from "react";
 
 const species: Record<Version, string> = {
-    yellow: '025',
-    red: '006',
-    blue: '009'
+    yellow: 'pikachu',
+    red: 'charizard',
+    blue: 'blastoise',
+    green: 'venusaur',
+    silver: 'lugia',
+    gold: 'ho-oh',
+    cristal: 'suicune',
 }
 
 export const SaveImg = (props: {version: Version, width ?: string}) => {

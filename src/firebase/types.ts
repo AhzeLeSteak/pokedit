@@ -1,11 +1,27 @@
 
 export type Version =
-    'blue' | 'red' | 'yellow';
+    'blue' | 'red' | 'yellow' | 'green' |
+    'silver' | 'gold' | 'cristal';
 
-export const VERSIONS: Array<{value: Version, label: string}> = [
-    {value: 'blue', label: 'Blue'},
-    {value: 'red', label: 'Red'},
-    {value: 'yellow', label: 'Yellow'},
+export const GENERATIONS: Array<{label: string, versions: Array<{value: Version, label: string}>}> = [
+    {
+        label: 'Generation 1',
+        versions: [
+            {value: 'blue', label: 'Blue'},
+            {value: 'red', label: 'Red'},
+            {value: 'yellow', label: 'Yellow'},
+            {value: 'green', label: 'Green'}
+
+        ]
+    },
+    {
+        label: 'Generation 2',
+        versions: [
+            {value: 'silver', label: 'Silver'},
+            {value: 'gold', label: 'Gold'},
+            {value: 'cristal', label: 'Cristal'}
+        ]
+    }
 ];
 
 export type Language = 'FR' | 'EN' | 'JP' | 'GR' | 'IT' | 'SP';

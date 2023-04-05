@@ -14,7 +14,7 @@ export const PokeDetails = () => {
     if(!selected_pokemon)
         return <div className="poke-details"></div>;
 
-    const species = String(selected_pokemon.pokedex_id).padStart(3, '0'); // 7 -> '007'
+    const species = NAMES[selected_pokemon.pokedex_id];
 
     return <div className="poke-details">
         <img alt="" src={`${process.env.PUBLIC_URL}/icons/${species}.png`} className="poke-img cursor-pointer"/>

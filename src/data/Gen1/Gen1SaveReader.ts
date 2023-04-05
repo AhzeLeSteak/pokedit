@@ -261,8 +261,6 @@ export class Gen1SaveReader extends SaveReader<PokemonGen1>{
 
         write_bank_offset(OFFSET.BOX.BOX_1, OFFSET.CHECKSUM.BANK_2);
         write_bank_offset(OFFSET.BOX.BOX_7, OFFSET.CHECKSUM.BANK_3);
-
-
         super.update();
     }
 

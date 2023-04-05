@@ -1,5 +1,5 @@
 import './NewSave.scss';
-import {Language, LANGUAGES, SaveFile, Version, VERSIONS} from "../firebase/types";
+import {GENERATIONS, Language, SaveFile, Version} from "../firebase/types";
 import React, {useState} from "react";
 import {addDoc, collection, CollectionReference} from "firebase/firestore";
 import {COLLECTIONS, getFirestore} from "../firebase/firebase-config";
@@ -7,9 +7,8 @@ import {useAuthContext} from "../firebase/AuthProvider";
 import {useNavigate} from "react-router-dom";
 import {Button} from "primereact/button";
 import {InputText} from "primereact/inputtext";
-import {Dropdown} from "primereact/dropdown";
 import {FileUpload} from "primereact/fileupload";
-import {SaveImg} from "../components/SaveImg";
+import {VersionLanguagePicker} from "../components/VersionLanguagePicker";
 
 const title = (str: string) => str[0].toUpperCase() + str.slice(1)
 
@@ -19,8 +18,8 @@ export const NewSave = () => {
 
     const [file, setFile] = useState<File>()
     let [saveName, setSaveName] = useState('');
-    const [version, setVersion] = useState<Version>();
-    const [language, setLanguage] = useState<Language>();
+    const [version, setVersion] = useState<Version>(GENERATIONS[0].versions[0].value);
+    const [language, setLanguage] = useState<Language>('EN');
     const [hasUserPressed, setHasUserPressed] = useState(false);
 
     if(file && version && !hasUserPressed)
@@ -40,41 +39,10 @@ export const NewSave = () => {
         navigate('/save/'+doc_ref.id);
     }
 
-    const versionTemplate = (option: {value: Version, label: string}) => {
-        return (
-            <div className="flex align-items-end">
-                <SaveImg version={option.value} width="4em"/>
-                <div className="text-lg">{option.label}</div>
-            </div>
-        );
-    };
-
     return <div id="dialog-new-file" className="grid poke-font">
-        <div className="col-6">
-            Game version
-        </div>
-        <div className="col-6">
-            <Dropdown value={version}
-                      onChange={e => setVersion(e.value)}
-                      options={VERSIONS}
-                      optionValue="value"
-                      optionLabel="label"
-                      style={{width: '100%'}}
-                      itemTemplate={versionTemplate}
-            />
-        </div>
-        <div className="col-6">
-            Game language
-        </div>
-        <div className="col-6">
-            <Dropdown value={language}
-                      onChange={e => setLanguage(e.value)}
-                      options={LANGUAGES}
-                      optionValue="value"
-                      optionLabel="label"
-                      style={{width: '100%'}}
-            />
-        </div>
+        <VersionLanguagePicker value={{language, version}}
+                               onChange={(v, l) => {setLanguage(l);setVersion(v)}}
+        />
         <div className="col-6">
             Select your save file
         </div>

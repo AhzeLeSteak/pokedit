@@ -7,7 +7,7 @@
     flex-flow: column;
     justify-content: flex-start;
     align-items: center;
-    gap: calc(var(--app-height) * 4 /160);
+    gap: calc(var(--app-height) * 2 / 160);
 
     padding: calc(var(--app-height) * 4 / 160) calc(var(--app-height) * 9 / 160) calc(var(--app-height) * 13 / 160);
 }

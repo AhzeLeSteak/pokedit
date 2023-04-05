@@ -1,13 +1,13 @@
 import './PokeCard.css'
 
-import React, {useId} from "react";
+import React from "react";
 import {Location, Pokemon} from "../data/PokeTypes";
 import {useSaveContext} from "../pages/SaveViewer";
+import {NAMES} from "../data/NAMES";
 
 export function PokeCard({location, pokemon}: { pokemon: Pokemon, location: Location }){
 
     const {set_pokemon, save_reader, update} = useSaveContext();
-    const id = useId();
 
     const onDrop = (e: React.DragEvent) => {
         e.preventDefault();
@@ -21,16 +21,14 @@ export function PokeCard({location, pokemon}: { pokemon: Pokemon, location: Loca
 
     if(!pokemon)
         return <img src={`${process.env.PUBLIC_URL}/icons/empty.png`}
-                    id={id}
                     className="cursor-pointer poke-card"
                     onDoubleClick={() => console.log(location)}
                     onDrop={onDrop}
                     onDragOver={e => e.preventDefault()}
         />
 
-    const species = String(pokemon.pokedex_id).padStart(3, '0');
+    const species = NAMES[pokemon.pokedex_id].toLowerCase();
     return <img src={`${process.env.PUBLIC_URL}/icons/${species}.png`}
-                id={id}
                 className="cursor-pointer poke-card"
                 onClick={() => set_pokemon(pokemon)}
                 onDoubleClick={() => console.log(location, pokemon)}
