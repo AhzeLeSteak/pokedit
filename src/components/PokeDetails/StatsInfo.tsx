@@ -1,5 +1,5 @@
 import React from "react";
-import {Pokemon} from "../../data/PokeTypes";
+import {Pokemon} from "../../data/types/pokemon";
 import './StatsInfo.scss'
 
 export const StatsInfo = (props: {poke: Pokemon}) => {

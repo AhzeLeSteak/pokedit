@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {MovesInfo} from "./MovesInfo";
 import {StatsInfo} from "./StatsInfo";
 import {BaseInfo} from "./BaseInfo";
-import {NAMES} from "../../data/NAMES";
+import {NAMES} from "../../data/static-data/NAMES";
 import {useSaveContext} from "../../pages/SaveViewer";
 
 export const PokeDetails = () => {

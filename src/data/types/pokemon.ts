@@ -1,9 +1,5 @@
-import {PkMove} from "./PokeMoves";
-
-export type PkType =
-    'NORMAL' | 'FIGHTING' | 'FLYING' | 'POISON' | 'GROUND' |
-    'ROCK' | 'BUG' | 'GHOST' | 'FIRE' | 'WATER' | 'GRASS' |
-    'ELECTRIC' | 'PSYCHIC' | 'ICE' | 'DRAGON' | 'NONE'
+import {Move} from "./move";
+import {Type} from "./pokemon_types";
 
 export interface Stats{
     hp: number,
@@ -14,9 +10,8 @@ export interface Stats{
     spd: number,
 }
 
-export type PkMoveWithPP = PkMove & { actual_PP : number }
+export type PkMoveWithPP = Move & { actual_PP : number }
 
-export type Location = {location: 'party', pk_index: number} | {location: 'box', box_index: number, pk_index: number};
 
 export interface Pokemon {
     pokedex_id: number,
@@ -29,7 +24,7 @@ export interface Pokemon {
     IVs: Stats,
     stats_exp: Stats
 
-    types: [PkType, PkType] | [PkType]
+    types: [Type, Type] | [Type]
 
     current_hp: number,
     exp: number,

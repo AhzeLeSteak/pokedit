@@ -1,4 +1,4 @@
-import {PkMoveWithPP} from "../../data/PokeTypes";
+import {PkMoveWithPP} from "../../data/types/pokemon";
 import {CSSProperties, useEffect, useState} from "react";
 import './MovesInfo.scss';
 

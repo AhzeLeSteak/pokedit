@@ -12,8 +12,6 @@ export const VersionLanguagePicker = (props: {value: {version: Version, language
         </div>;
     };
 
-    console.log(props.value)
-
     return <>
         <div className="col-6">
             Game version

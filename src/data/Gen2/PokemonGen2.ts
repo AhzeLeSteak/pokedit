@@ -1,16 +1,11 @@
-export const bytes_in_poke_g1 = {
+export const bytes_in_poke_g2 = {
     species: 1,
-    currentHp: 2,
-    level: 1,
-    status: 1,
-    type1: 1,
-    type2: 1,
     item: 1,
     move1: 1,
     move2: 1,
     move3: 1,
     move4: 1,
-    OGTrainerID: 2,
+    OG_trainer_ID: 2,
     exp: 3,
     EV_HP: 2,
     ATK_EV: 2,
@@ -22,12 +17,18 @@ export const bytes_in_poke_g1 = {
     move2PP: 1,
     move3PP: 1,
     move4PP: 1,
-    level_doublon: 1,
+    friendship: 1,
+    pokerus: 1,
+    caught_data: 2,
+    level: 1,
+    status: 1,
+    empty: 1,
+    currentHp: 2,
     maxHP: 2,
     atk: 2,
     def: 2,
     spd: 2,
-    spe: 2
+    atk_spe: 2,
+    def_spe: 2
 }
-Object.freeze(bytes_in_poke_g1);
-export type PokemonGen1 = typeof bytes_in_poke_g1;
+export type PokemonGen2 = typeof bytes_in_poke_g2;

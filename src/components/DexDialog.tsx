@@ -1,7 +1,7 @@
 import './DexDialog.scss';
 import {SaveType} from "../data/SaveReader";
 import React, {useEffect, useRef} from "react";
-import {NAMES} from "../data/NAMES";
+import {NAMES} from "../data/static-data/NAMES";
 import {useClickOutside} from "primereact/hooks";
 
 let timeout: NodeJS.Timeout;
@@ -53,8 +53,8 @@ export const DexDialog = ({visible, onClose, dex_info}: DexDialogProps) => {
                 <div id="sprites" onScroll={e => handleScroll(e, 'names')}>
                     {filler_sprites}
                     {dex_info.map((_, i) =>
-                        <div className="flex justify-content-center align-content-center" data-pkid={i+1}>
-                            <img style={{width: '100%'}} src={`${process.env.PUBLIC_URL}/icons/${String(i+1).padStart(3, '0')}.png`}/>
+                        <div className="flex justify-content-center align-content-center" data-pkid={i}>
+                            <img style={{width: '100%'}} src={`${process.env.PUBLIC_URL}/icons/${NAMES[i]}.png`}/>
                         </div>
                     )}
                     {filler_sprites}
@@ -66,7 +66,7 @@ export const DexDialog = ({visible, onClose, dex_info}: DexDialogProps) => {
                             i+=1;
                             const fixed = String(i).padStart(3, '0');
                             const ball = _.owned ? 'pokeball' : 'noball';
-                            return <div data-pkid={i}>
+                            return <div data-pkid={i} onClick={e => e.currentTarget.scrollIntoView({block: "center", behavior: 'smooth'})}>
                                 <div><img className="ball" src={`${process.env.PUBLIC_URL}/imgs/${ball}.png`}/></div>
                                 <span>N°{fixed} {NAMES[i].toUpperCase()}</span>
                             </div>

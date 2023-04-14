@@ -4,7 +4,7 @@ import {Party} from "../components/Party";
 import {Box} from "../components/Box";
 import {DexDialog} from "../components/DexDialog";
 import React, {createContext, useContext, useState} from "react";
-import {Pokemon} from "../data/PokeTypes";
+import {Pokemon} from "../data/types/pokemon";
 import {SaveReader} from "../data/SaveReader";
 
 type BoxContextType = {

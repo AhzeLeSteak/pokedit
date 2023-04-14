@@ -1,4 +1,6 @@
-export const OFFSET = {
+import {Offset} from "../../SaveReaderOffset";
+
+export const OFFSET_G1: Offset = {
     PLAYER_NAME: 0x2598,
     RIVAL_NAME: 0x25F6,
     CURRENT_BOX_NUMBER: 0x284C,
@@ -27,12 +29,11 @@ export const OFFSET = {
         MAIN_DATA: 0x3523,
         BANK_2: 0x5A4C,
         BANK_3: 0x7A4C,
+    },
+    MEMORY_SIZE: {
+        STRING_LENGTH: 0xB,
+        BOX: 0x462,
+        POKEMON_IN_BOX: 0x21,
+        POKEMON_IN_PARTY: 0x2C
     }
-}
-
-export const MEMORY_SIZE = {
-    STRING_LENGTH: 0xB,
-    BOX: 0x462,
-    POKEMON_IN_BOX: 0x21,
-    POKEMON_IN_PARTY: 0x2C
 }

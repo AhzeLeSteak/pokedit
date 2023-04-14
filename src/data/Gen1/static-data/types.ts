@@ -1,6 +1,6 @@
-import {PkType} from "../../PokeTypes";
+import {Type} from "../../types/pokemon_types";
 
-export const TYPES : PkType[] = [
+export const TYPES : Type[] = [
     'NORMAL',
     'FIGHTING',
     'FLYING',

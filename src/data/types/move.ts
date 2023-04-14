@@ -1,17 +1,15 @@
-//ALL moves names in index order
-import {PkType} from "./PokeTypes";
+import {Type} from "./pokemon_types";
 
-
-export enum PkMoveCategory{
+export enum MoveCategory{
     PHYSICAL,
     SPECIAL,
     STATUS
 }
 
-export type PkMove = {
+export type Move = {
     name: string,
-    type: PkType,
-    category ?: PkMoveCategory,
+    type: Type,
+    category ?: MoveCategory,
     power: number | '—',
     accuracy : number | '—' | '∞',
     PP: number | '—',

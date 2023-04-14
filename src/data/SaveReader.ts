@@ -1,5 +1,6 @@
-import {Location, Pokemon} from "./PokeTypes";
+import {Pokemon} from "./types/pokemon";
 import {Language} from "../firebase/types";
+import {Location} from "./types/location";
 
 export interface SaveType {
     player_name: string,
@@ -17,7 +18,7 @@ export abstract class SaveReader<TPkGen = {}> {
 
     protected _save!: SaveType;
 
-    constructor(public readonly buffer: Uint8Array, public readonly language: Language) {
+    protected constructor(public readonly buffer: Uint8Array, public readonly language: Language) {
     }
 
     protected abstract calc_save_data(): SaveType;
@@ -53,7 +54,7 @@ export abstract class SaveReader<TPkGen = {}> {
     transfer(from: Location, to: Location, update = true) {
         const poke = this.get_from_location(from);
         this.set_from_location(to, poke, from.location === 'box' && to.location === 'party');
-        this.change_size(to, 1);
+        this.change_location_size(to, 1);
         this.remove_from_location(from);
         update && this.update();
     }
@@ -63,10 +64,10 @@ export abstract class SaveReader<TPkGen = {}> {
         for(let i = where.pk_index; i + 1 < to; i++)
             this.set_from_location({...where, pk_index: i}, this.get_from_location({...where, pk_index: i+1}), false);
 
-        this.change_size(where, -1);
+        this.change_location_size(where, -1);
     }
 
-    abstract change_size(l: Location, diff: number): void;
+    protected abstract change_location_size(l: Location, diff: number): void;
 
     protected get flat_mons(){
         const res: TPkGen[] = [];

@@ -1,4 +1,4 @@
-import {Pokemon} from "./PokeTypes";
+import {Pokemon} from "../types/pokemon";
 
 type Curve = 'f' | 'mf' | 'ms' | 's' | 'e' | 'fl';
 

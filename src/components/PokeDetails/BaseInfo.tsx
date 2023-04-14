@@ -1,5 +1,5 @@
 import './BaseInfo.scss'
-import {Pokemon} from "../../data/PokeTypes";
+import {Pokemon} from "../../data/types/pokemon";
 import React from "react";
 
 export const BaseInfo = ({poke}: { poke: Pokemon }) => {

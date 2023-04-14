@@ -1,18 +1,29 @@
 import './Login.scss'
 import {useAuthContext} from "../firebase/AuthProvider";
-import React, {DragEventHandler, useState} from "react";
+import React, {DragEventHandler, useEffect, useState} from "react";
 import {SaveReader} from "../data/SaveReader";
 import {SaveViewer} from "./SaveViewer";
 import {GENERATIONS, Language, Version} from "../firebase/types";
 import {get_reader} from "../data/get_save_reader";
 import {VersionLanguagePicker} from "../components/VersionLanguagePicker";
+import {Gen2SaveReader} from "../data/Gen2/Gen2SaveReader";
 
 export const Login = () => {
 
-    const {login, user} = useAuthContext();
+    const {login} = useAuthContext();
     const [saveReader, setSaveReader] = useState<SaveReader>();
     const [version, setVersion] = useState<Version>(GENERATIONS[0].versions[0].value);
     const [language, setLanguage] = useState<Language>('EN');
+
+    useEffect(() => {
+        (async() => {
+            const q = await fetch('pokedit/save_exp/blue.sav');
+            const save = await q.arrayBuffer()
+            const sr = new Gen2SaveReader(new Uint8Array(save), 'FR', 'gold');
+            setSaveReader(sr);
+            console.log(sr.save);
+        })();
+    }, []);
 
     if(saveReader)
         return <SaveViewer saveReader={saveReader} edit={false} onHome={() => setSaveReader(undefined)}></SaveViewer>

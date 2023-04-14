@@ -1,9 +1,10 @@
 import './PokeCard.css'
 
 import React from "react";
-import {Location, Pokemon} from "../data/PokeTypes";
+import {Pokemon} from "../data/types/pokemon";
 import {useSaveContext} from "../pages/SaveViewer";
-import {NAMES} from "../data/NAMES";
+import {NAMES} from "../data/static-data/NAMES";
+import {Location} from "../data/types/location";
 
 export function PokeCard({location, pokemon}: { pokemon: Pokemon, location: Location }){
 
@@ -27,7 +28,9 @@ export function PokeCard({location, pokemon}: { pokemon: Pokemon, location: Loca
                     onDragOver={e => e.preventDefault()}
         />
 
-    const species = NAMES[pokemon.pokedex_id].toLowerCase();
+
+    const species = pokemon.pokedex_id === -1 ? 'N/A' : NAMES[pokemon.pokedex_id].toLowerCase();
+
     return <img src={`${process.env.PUBLIC_URL}/icons/${species}.png`}
                 className="cursor-pointer poke-card"
                 onClick={() => set_pokemon(pokemon)}

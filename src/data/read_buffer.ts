@@ -1,5 +1,4 @@
 import {PKCharToUInt8, UInt8ToPKChar} from "./Gen1/char_encoding";
-import {MEMORY_SIZE} from "./Gen1/static-data/offset";
 import {Language} from "../firebase/types";
 
 export const read_n_bytes = (buffer: Uint8Array, offset: number, n: number) => {
@@ -11,7 +10,7 @@ export const read_n_bytes = (buffer: Uint8Array, offset: number, n: number) => {
     return res;
 }
 
-export const read_string = (buffer: Uint8Array, offset: number, language: Language, length = MEMORY_SIZE.STRING_LENGTH) => {
+export const read_string = (buffer: Uint8Array, offset: number, language: Language, length: number) => {
     let over = false;
     let res = '';
     for(let i = 0; !over && i < length; i++){
@@ -33,7 +32,7 @@ export const write_n_bytes = (buffer: Uint8Array, offset: number, n: number, val
 }
 
 
-export const write_string = (buffer: Uint8Array, offset: number, value: string, language: Language, length = MEMORY_SIZE.STRING_LENGTH) => {
+export const write_string = (buffer: Uint8Array, offset: number, value: string, language: Language, length: number) => {
     let i = 0;
     for(i; i < value.length; i++){
         buffer[offset+i] = PKCharToUInt8(value[i], language);

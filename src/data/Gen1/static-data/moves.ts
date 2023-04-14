@@ -1,6 +1,6 @@
-import {PkMove} from "../PokeMoves";
+import {Move} from "../../types/move";
 
-export const moves_g1: PkMove[] = [
+export const moves_g1: Move[] = [
     {
         name: "Pound",
         type: "NORMAL",
