@@ -19,6 +19,9 @@ export interface Pokemon {
     level: number,
     OT_name: string,
 
+    is_egg: boolean,
+    is_shiny: boolean,
+
     base_stats : Stats,
     stats: Stats,
     IVs: Stats,

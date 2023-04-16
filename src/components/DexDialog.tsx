@@ -1,7 +1,7 @@
 import './DexDialog.scss';
 import {SaveType} from "../data/SaveReader";
 import React, {useEffect, useRef} from "react";
-import {NAMES} from "../data/static-data/NAMES";
+import {NAMES} from "../data/static-data/names";
 import {useClickOutside} from "primereact/hooks";
 
 let timeout: NodeJS.Timeout;

@@ -3,17 +3,18 @@ import {bytes_in_poke_g1, PokemonGen1} from "./PokemonGen1";
 import {SPECIES} from "./static-data/species";
 import {moves_g1} from "./static-data/moves";
 import {BASE_STATS_G1} from "../static-data/base_stats_g1";
-import {calcNextXp} from "../static-data/xp_curves";
 import {OFFSET_G1} from "./static-data/OFFSET_G1";
 import {TYPES} from "./static-data/types";
 import {SaveReaderOffset} from "../SaveReaderOffset";
-import {PkMoveWithPP, Pokemon, Stats} from "../types/pokemon";
+import {PkMoveWithPP, Pokemon} from "../types/pokemon";
 import {Location} from "../types/location";
 import {Language} from "../../firebase/types";
 
 type PkG1WithNames = PokemonGen1 & {nickname: string, OT_name: string}
 
 export class Gen1SaveReader extends SaveReaderOffset<PokemonGen1>{
+
+    box_size = 20;
 
     constructor(buffer: Uint8Array, language: Language) {
         super(OFFSET_G1, bytes_in_poke_g1, 151, buffer, language);
@@ -49,6 +50,8 @@ export class Gen1SaveReader extends SaveReaderOffset<PokemonGen1>{
         const base_stats_g1 = BASE_STATS_G1[dex_id];
 
         const pokemon: Pokemon = {
+            is_egg: false,
+            is_shiny: false,
             OT_name,
             nickname,
             stats_exp: {
@@ -59,26 +62,7 @@ export class Gen1SaveReader extends SaveReaderOffset<PokemonGen1>{
                 def_spe: poke.SPE_EV,
                 spd: poke.SPD_EV
             },
-            IVs: (() => {
-                const ATK_IV = poke.IV >> 12
-                const DEF_IV = (poke.IV >> 8) & 15;
-                const SPD_IV = (poke.IV >> 4) & 15;
-                const SPE_IV = (poke.IV >> 0) & 15;
-                let HP_IV =
-                    (ATK_IV & 1) * 8 +
-                    (DEF_IV & 1) * 4 +
-                    (SPD_IV & 1) * 2 +
-                    (SPE_IV & 1);
-
-                return {
-                    hp: HP_IV,
-                    atk: ATK_IV,
-                    atk_spe: SPE_IV,
-                    def: DEF_IV,
-                    def_spe: SPE_IV,
-                    spd: SPD_IV
-                }
-            })(),
+            IVs: this.parse_IVs(poke.IV),
             OT_id: 0,
             stats: {
                 hp: poke.maxHP,
@@ -102,21 +86,9 @@ export class Gen1SaveReader extends SaveReaderOffset<PokemonGen1>{
             status: 0,
             types
         };
-        calcNextXp(pokemon);
-        if(location === 'box')
-            this.box_trick(pokemon);
         return pokemon;
     }
 
-    private box_trick(poke: Pokemon) {
-        const calc_stat = (base: number, IV: number, stat_xp: number) =>
-            Math.floor((((base + IV)*2+(Math.sqrt(stat_xp)/4))*poke.level)/100)+ 5;
-
-        (Object.keys(poke.stats) as Array<keyof Stats>).forEach((stat) => {
-            poke.stats[stat] = calc_stat(poke.base_stats[stat], poke.IVs[stat], poke.stats_exp[stat]);
-        })
-        poke.stats.hp += poke.level + 5;
-    }
 
 
 

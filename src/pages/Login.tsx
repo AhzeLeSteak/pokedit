@@ -17,7 +17,7 @@ export const Login = () => {
 
     useEffect(() => {
         (async() => {
-            const q = await fetch('pokedit/save_exp/blue.sav');
+            const q = await fetch('pokedit/save/gold.sav');
             const save = await q.arrayBuffer()
             const sr = new Gen2SaveReader(new Uint8Array(save), 'FR', 'gold');
             setSaveReader(sr);

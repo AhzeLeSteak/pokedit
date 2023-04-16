@@ -9,62 +9,60 @@ import {BASE_STATS_G2_5} from "../static-data/base_stats_g2_5";
 
 export class Gen2SaveReader extends SaveReaderOffset<PokemonGen2>{
 
+    box_size: number;
+
     constructor(buffer: Uint8Array, language: Language, version: Version) {
         super(get_offset(language, version), bytes_in_poke_g2, 251, buffer, language);
+        this.box_size = language === 'JP' ? 30 : 20;
     }
 
 
-    protected convert_poke(poke: PokemonGen2, nickname: string, OT_name: string, location: Location["location"]): Pokemon {
-
+    protected convert_poke(pk_g2: PokemonGen2, nickname: string, OT_name: string, location: Location["location"]): Pokemon {
         return {
-            IVs: {
-                atk: poke.atk,
-                def: poke.def,
-                spd: poke.spd,
-                atk_spe: poke.atk_spe,
-                def_spe: poke.def_spe,
-                hp: poke.maxHP
-            },
-            OT_id: poke.OG_trainer_ID,
+            is_egg: pk_g2.species === 0xFD,
+            is_shiny: this.is_shiny(),
+            IVs: this.parse_IVs(pk_g2.IV),
+            OT_id: pk_g2.OG_trainer_ID,
             OT_name,
-            base_stats: BASE_STATS_G2_5[poke.species-1],
-            current_hp: 0,
-            exp: poke.exp,
-            item: poke.item,
-            level: poke.level,
+            base_stats: BASE_STATS_G2_5[pk_g2.species - 1],
+            current_hp: pk_g2.currentHp,
+            exp: pk_g2.exp,
+            item: pk_g2.item,
+            level: pk_g2.level,
             moves: [],
             nickname: nickname,
-            pokedex_id: poke.species-1,
+            pokedex_id: pk_g2.species - 1,
             stats: {
-                atk: poke.atk,
-                def: poke.def,
-                spd: poke.spd,
-                atk_spe: poke.atk_spe,
-                def_spe: poke.def_spe,
-                hp: poke.maxHP
+                atk: pk_g2.atk,
+                def: pk_g2.def,
+                spd: pk_g2.spd,
+                atk_spe: pk_g2.atk_spe,
+                def_spe: pk_g2.def_spe,
+                hp: pk_g2.maxHP
             },
             stats_exp: {
-                atk: poke.atk,
-                def: poke.def,
-                spd: poke.spd,
-                atk_spe: poke.atk_spe,
-                def_spe: poke.def_spe,
-                hp: poke.maxHP
+                atk: pk_g2.ATK_EV,
+                def: pk_g2.DEF_EV,
+                spd: pk_g2.SPD_EV,
+                atk_spe: pk_g2.SPE_EV,
+                def_spe: pk_g2.SPE_EV,
+                hp: pk_g2.EV_HP
             },
             status: 0,
-            types: TYPES_G2[poke.species-1]
+            types: TYPES_G2[pk_g2.species - 1]
         };
     }
 
     protected dex_id(poke: PokemonGen2): number {
-        return 0;
+        return poke.species;
+    }
+
+    private is_shiny() {
+        return false;
     }
 
     protected set_from_location(l: Location, poke: PokemonGen2, b: boolean): void {
     }
-
-
-
 }
 
 const get_offset = (l: Language, v: Version) => {

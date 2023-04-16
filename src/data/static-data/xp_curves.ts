@@ -20,15 +20,14 @@ const funcs : Record<Curve, (lvl: number) => number> = {
 
 
 export function calcNextXp(poke: Pokemon) {
+    if(poke.level === 100) return;
+
     const type = xp_curves[poke.pokedex_id-1];
     if(!(type in funcs))
         return console.warn(type, 'not a known xp type');
 
     const xp_needed_for_actual_level = Math.floor(funcs[type](poke.level));
-    poke.level++;
-    poke.xp_needed_for_next_level = Math.floor(funcs[type](poke.level));
-    poke.level--;
-
+    poke.xp_needed_for_next_level = Math.floor(funcs[type](poke.level+1));
     poke.percentage_level = (poke.exp - xp_needed_for_actual_level) / (poke.xp_needed_for_next_level - xp_needed_for_actual_level)
 }
 

@@ -1,10 +1,13 @@
 import {SaveReader} from "./SaveReader";
-import {Pokemon} from "./types/pokemon";
+import {Pokemon, Stats} from "./types/pokemon";
 import {read_n_bytes, read_string} from "./read_buffer";
 import {Language} from "../firebase/types";
 import {Location} from "./types/location";
+import {calcNextXp} from "./static-data/xp_curves";
 
 export abstract class SaveReaderOffset<T extends {species: number, [K: string]: number}> extends SaveReader<T>{
+
+    abstract box_size: number;
 
     protected constructor(protected offset: Offset, protected bytes_in_poke: T,
                           protected max_pk_id: number,
@@ -18,7 +21,7 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
             rival_name: read_string(this.buffer, this.offset.RIVAL_NAME, this.language, this.offset.MEMORY_SIZE.STRING_LENGTH),
             party: this.get_party_info(),
             boxes: this.get_boxes_info(),
-            box_size: 20,
+            box_size: this.box_size,
             pokedex: this.get_dex_info()
         }
     }
@@ -29,15 +32,6 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
             .map((_, i) => this.get_box_info(i));
     }
 
-    protected get_dex_info(){
-        const dex_seen = this.get_dex_data(this.offset.POKEDEX.SEEN);
-        const dex_owned = this.get_dex_data(this.offset.POKEDEX.OWNED);
-        return dex_seen.map((seen, i) => ({
-            seen,
-            owned: dex_owned[i]
-        }))
-    }
-
     protected get_box_info(box_index: number) {
         const box_offset = this.get_box_offset(box_index);
         const poke_count = this.buffer[box_offset];
@@ -45,17 +39,40 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
         return Array(poke_count).fill(0)
             .map((_, i) => (<Location>{location: 'box', box_index, pk_index: i}))
             .map(l => ({l, pk: this.get_from_location(l)}) )
-            .map(({l, pk}) => this.convert_poke(pk, pk.nickname, pk.OT_name, l.location))
+            .map(({l, pk}) => this.convert_poke_and_calc(pk, pk.nickname, pk.OT_name, l.location))
     }
-
 
     protected get_party_info(): Pokemon[] {
         const poke_count = this.buffer[this.offset.PARTY.OFFSET];
         return Array(poke_count).fill(0)
             .map((_, i) => (<Location>{location: 'party', pk_index: i}))
             .map(l => ({l, pk: this.get_from_location(l)}) )
-            .map(({l, pk}) => this.convert_poke(pk, pk.nickname, pk.OT_name, l.location));
+            .map(({l, pk}) => this.convert_poke_and_calc(pk, pk.nickname, pk.OT_name, l.location));
     }
+
+    private convert_poke_and_calc(pkT: T, nickname: string, OT_name: string, location: Location['location']){
+        const pk = this.convert_poke(pkT, nickname, OT_name, location);
+        calcNextXp(pk);
+        if(location === 'box')
+            this.box_trick(pk);
+        return pk;
+    }
+
+    private box_trick(poke: Pokemon) {
+        const calc_stat = (base: number, IV: number, stat_xp: number) =>
+            Math.floor((((base + IV)*2+(Math.sqrt(stat_xp)/4))*poke.level)/100)+ 5;
+
+        (Object.keys(poke.stats) as Array<keyof Stats>).forEach((stat) => {
+            try{
+                poke.stats[stat] = calc_stat(poke.base_stats[stat], poke.IVs[stat], poke.stats_exp[stat]);
+            }
+            catch (e){
+                //debugger
+            }
+        })
+        poke.stats.hp += poke.level + 5;
+    }
+
 
     protected get_box_offset(box_index: number){
         let current_box_number = this.buffer[this.offset.CURRENT_BOX_NUMBER] % 2**7;
@@ -64,6 +81,15 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
             : box_index < 6
                 ? this.offset.BOX.BOX_1 + box_index * this.offset.MEMORY_SIZE.BOX
                 : this.offset.BOX.BOX_7 + (box_index-6) * this.offset.MEMORY_SIZE.BOX;
+    }
+
+    protected get_dex_info(){
+        const dex_seen = this.get_dex_data(this.offset.POKEDEX.SEEN);
+        const dex_owned = this.get_dex_data(this.offset.POKEDEX.OWNED);
+        return dex_seen.map((seen, i) => ({
+            seen,
+            owned: dex_owned[i]
+        }))
     }
 
     override get_from_location(l: Location): T & {nickname: string, OT_name: string} {
@@ -107,7 +133,7 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
         ]
     }
 
-    private get_poke_from_offset(offset: number) {
+    protected get_poke_from_offset(offset: number) {
         const poke = {...this.bytes_in_poke};
         for(const key in poke){
             const bytes = poke[key];
@@ -129,7 +155,28 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
             .map(val => !!val)
     }
 
-    protected abstract convert_poke(poke: T, nickname: string, OT_name: string, location: Location['location']) : Pokemon
+    protected abstract convert_poke(poke: T, nickname: string, OT_name: string, location: Location['location']) : Pokemon;
+
+    protected parse_IVs(IVs: number): Stats{
+        const ATK_IV = IVs >> 12
+        const DEF_IV = (IVs >> 8) & 15;
+        const SPD_IV = (IVs >> 4) & 15;
+        const SPE_IV = (IVs >> 0) & 15;
+        let HP_IV =
+            (ATK_IV & 1) * 8 +
+            (DEF_IV & 1) * 4 +
+            (SPD_IV & 1) * 2 +
+            (SPE_IV & 1);
+
+        return {
+            hp: HP_IV,
+            atk: ATK_IV,
+            atk_spe: SPE_IV,
+            def: DEF_IV,
+            def_spe: SPE_IV,
+            spd: SPD_IV
+        }
+    }
 }
 
 

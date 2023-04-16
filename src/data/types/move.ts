@@ -8,7 +8,7 @@ export enum MoveCategory{
 
 export type Move = {
     name: string,
-    type: Type,
+    type: Type | '???',
     category ?: MoveCategory,
     power: number | '—',
     accuracy : number | '—' | '∞',

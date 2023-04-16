@@ -9,7 +9,7 @@ export const StatsInfo = (props: {poke: Pokemon}) => {
         'ATK', props.poke.stats.atk,
         'DEF', props.poke.stats.def,
         'SP.ATK', props.poke.stats.atk_spe,
-        'SP.DEF', props.poke.stats.atk_spe,
+        'SP.DEF', props.poke.stats.def_spe,
         'SPD', props.poke.stats.spd
     ];
 

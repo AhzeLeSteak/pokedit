@@ -7,7 +7,7 @@ export const OFFSET_GOLD_EN: Offset = {
     CURRENT_BOX: 0x2D6C,
     BOX: {
         BOX_1: 0x4000,
-        BOX_7: 0x6000,
+        BOX_7: 0x59E0,
         SPECIES: 0x01,
         POKEMONS: 0x16,
         POKEMON_NAMES: 0x386,
@@ -32,7 +32,7 @@ export const OFFSET_GOLD_EN: Offset = {
     },
     MEMORY_SIZE : {
         STRING_LENGTH: 0xB,
-        BOX: 0x462,
+        BOX: 0x450,
         POKEMON_IN_BOX: 0x20,
         POKEMON_IN_PARTY: 0x30
     }
