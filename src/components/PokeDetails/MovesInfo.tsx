@@ -9,6 +9,8 @@ export function MovesInfo(props: { moves: PkMoveWithPP[] }) {
         selectedMoveIndex = 0;
 
     useEffect(() => setSelectedMoveIndex(0), [props.moves]); //set 0 when changing selected pkmon
+    if(!props.moves || !props.moves.length)
+        return <></>;
 
     const selected_move = props.moves[selectedMoveIndex];
     const effect = [selected_move.power, 'POWER', 'ACCURACY', selected_move.accuracy];

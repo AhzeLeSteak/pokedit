@@ -1,4 +1,5 @@
 export const NAMES = [
+    "",
     "Bulbasaur",
     "Ivysaur",
     "Venusaur",

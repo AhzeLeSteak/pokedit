@@ -1,11 +1,12 @@
 import {bytes_in_poke_g2, PokemonGen2} from "./PokemonGen2";
 import {SaveReaderOffset} from "../SaveReaderOffset";
 import {Location} from "../types/location";
-import {Pokemon} from "../types/pokemon";
+import {PkMoveWithPP, Pokemon, Stats} from "../types/pokemon";
 import {TYPES_G2} from "./static-data/types";
 import {Language, Version} from "../../firebase/types";
 import {OFFSET_GOLD_EN} from "./static-data/OFFSET_G2";
 import {BASE_STATS_G2_5} from "../static-data/base_stats_g2_5";
+import {MOVES_G2} from "./static-data/moves";
 
 export class Gen2SaveReader extends SaveReaderOffset<PokemonGen2>{
 
@@ -18,10 +19,14 @@ export class Gen2SaveReader extends SaveReaderOffset<PokemonGen2>{
 
 
     protected convert_poke(pk_g2: PokemonGen2, nickname: string, OT_name: string, location: Location["location"]): Pokemon {
+        const IVs = this.parse_IVs(pk_g2.IV);
+        const moves = [pk_g2.move1, pk_g2.move2, pk_g2.move3, pk_g2.move4];
+        const PPs = [pk_g2.move1PP, pk_g2.move2PP, pk_g2.move3PP, pk_g2.move4PP];
+
         return {
             is_egg: pk_g2.species === 0xFD,
-            is_shiny: this.is_shiny(),
-            IVs: this.parse_IVs(pk_g2.IV),
+            is_shiny: this.is_shiny(IVs),
+            IVs,
             OT_id: pk_g2.OG_trainer_ID,
             OT_name,
             base_stats: BASE_STATS_G2_5[pk_g2.species - 1],
@@ -29,9 +34,9 @@ export class Gen2SaveReader extends SaveReaderOffset<PokemonGen2>{
             exp: pk_g2.exp,
             item: pk_g2.item,
             level: pk_g2.level,
-            moves: [],
+            moves: moves.reduce((acc, moveIndex, i) => MOVES_G2[moveIndex] ? [...acc, {...MOVES_G2[moveIndex], actual_PP: PPs[i]}] : acc, [] as PkMoveWithPP[]),
             nickname: nickname,
-            pokedex_id: pk_g2.species - 1,
+            pokedex_id: this.dex_id(pk_g2),
             stats: {
                 atk: pk_g2.atk,
                 def: pk_g2.def,
@@ -57,8 +62,11 @@ export class Gen2SaveReader extends SaveReaderOffset<PokemonGen2>{
         return poke.species;
     }
 
-    private is_shiny() {
-        return false;
+    private is_shiny(IVs: Stats) {
+        return [2, 3, 6, 7, 10, 11, 14, 15].includes(IVs.atk)
+            && IVs.def === 10
+            && IVs.atk_spe === 10
+            && IVs.spd === 10;
     }
 
     protected set_from_location(l: Location, poke: PokemonGen2, b: boolean): void {

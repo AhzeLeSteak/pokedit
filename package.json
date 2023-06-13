@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "firebase": "^9.17.2",
+    "fs": "^0.0.1-security",
     "gh-pages": "^5.0.0",
     "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^6.9.0",

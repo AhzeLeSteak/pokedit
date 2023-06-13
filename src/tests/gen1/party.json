@@ -1,0 +1,80 @@
+[
+  {
+    "species": 51,
+    "nickname": "TRIOPIKEUR",
+    "exp": 71824,
+    "lvl": 41,
+    "stats": {
+      "hp": 92,
+      "atk": 81,
+      "def": 60,
+      "spe": 69,
+      "spd": 116
+    }
+  },
+  {
+    "species": 12,
+    "nickname": "ELMERA",
+    "exp": 70901,
+    "lvl": 41,
+    "stats": {
+      "hp": 117,
+      "atk": 56,
+      "def": 62,
+      "spe": 89,
+      "spd": 80
+    }
+  },
+  {
+    "species": 25,
+    "nickname": "SPARKY",
+    "exp": 79344,
+    "lvl": 42,
+    "stats": {
+      "hp": 103,
+      "atk": 67,
+      "def": 49,
+      "spe": 60,
+      "spd": 104
+    }
+  },
+  {
+    "species": 3,
+    "nickname": "KERBEROS",
+    "exp": 84972,
+    "lvl": 45,
+    "stats": {
+      "hp": 145,
+      "atk": 99,
+      "def": 100,
+      "spe": 108,
+      "spd": 93
+    }
+  },
+  {
+    "species": 121,
+    "nickname": "STAROSS",
+    "exp": 154797,
+    "lvl": 49,
+    "stats": {
+      "hp": 128,
+      "atk": 90,
+      "def": 110,
+      "spe": 123,
+      "spd": 135
+    }
+  },
+  {
+    "species": 146,
+    "nickname": "SULFURA",
+    "exp": 171999,
+    "lvl": 51,
+    "stats": {
+      "hp": 157,
+      "atk": 119,
+      "def": 107,
+      "spe": 149,
+      "spd": 107
+    }
+  }
+]

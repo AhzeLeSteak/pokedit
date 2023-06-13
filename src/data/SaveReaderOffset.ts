@@ -37,7 +37,7 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
         const poke_count = this.buffer[box_offset];
 
         return Array(poke_count).fill(0)
-            .map((_, i) => (<Location>{location: 'box', box_index, pk_index: i}))
+            .map((_, i) => ({location: 'box', box_index, pk_index: i} satisfies Location))
             .map(l => ({l, pk: this.get_from_location(l)}) )
             .map(({l, pk}) => this.convert_poke_and_calc(pk, pk.nickname, pk.OT_name, l.location))
     }
@@ -45,7 +45,7 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
     protected get_party_info(): Pokemon[] {
         const poke_count = this.buffer[this.offset.PARTY.OFFSET];
         return Array(poke_count).fill(0)
-            .map((_, i) => (<Location>{location: 'party', pk_index: i}))
+            .map((_, i) => ({location: 'party', pk_index: i} satisfies Location))
             .map(l => ({l, pk: this.get_from_location(l)}) )
             .map(({l, pk}) => this.convert_poke_and_calc(pk, pk.nickname, pk.OT_name, l.location));
     }
@@ -61,12 +61,12 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
     private box_trick(poke: Pokemon) {
         const calc_stat = (base: number, IV: number, stat_xp: number) =>
             Math.floor((((base + IV)*2+(Math.sqrt(stat_xp)/4))*poke.level)/100)+ 5;
-
         (Object.keys(poke.stats) as Array<keyof Stats>).forEach((stat) => {
             try{
                 poke.stats[stat] = calc_stat(poke.base_stats[stat], poke.IVs[stat], poke.stats_exp[stat]);
             }
             catch (e){
+                console.error(e);
                 //debugger
             }
         })
@@ -115,27 +115,28 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
 
 
 
-    get_offsets(l: Location): [number, number, number, number] {
+    get_offsets(l: Location) {
         if(l.location === 'party')
             return [
                 this.offset.PARTY.OFFSET + this.offset.PARTY.POKEMONS + l.pk_index * this.offset.MEMORY_SIZE.POKEMON_IN_PARTY,
                 this.offset.PARTY.OFFSET + this.offset.PARTY.SPECIES + l.pk_index,
                 this.offset.PARTY.OFFSET + this.offset.PARTY.POKEMON_NAMES + l.pk_index * this.offset.MEMORY_SIZE.STRING_LENGTH,
                 this.offset.PARTY.OFFSET + this.offset.PARTY.OT_NAMES + l.pk_index * this.offset.MEMORY_SIZE.STRING_LENGTH
-            ]
+            ] as const;
 
         const box_offset = this.get_box_offset(l.box_index);
         return [
             box_offset + this.offset.BOX.POKEMONS + l.pk_index * this.offset.MEMORY_SIZE.POKEMON_IN_BOX,
             box_offset + this.offset.PARTY.SPECIES + l.pk_index,
-            box_offset + this.offset.BOX.SPECIES + l.pk_index,
+            box_offset + this.offset.BOX.POKEMON_NAMES + l.pk_index  * this.offset.MEMORY_SIZE.STRING_LENGTH,
             box_offset + this.offset.BOX.OT_NAMES + l.pk_index * this.offset.MEMORY_SIZE.STRING_LENGTH
-        ]
+        ] as const;
     }
 
     protected get_poke_from_offset(offset: number) {
-        const poke = {...this.bytes_in_poke};
-        for(const key in poke){
+        const poke: T = {...this.bytes_in_poke};
+        let key: keyof T;
+        for(key in poke){
             const bytes = poke[key];
             // @ts-ignore
             poke[key] = read_n_bytes(this.buffer, offset, bytes);
@@ -171,8 +172,8 @@ export abstract class SaveReaderOffset<T extends {species: number, [K: string]: 
         return {
             hp: HP_IV,
             atk: ATK_IV,
-            atk_spe: SPE_IV,
             def: DEF_IV,
+            atk_spe: SPE_IV,
             def_spe: SPE_IV,
             spd: SPD_IV
         }

@@ -2,6 +2,12 @@ import {Stats} from "../types/pokemon";
 
 export const BASE_STATS_G1: Array<Omit<Stats, 'def_spe' | 'atk_spe'> & {spe: number}> = [
     {
+        hp : 0,
+        atk: 0,
+        def: 0,
+        spd: 0,
+        spe: 0,
+    },{
         hp: 45,
         atk: 49,
         def: 49,

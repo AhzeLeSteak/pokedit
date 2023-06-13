@@ -53,8 +53,8 @@ export const DexDialog = ({visible, onClose, dex_info}: DexDialogProps) => {
                 <div id="sprites" onScroll={e => handleScroll(e, 'names')}>
                     {filler_sprites}
                     {dex_info.map((_, i) =>
-                        <div className="flex justify-content-center align-content-center" data-pkid={i}>
-                            <img style={{width: '100%'}} src={`${process.env.PUBLIC_URL}/icons/${NAMES[i]}.png`}/>
+                        <div className="flex justify-content-center align-content-center" data-pkid={i+1}>
+                            <img style={{width: '100%'}} src={`${process.env.PUBLIC_URL}/icons/${NAMES[i+1]}.png`}/>
                         </div>
                     )}
                     {filler_sprites}
@@ -87,5 +87,5 @@ const filler_names = Array(3).fill(0).map((_, i) =>
     </div>
 );
 const filler_sprites = <div className="flex justify-content-center align-content-center">
-    <img style={{width: '100%', visibility: 'hidden'}} src={`${process.env.PUBLIC_URL}/icons/001.png`}/>
+    <img style={{width: '100%', visibility: 'hidden'}} src={`${process.env.PUBLIC_URL}/icons/abra.png`}/>
 </div>;

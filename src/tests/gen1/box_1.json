@@ -1,0 +1,47 @@
+[
+  {
+    "species": 80,
+    "nickname": "FLAGADOSS",
+    "lvl": 23,
+    "currentHp": 7,
+    "stats": {
+      "hp": 77,
+      "atk": 45,
+      "def": 55,
+      "spd": 24,
+      "spe": 41
+    },
+    "exp": 12167,
+    "next_lvl": 1657
+  },
+  {
+    "species": 140,
+    "nickname": "KABUTO",
+    "lvl": 30,
+    "currentHp": 65,
+    "stats": {
+      "hp": 65,
+      "atk": 62,
+      "def": 66,
+      "spd": 45,
+      "spe": 38
+    },
+    "exp": 27000,
+    "next_lvl": 2791
+  },
+  {
+    "species": 143,
+    "nickname": "RONFLEX",
+    "lvl": 30,
+    "currentHp": 17,
+    "stats": {
+      "hp": 136,
+      "atk": 71,
+      "def": 44,
+      "spd": 23,
+      "spe": 52
+    },
+    "exp": 33750,
+    "next_lvl": 3488
+  }
+]
