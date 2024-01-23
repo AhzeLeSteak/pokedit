@@ -7,6 +7,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.debug{
+    border-radius: 5px;
+    border: 2px dot-dash red;
+    background-color: rgba(0, 0, 0, .6);
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

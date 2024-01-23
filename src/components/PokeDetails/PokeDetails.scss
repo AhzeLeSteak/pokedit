@@ -1,80 +1,82 @@
 .poke-details{
-    position: relative;
-    background-image: url("../../../public/imgs/poke-data.png");
-    background-size: 100%;
 
-    display: flex;
-    flex-flow: column;
-    padding-right: calc(var(--app-height) * 2 / 156);
+  position: relative;
+  background-size: 100%;
 
-    overflow-y: hidden;
+  display: flex;
+  flex-flow: column;
+  padding-right: calc(var(--app-height) * 2 / 156);
+
+  overflow-y: hidden;
 
   .horizontal & {
-    height: 100%;
+    background-image: url("../../../public/imgs/poke-data-y.png");
     aspect-ratio: 80/156;
+    height: 100%;
   }
   .vertical & {
+    background-image: url("../../../public/imgs/poke-data-x.png");
     width: 100%;
     aspect-ratio: 156/80;
   }
 }
 
 .poke-img{
-    height: calc(var(--app-height) * 80 / 156);
-    padding: calc(var(--app-height) * 18 / 156) calc(var(--app-height) * 6 / 156) calc(var(--app-height) * 8 / 156) calc(var(--app-height) * 14 / 156);
-    object-fit: cover;
+  height: calc(var(--app-height) * 80 / 156);
+  padding: calc(var(--app-height) * 18 / 156) calc(var(--app-height) * 6 / 156) calc(var(--app-height) * 8 / 156) calc(var(--app-height) * 14 / 156);
+  object-fit: cover;
 }
 
 .types{
-    position: absolute;
-    width: calc(var(--app-height) * 50 / 156);
-    left: calc(var(--app-height) * 14 / 156);
-    top: calc(var(--app-height) * 18 / 156);
-    font-size: calc(var(--app-height) / 40);
+  position: absolute;
+  width: calc(var(--app-height) * 50 / 156);
+  left: calc(var(--app-height) * 14 / 156);
+  top: calc(var(--app-height) * 18 / 156);
+  font-size: calc(var(--app-height) / 40);
 
-    img{
-        aspect-ratio : 32 / 14;
-    }
+  img{
+    aspect-ratio : 32 / 14;
+  }
 }
 
 
 .tab-select{
-    aspect-ratio: 160 / 16;
-    padding-left: calc(var(--app-height) * 23 / 156);
-    padding-right: calc(var(--app-height) * 23 / 156);
+  aspect-ratio: 160 / 16;
+  padding-left: calc(var(--app-height) * 23 / 156);
+  padding-right: calc(var(--app-height) * 23 / 156);
 
-    &.tab-0{
-        background-image: url("../../../public/imgs/barre_0.png");
-    }
-    &.tab-1{
-        background-image: url("../../../public/imgs/barre_1.png");
-    }
-    &.tab-2{
-        background-image: url("../../../public/imgs/barre_2.png");
-    }
-    &.tab-3{
-        background-image: url("../../../public/imgs/barre_3.png");
-    }
+  &.tab-0{
+    background-image: url("../../../public/imgs/barre_0.png");
+  }
+  &.tab-1{
+    background-image: url("../../../public/imgs/barre_1.png");
+  }
+  &.tab-2{
+    background-image: url("../../../public/imgs/barre_2.png");
+  }
+  &.tab-3{
+    background-image: url("../../../public/imgs/barre_3.png");
+  }
 
-    div{
-        color: transparent;
-        cursor: pointer;
-        width: calc(var(--app-height) * 4 / 156);
-        height: 100%;
-    }
+  div{
+    color: transparent;
+    cursor: pointer;
+    width: calc(var(--app-height) * 4 / 156);
+    height: 100%;
+  }
 }
 
 
 
 .tab-content{
-    width: 100%;
-    --w: 160;
-    --h: 139;
-    aspect-ratio: var(--w) / var(--h);
-    position: relative;
-    span{
-        font-size: calc(var(--app-height) / 31);
-    }
+  width: 100%;
+  --w: 160;
+  --h: 139;
+  aspect-ratio: var(--w) / var(--h);
+  position: relative;
+  span{
+    font-size: calc(var(--app-height) / 31);
+  }
 
 }
 

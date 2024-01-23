@@ -2,5 +2,4 @@ img.poke-card {
     height: 100%;
     aspect-ratio: 1;
     object-fit: contain;
-    border: solid 1px black;
 }
