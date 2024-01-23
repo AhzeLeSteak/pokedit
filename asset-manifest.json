@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/pokedit/static/css/main.d5eeb07b.css",
-    "main.js": "/pokedit/static/js/main.7133c06b.js",
+    "main.js": "/pokedit/static/js/main.cc775c1e.js",
     "static/js/787.74df8652.chunk.js": "/pokedit/static/js/787.74df8652.chunk.js",
     "static/media/primeicons.svg": "/pokedit/static/media/primeicons.e1441b135b3ca9ad643c.svg",
     "static/media/pkcenter_icon.png": "/pokedit/static/media/pkcenter_icon.5c2855bfe5f05064296d.png",
@@ -13,11 +13,11 @@
     "static/media/color.png": "/pokedit/static/media/color.6441e63a57ccc5105bad.png",
     "index.html": "/pokedit/index.html",
     "main.d5eeb07b.css.map": "/pokedit/static/css/main.d5eeb07b.css.map",
-    "main.7133c06b.js.map": "/pokedit/static/js/main.7133c06b.js.map",
+    "main.cc775c1e.js.map": "/pokedit/static/js/main.cc775c1e.js.map",
     "787.74df8652.chunk.js.map": "/pokedit/static/js/787.74df8652.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d5eeb07b.css",
-    "static/js/main.7133c06b.js"
+    "static/js/main.cc775c1e.js"
   ]
 }
